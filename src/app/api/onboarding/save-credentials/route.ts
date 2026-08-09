@@ -22,11 +22,12 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { redisUrl, redisToken, geminiApiKey, anthropicApiKey } = body as {
+    const { redisUrl, redisToken, geminiApiKey, anthropicApiKey, openaiApiKey } = body as {
       redisUrl?: string;
       redisToken?: string;
       geminiApiKey?: string;
       anthropicApiKey?: string;
+      openaiApiKey?: string;
     };
 
     // Build updates — only encrypt and store non-empty values
@@ -50,6 +51,10 @@ export async function POST(request: Request) {
 
     if (anthropicApiKey) {
       updates.encryptedAnthropicApiKey = encrypt(anthropicApiKey);
+    }
+
+    if (openaiApiKey) {
+      updates.encryptedOpenaiApiKey = encrypt(openaiApiKey);
     }
 
     if (Object.keys(updates).length === 0) {

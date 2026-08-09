@@ -52,7 +52,7 @@ export interface ParticipantProfile {
 
 export type AIBehavior = 'structured' | 'standard' | 'exploratory';
 
-export type AIProviderType = 'gemini' | 'claude';
+export type AIProviderType = 'gemini' | 'claude' | 'openai';
 
 // ============================================
 // AI Model Configuration
@@ -78,13 +78,22 @@ export const CLAUDE_MODELS: AIModelOption[] = [
   { id: 'claude-opus-4-5', label: 'Claude Opus 4.5', desc: 'Higher capability ($5/$25 per MTok)' },
 ];
 
+// Available OpenAI / OpenAI-compatible models
+export const OPENAI_MODELS: AIModelOption[] = [
+  { id: 'gpt-4o-mini', label: 'GPT-4o mini', desc: 'Fast, cost-effective' },
+  { id: 'gpt-4o', label: 'GPT-4o', desc: 'Higher capability' },
+  { id: 'o4-mini', label: 'o4-mini', desc: 'Reasoning model' },
+];
+
 // Default models for each provider
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.5-flash';
 export const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-5';
+export const DEFAULT_OPENAI_MODEL = 'gpt-4o-mini';
 
 // Synthesis models (switch to the app's configured higher-capability model)
 export const GEMINI_SYNTHESIS_MODEL = 'gemini-3.1-pro-preview';
 export const CLAUDE_SYNTHESIS_MODEL = 'claude-opus-4-5';
+export const OPENAI_SYNTHESIS_MODEL = 'gpt-4o';
 
 // Link expiration options
 export type LinkExpirationOption = 'never' | '7days' | '30days' | '90days';
@@ -229,6 +238,7 @@ export interface ResearcherAccount {
   encryptedRedisToken: string | null;
   encryptedGeminiApiKey: string | null;
   encryptedAnthropicApiKey: string | null;
+  encryptedOpenaiApiKey: string | null;
 
   redisConfiguredAt: number | null;
 }
@@ -243,6 +253,7 @@ export interface ResearcherProfile {
   hasRedisConfigured: boolean;
   hasGeminiKey: boolean;
   hasAnthropicKey: boolean;
+  hasOpenAIKey: boolean;
 }
 
 // ============================================

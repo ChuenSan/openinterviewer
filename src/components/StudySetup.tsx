@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useStore } from '@/store';
 import { generateParticipantLink } from '@/services/geminiService';
-import { StudyConfig, ProfileField, AIBehavior, AIProviderType, LinkExpirationOption, GEMINI_MODELS, CLAUDE_MODELS, DEFAULT_GEMINI_MODEL, DEFAULT_CLAUDE_MODEL } from '@/types';
+import { StudyConfig, ProfileField, AIBehavior, AIProviderType, LinkExpirationOption, GEMINI_MODELS, CLAUDE_MODELS, OPENAI_MODELS, DEFAULT_GEMINI_MODEL, DEFAULT_CLAUDE_MODEL, DEFAULT_OPENAI_MODEL } from '@/types';
 import {
   FileText,
   Plus,
@@ -67,7 +67,7 @@ const StudySetup: React.FC = () => {
     studyConfig?.aiProvider || 'gemini'
   );
   const [aiModel, setAiModel] = useState<string>(
-    studyConfig?.aiModel || (studyConfig?.aiProvider === 'claude' ? DEFAULT_CLAUDE_MODEL : DEFAULT_GEMINI_MODEL)
+    studyConfig?.aiModel || (studyConfig?.aiProvider === 'claude' ? DEFAULT_CLAUDE_MODEL : studyConfig?.aiProvider === 'openai' ? DEFAULT_OPENAI_MODEL : DEFAULT_GEMINI_MODEL)
   );
   const [enableReasoning, setEnableReasoning] = useState<boolean | undefined>(
     studyConfig?.enableReasoning
@@ -210,7 +210,7 @@ const StudySetup: React.FC = () => {
       setProfileSchema(studyConfig.profileSchema || []);
       setAiBehavior(studyConfig.aiBehavior);
       setAiProvider(studyConfig.aiProvider || 'gemini');
-      setAiModel(studyConfig.aiModel || (studyConfig.aiProvider === 'claude' ? DEFAULT_CLAUDE_MODEL : DEFAULT_GEMINI_MODEL));
+      setAiModel(studyConfig.aiModel || (studyConfig.aiProvider === 'claude' ? DEFAULT_CLAUDE_MODEL : studyConfig.aiProvider === 'openai' ? DEFAULT_OPENAI_MODEL : DEFAULT_GEMINI_MODEL));
       setEnableReasoning(studyConfig.enableReasoning);
       setLinkExpiration(studyConfig.linkExpiration || 'never');
       setConsentText(studyConfig.consentText);
@@ -500,6 +500,11 @@ const StudySetup: React.FC = () => {
       id: 'claude',
       label: 'Anthropic Claude',
       desc: 'Nuanced reasoning. Best for complex, exploratory interviews.'
+    },
+    {
+      id: 'openai',
+      label: 'OpenAI (Chat API)',
+      desc: 'Broad compatibility. Works with any OpenAI Chat API-compatible endpoint.'
     }
   ];
 
@@ -874,7 +879,7 @@ const StudySetup: React.FC = () => {
                     onChange={() => {
                       setAiProvider(option.id);
                       // Reset model to provider's default when switching providers
-                      setAiModel(option.id === 'claude' ? DEFAULT_CLAUDE_MODEL : DEFAULT_GEMINI_MODEL);
+                      setAiModel(option.id === 'claude' ? DEFAULT_CLAUDE_MODEL : option.id === 'openai' ? DEFAULT_OPENAI_MODEL : DEFAULT_GEMINI_MODEL);
                       setIsDirty(true);
                     }}
                     className="mt-1 accent-stone-500"
@@ -897,14 +902,14 @@ const StudySetup: React.FC = () => {
                 onChange={(e) => { setAiModel(e.target.value); setIsDirty(true); }}
                 className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
               >
-                {(aiProvider === 'gemini' ? GEMINI_MODELS : CLAUDE_MODELS).map((model) => (
+                {(aiProvider === 'gemini' ? GEMINI_MODELS : aiProvider === 'claude' ? CLAUDE_MODELS : OPENAI_MODELS).map((model) => (
                   <option key={model.id} value={model.id}>
                     {model.label}
                   </option>
                 ))}
               </select>
               <p className="text-xs text-stone-500">
-                {(aiProvider === 'gemini' ? GEMINI_MODELS : CLAUDE_MODELS).find(m => m.id === aiModel)?.desc || ''}
+                {(aiProvider === 'gemini' ? GEMINI_MODELS : aiProvider === 'claude' ? CLAUDE_MODELS : OPENAI_MODELS).find(m => m.id === aiModel)?.desc || ''}
               </p>
             </div>
 

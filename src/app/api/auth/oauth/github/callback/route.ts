@@ -125,6 +125,7 @@ export async function GET(request: Request) {
         encryptedRedisToken: null,
         encryptedGeminiApiKey: null,
         encryptedAnthropicApiKey: null,
+        encryptedOpenaiApiKey: null,
         redisConfiguredAt: null,
       } satisfies ResearcherAccount;
 

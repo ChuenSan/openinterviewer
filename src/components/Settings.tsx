@@ -15,6 +15,7 @@ interface ResearcherProfile {
   hasRedisConfigured: boolean;
   hasGeminiKey: boolean;
   hasAnthropicKey: boolean;
+  hasOpenAIKey: boolean;
 }
 
 interface ValidationState {
@@ -31,12 +32,14 @@ const Settings: React.FC = () => {
   // Form state
   const [geminiKey, setGeminiKey] = useState('');
   const [anthropicKey, setAnthropicKey] = useState('');
+  const [openaiKey, setOpenAIKey] = useState('');
   const [redisUrl, setRedisUrl] = useState('');
   const [redisToken, setRedisToken] = useState('');
 
   // Validation state
   const [geminiValidation, setGeminiValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
   const [anthropicValidation, setAnthropicValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
+  const [openaiValidation, setOpenAIValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
   const [redisValidation, setRedisValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
 
   const [saving, setSaving] = useState(false);
@@ -46,6 +49,7 @@ const Settings: React.FC = () => {
   // Expandable guide state
   const [geminiGuideOpen, setGeminiGuideOpen] = useState(false);
   const [claudeGuideOpen, setClaudeGuideOpen] = useState(false);
+  const [openaiGuideOpen, setOpenAIGuideOpen] = useState(false);
   const [redisGuideOpen, setRedisGuideOpen] = useState(false);
 
   useEffect(() => {
@@ -58,8 +62,8 @@ const Settings: React.FC = () => {
       .catch(() => setLoading(false));
   }, []);
 
-  const validateAiKey = async (provider: 'gemini' | 'claude', apiKey: string) => {
-    const setValidation = provider === 'gemini' ? setGeminiValidation : setAnthropicValidation;
+  const validateAiKey = async (provider: 'gemini' | 'claude' | 'openai', apiKey: string) => {
+    const setValidation = provider === 'gemini' ? setGeminiValidation : provider === 'claude' ? setAnthropicValidation : setOpenAIValidation;
     setValidation({ loading: true, valid: null, error: null });
 
     try {
@@ -90,7 +94,7 @@ const Settings: React.FC = () => {
     }
   };
 
-  const hasChanges = !!(geminiKey || anthropicKey || (redisUrl && redisToken));
+  const hasChanges = !!(geminiKey || anthropicKey || openaiKey || (redisUrl && redisToken));
 
   const handleSave = async () => {
     setSaving(true);
@@ -101,6 +105,7 @@ const Settings: React.FC = () => {
       const body: Record<string, string | undefined> = {};
       if (geminiKey) body.geminiApiKey = geminiKey;
       if (anthropicKey) body.anthropicApiKey = anthropicKey;
+      if (openaiKey) body.openaiApiKey = openaiKey;
       if (redisUrl && redisToken) {
         body.redisUrl = redisUrl;
         body.redisToken = redisToken;
@@ -126,6 +131,7 @@ const Settings: React.FC = () => {
         // Clear form fields
         setGeminiKey('');
         setAnthropicKey('');
+        setOpenAIKey('');
         setRedisUrl('');
         setRedisToken('');
         setTimeout(() => setSaveSuccess(false), 3000);
@@ -186,7 +192,7 @@ const Settings: React.FC = () => {
         {profile && (
           <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6 mb-6">
             <h2 className="text-lg font-semibold text-white mb-4">Current Status</h2>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-4">
               <div className="flex items-center gap-2">
                 <StatusIcon configured={profile.hasGeminiKey} />
                 <span className="text-stone-300 text-sm">Gemini Key</span>
@@ -194,6 +200,10 @@ const Settings: React.FC = () => {
               <div className="flex items-center gap-2">
                 <StatusIcon configured={profile.hasAnthropicKey} />
                 <span className="text-stone-300 text-sm">Claude Key</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <StatusIcon configured={profile.hasOpenAIKey} />
+                <span className="text-stone-300 text-sm">OpenAI Key</span>
               </div>
               <div className="flex items-center gap-2">
                 <StatusIcon configured={profile.hasRedisConfigured} />
@@ -306,6 +316,55 @@ const Settings: React.FC = () => {
                     <div className="flex items-start gap-1.5 text-stone-400 mt-2">
                       <span>•</span>
                       <span>$5 free ≈ 15-100 interviews</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-stone-300">OpenAI API Key</label>
+                <ValidationBadge state={openaiValidation} />
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="password"
+                  value={openaiKey}
+                  onChange={(e) => { setOpenAIKey(e.target.value); setOpenAIValidation({ loading: false, valid: null, error: null }); }}
+                  placeholder={profile?.hasOpenAIKey ? '(currently set)' : 'sk-...'}
+                  className="flex-1 px-3 py-2 rounded-lg bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+                />
+                <button
+                  onClick={() => validateAiKey('openai', openaiKey)}
+                  disabled={!openaiKey || openaiValidation.loading}
+                  className="px-3 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
+                >
+                  Test
+                </button>
+              </div>
+              {openaiValidation.error && <p className="text-red-400 text-xs mt-1">{openaiValidation.error}</p>}
+
+              {/* Expandable setup guide */}
+              <div className="mt-2">
+                <button
+                  onClick={() => setOpenAIGuideOpen(!openaiGuideOpen)}
+                  className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
+                >
+                  {openaiGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                  Setup guide
+                </button>
+
+                {openaiGuideOpen && (
+                  <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
+                    <ol className="list-decimal list-inside space-y-1 text-stone-300">
+                      <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">platform.openai.com/api-keys</a></li>
+                      <li>Create a new secret key (starts with sk-)</li>
+                      <li>Or use any OpenAI-compatible endpoint and set OPENAI_BASE_URL</li>
+                    </ol>
+                    <div className="flex items-start gap-1.5 text-stone-400 mt-2">
+                      <span>•</span>
+                      <span>Works with Groq, Together, DeepSeek, Ollama, etc.</span>
                     </div>
                   </div>
                 )}

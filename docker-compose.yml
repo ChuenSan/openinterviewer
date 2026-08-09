@@ -1,0 +1,18 @@
+services:
+  openinterviewer:
+    build: .
+    container_name: openinterviewer
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
+    environment:
+      - DEPLOYMENT_MODE=standalone
+      - AI_PROVIDER=openai
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL}
+      - KV_REST_API_URL=${KV_REST_API_URL}
+      - KV_REST_API_TOKEN=${KV_REST_API_TOKEN}
+    deploy:
+      resources:
+        limits:
+          memory: 256M

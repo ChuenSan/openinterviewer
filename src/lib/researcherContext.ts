@@ -21,6 +21,7 @@ export interface ResearcherContext {
   // AI API keys
   geminiApiKey: string | null;
   anthropicApiKey: string | null;
+  openaiApiKey: string | null;
 
   // Whether the researcher has completed onboarding
   onboardingComplete: boolean;
@@ -59,6 +60,9 @@ async function resolveById(researcherId: string): Promise<ResearcherContext> {
     anthropicApiKey: researcher.encryptedAnthropicApiKey
       ? decrypt(researcher.encryptedAnthropicApiKey)
       : null,
+    openaiApiKey: researcher.encryptedOpenaiApiKey
+      ? decrypt(researcher.encryptedOpenaiApiKey)
+      : null,
     onboardingComplete: researcher.onboardingComplete,
   };
 }
@@ -70,6 +74,7 @@ function getStandaloneContext(): ResearcherContext {
     kvClient: getKVClient(),
     geminiApiKey: process.env.GEMINI_API_KEY || null,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY || null,
+    openaiApiKey: process.env.OPENAI_API_KEY || null,
     onboardingComplete: true,
   };
 }

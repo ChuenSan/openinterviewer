@@ -19,6 +19,7 @@ export async function GET() {
     const status = {
       hasAnthropicKey: !!context.anthropicApiKey,
       hasGeminiKey: !!context.geminiApiKey,
+      hasOpenAIKey: !!context.openaiApiKey,
     };
 
     return NextResponse.json(status);

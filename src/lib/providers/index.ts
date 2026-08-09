@@ -4,20 +4,22 @@
 import { AIProvider } from '../ai';
 import { GeminiProvider } from './gemini';
 import { ClaudeProvider } from './claude';
+import { OpenAIProvider } from './openai';
 import { StudyConfig } from '@/types';
 import { isHostedMode } from '../mode';
 
-export type ProviderType = 'gemini' | 'claude';
+export type ProviderType = 'gemini' | 'claude' | 'openai';
 
 // Optional per-request API keys (for hosted/BYOK mode)
 export interface AIProviderKeys {
   geminiApiKey?: string | null;
   anthropicApiKey?: string | null;
+  openaiApiKey?: string | null;
 }
 
 // Get the interview AI provider based on configuration
 // Provider priority: studyConfig.aiProvider > env.AI_PROVIDER > 'gemini'
-// Model priority: studyConfig.aiModel > env.GEMINI_MODEL/CLAUDE_MODEL > env.AI_MODEL > default
+// Model priority: studyConfig.aiModel > provider-specific env > env.AI_MODEL > default
 // In hosted mode, pass keys from ResearcherContext; in standalone, keys are null and env vars are used
 export function getInterviewProvider(studyConfig?: StudyConfig, keys?: AIProviderKeys): AIProvider {
   const providerType = (
@@ -38,6 +40,10 @@ export function getInterviewProvider(studyConfig?: StudyConfig, keys?: AIProvide
       const key = hosted ? (keys?.anthropicApiKey || '') : (keys?.anthropicApiKey ?? undefined);
       return new ClaudeProvider(model, key);
     }
+    case 'openai': {
+      const key = hosted ? (keys?.openaiApiKey || '') : (keys?.openaiApiKey ?? undefined);
+      return new OpenAIProvider(model, key);
+    }
     case 'gemini':
     default: {
       const key = hosted ? (keys?.geminiApiKey || '') : (keys?.geminiApiKey ?? undefined);
@@ -48,3 +54,4 @@ export function getInterviewProvider(studyConfig?: StudyConfig, keys?: AIProvide
 
 export { GeminiProvider } from './gemini';
 export { ClaudeProvider } from './claude';
+export { OpenAIProvider } from './openai';

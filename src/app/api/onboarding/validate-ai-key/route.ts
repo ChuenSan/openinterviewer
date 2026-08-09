@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { provider, apiKey } = body as { provider: 'gemini' | 'claude'; apiKey: string };
+    const { provider, apiKey } = body as { provider: 'gemini' | 'claude' | 'openai'; apiKey: string };
 
     if (!provider || !apiKey) {
       return NextResponse.json({ error: 'Missing provider or apiKey' }, { status: 400 });
@@ -67,6 +67,33 @@ export async function POST(request: Request) {
         },
         body: JSON.stringify({
           model: 'claude-haiku-4-5-20251001',
+          max_tokens: 10,
+          messages: [{ role: 'user', content: 'Say hello in one word.' }],
+        }),
+      });
+
+      if (!response.ok) {
+        return NextResponse.json({
+          valid: false,
+          error: response.status === 401 ? 'Invalid API key' : `API error (${response.status})`,
+        });
+      }
+
+      return NextResponse.json({ valid: true });
+    }
+
+    if (provider === 'openai') {
+      // Test OpenAI key with a minimal request
+      // Also works for OpenAI-compatible APIs when OPENAI_BASE_URL is set
+      const baseURL = process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
+      const response = await fetch(`${baseURL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
           max_tokens: 10,
           messages: [{ role: 'user', content: 'Say hello in one word.' }],
         }),

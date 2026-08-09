@@ -131,5 +131,6 @@ export function toResearcherProfile(account: ResearcherAccount): ResearcherProfi
     hasRedisConfigured: !!account.encryptedRedisUrl,
     hasGeminiKey: !!account.encryptedGeminiApiKey,
     hasAnthropicKey: !!account.encryptedAnthropicApiKey,
+    hasOpenAIKey: !!account.encryptedOpenaiApiKey,
   };
 }

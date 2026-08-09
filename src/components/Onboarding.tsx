@@ -27,6 +27,8 @@ const Onboarding: React.FC = () => {
   const [anthropicKey, setAnthropicKey] = useState('');
   const [geminiValidation, setGeminiValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
   const [anthropicValidation, setAnthropicValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
+  const [openaiKey, setOpenAIKey] = useState('');
+  const [openaiValidation, setOpenAIValidation] = useState<ValidationState>({ loading: false, valid: null, error: null });
 
   // Redis state
   const [redisUrl, setRedisUrl] = useState('');
@@ -38,6 +40,7 @@ const Onboarding: React.FC = () => {
   // Expandable guide state
   const [geminiGuideOpen, setGeminiGuideOpen] = useState(false);
   const [claudeGuideOpen, setClaudeGuideOpen] = useState(false);
+  const [openaiGuideOpen, setOpenAIGuideOpen] = useState(false);
   const [redisGuideOpen, setRedisGuideOpen] = useState(false);
 
   // Fetch profile on mount
@@ -52,8 +55,8 @@ const Onboarding: React.FC = () => {
 
   const step = STEPS[currentStep];
 
-  const validateAiKey = async (provider: 'gemini' | 'claude', apiKey: string) => {
-    const setValidation = provider === 'gemini' ? setGeminiValidation : setAnthropicValidation;
+  const validateAiKey = async (provider: 'gemini' | 'claude' | 'openai', apiKey: string) => {
+    const setValidation = provider === 'gemini' ? setGeminiValidation : provider === 'claude' ? setAnthropicValidation : setOpenAIValidation;
     setValidation({ loading: true, valid: null, error: null });
 
     try {
@@ -100,6 +103,7 @@ const Onboarding: React.FC = () => {
           redisToken: redisToken || undefined,
           geminiApiKey: geminiKey || undefined,
           anthropicApiKey: anthropicKey || undefined,
+          openaiApiKey: openaiKey || undefined,
         }),
       });
 
@@ -125,7 +129,7 @@ const Onboarding: React.FC = () => {
     }
   };
 
-  const canProceedFromAiKeys = geminiValidation.valid || anthropicValidation.valid;
+  const canProceedFromAiKeys = geminiValidation.valid || anthropicValidation.valid || openaiValidation.valid;
   const canProceedFromRedis = redisValidation.valid;
 
   const ValidationBadge: React.FC<{ state: ValidationState }> = ({ state }) => {
@@ -302,6 +306,61 @@ const Onboarding: React.FC = () => {
                           <div className="flex items-start gap-1.5 text-amber-400">
                             <span>•</span>
                             <span>Credit card required after free credits expire</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* OpenAI */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-sm font-medium text-stone-300">OpenAI API Key</label>
+                      <ValidationBadge state={openaiValidation} />
+                    </div>
+                    <div className="flex gap-2">
+                      <input
+                        type="password"
+                        value={openaiKey}
+                        onChange={(e) => { setOpenAIKey(e.target.value); setOpenAIValidation({ loading: false, valid: null, error: null }); }}
+                        placeholder="sk-proj-..."
+                        className="flex-1 px-3 py-2 rounded-lg bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 text-sm focus:outline-none focus:ring-2 focus:ring-stone-500"
+                      />
+                      <button
+                        onClick={() => validateAiKey('openai', openaiKey)}
+                        disabled={!openaiKey || openaiValidation.loading}
+                        className="px-3 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
+                      >
+                        Test
+                      </button>
+                    </div>
+                    {openaiValidation.error && <p className="text-red-400 text-xs mt-1">{openaiValidation.error}</p>}
+
+                    {/* Expandable setup guide */}
+                    <div className="mt-2">
+                      <button
+                        onClick={() => setOpenAIGuideOpen(!openaiGuideOpen)}
+                        className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
+                      >
+                        {openaiGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+                        How to get an OpenAI API key
+                      </button>
+
+                      {openaiGuideOpen && (
+                        <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
+                          <ol className="list-decimal list-inside space-y-1 text-stone-300">
+                            <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">platform.openai.com/api-keys</a></li>
+                            <li>Sign up or log in with your OpenAI account</li>
+                            <li>Click "Create new secret key"</li>
+                            <li>Copy the key (starts with sk-proj-)</li>
+                          </ol>
+                          <div className="flex items-start gap-1.5 text-stone-400 mt-2">
+                            <span>•</span>
+                            <span>New accounts get $5 free credits (expires after 3 months)</span>
+                          </div>
+                          <div className="flex items-start gap-1.5 text-amber-400">
+                            <span>•</span>
+                            <span>Credit card or pre-paid billing required after free credits expire</span>
                           </div>
                         </div>
                       )}
