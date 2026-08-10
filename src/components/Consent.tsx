@@ -29,7 +29,7 @@ const Consent: React.FC = () => {
   if (!studyConfig) {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
-        <p className="text-stone-400">No study configured. Please set up a study first.</p>
+        <p className="text-stone-400">尚未配置研究,请先设置一项研究。</p>
       </div>
     );
   }
@@ -46,7 +46,7 @@ const Consent: React.FC = () => {
           <div className="bg-stone-700 p-6">
             <div className="flex items-center gap-3 mb-2">
               <Shield size={28} className="text-stone-300" />
-              <h1 className="text-2xl font-bold text-white">Research Consent</h1>
+              <h1 className="text-2xl font-bold text-white">研究知情同意</h1>
             </div>
             <p className="text-stone-400 text-sm">
               {studyConfig.name}
@@ -63,23 +63,23 @@ const Consent: React.FC = () => {
             <div className="bg-stone-800 rounded-xl p-5 space-y-4">
               <h3 className="font-semibold text-stone-100 flex items-center gap-2">
                 <MessageSquare size={18} className="text-stone-400" />
-                Interview Structure
+                访谈流程
               </h3>
 
               <div className="space-y-3 text-sm">
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-stone-700 flex items-center justify-center text-xs text-stone-400 flex-shrink-0 mt-0.5">1</div>
                   <div>
-                    <div className="text-stone-200">Brief background questions</div>
-                    <div className="text-stone-500 text-xs">Help us understand your context</div>
+                    <div className="text-stone-200">简短的背景问题</div>
+                    <div className="text-stone-500 text-xs">帮助我们了解您的背景</div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-stone-700 flex items-center justify-center text-xs text-stone-400 flex-shrink-0 mt-0.5">2</div>
                   <div>
-                    <div className="text-stone-200">{studyConfig.coreQuestions.length} core questions about your experiences</div>
-                    <div className="text-stone-500 text-xs">The heart of the interview</div>
+                    <div className="text-stone-200">{studyConfig.coreQuestions.length} 个关于您经历的核心问题</div>
+                    <div className="text-stone-500 text-xs">访谈的核心部分</div>
                   </div>
                 </div>
 
@@ -88,29 +88,29 @@ const Consent: React.FC = () => {
                     <HelpCircle size={12} />
                   </div>
                   <div>
-                    <div className="text-stone-200">The AI may ask follow-up questions</div>
-                    <div className="text-stone-500 text-xs">To better understand your perspective</div>
+                    <div className="text-stone-200">AI 可能会追问</div>
+                    <div className="text-stone-500 text-xs">以便更好地理解您的观点</div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <div className="w-6 h-6 rounded-full bg-stone-700 flex items-center justify-center text-xs text-stone-400 flex-shrink-0 mt-0.5">3</div>
                   <div>
-                    <div className="text-stone-200">A final question for your feedback</div>
-                    <div className="text-stone-500 text-xs">Your thoughts on the interview itself</div>
+                    <div className="text-stone-200">最后一个征求您反馈的问题</div>
+                    <div className="text-stone-500 text-xs">您对本次访谈的感受</div>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 pt-2 border-t border-stone-700 text-stone-400 text-sm">
                 <Clock size={14} />
-                <span>Estimated time: 10-15 minutes</span>
+                <span>预计时长:10-15 分钟</span>
               </div>
             </div>
 
             <div className="bg-stone-800 border border-stone-600 rounded-xl p-4 text-sm text-stone-300">
-              <strong className="text-stone-100">Privacy:</strong> Your responses will be used for research purposes only.
-              No personally identifying information will be shared without your consent.
+              <strong className="text-stone-100">隐私:</strong>您的回答仅用于研究目的。
+              未经您同意,我们不会分享任何可识别个人身份的信息。
             </div>
           </div>
 
@@ -121,14 +121,14 @@ const Consent: React.FC = () => {
                 onClick={handleBack}
                 className="px-6 py-3 border border-stone-600 text-stone-400 rounded-xl hover:bg-stone-700 transition-colors flex items-center gap-2"
               >
-                <ArrowLeft size={18} /> Back
+                <ArrowLeft size={18} /> 返回
               </button>
             )}
             <button
               onClick={handleConsent}
               className="flex-1 py-3 bg-stone-600 hover:bg-stone-500 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
             >
-              I Consent - Begin Interview <ArrowRight size={18} />
+              我同意 · 开始访谈 <ArrowRight size={18} />
             </button>
           </div>
         </div>

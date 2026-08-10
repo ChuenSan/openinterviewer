@@ -28,7 +28,7 @@ const getExpirationTime = (option?: LinkExpirationOption): string | null => {
 const getSecret = () => {
   const secret = process.env.PARTICIPANT_TOKEN_SECRET || process.env.ADMIN_PASSWORD;
   if (!secret) {
-    throw new Error('Token signing secret not configured');
+    throw new Error('未配置令牌签名密钥');
   }
   return new TextEncoder().encode(secret);
 };
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const { authorized, context, researcherId, error } = await getRequestContext();
     if (!authorized || !context) {
       return NextResponse.json(
-        { error: error || 'Admin authentication required to generate participant links' },
+        { error: error || '生成参与者链接需要管理员身份验证' },
         { status: 401 }
       );
     }
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
       secret = getSecret();
     } catch {
       return NextResponse.json(
-        { error: 'Token signing not configured. Set ADMIN_PASSWORD or PARTICIPANT_TOKEN_SECRET.' },
+        { error: '未配置令牌签名。请设置 ADMIN_PASSWORD 或 PARTICIPANT_TOKEN_SECRET。' },
         { status: 500 }
       );
     }
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!studyConfig) {
       return NextResponse.json(
-        { error: 'Missing required field: studyConfig' },
+        { error: '缺少必填字段：studyConfig' },
         { status: 400 }
       );
     }
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Generate link API error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate participant link' },
+      { error: '生成参与者链接失败' },
       { status: 500 }
     );
   }
@@ -121,7 +121,7 @@ export async function GET(request: Request) {
 
     if (!token) {
       return NextResponse.json(
-        { error: 'Missing token parameter' },
+        { error: '缺少令牌参数' },
         { status: 400 }
       );
     }
@@ -132,7 +132,7 @@ export async function GET(request: Request) {
       secret = getSecret();
     } catch {
       return NextResponse.json(
-        { valid: false, error: 'Token verification not configured' },
+        { valid: false, error: '未配置令牌验证' },
         { status: 500 }
       );
     }
@@ -151,14 +151,14 @@ export async function GET(request: Request) {
     // Handle expired tokens specifically
     if (error instanceof jose.errors.JWTExpired) {
       return NextResponse.json(
-        { valid: false, error: 'Token has expired. Please request a new participant link.' },
+        { valid: false, error: '令牌已过期。请申请新的参与者链接。' },
         { status: 400 }
       );
     }
 
     console.error('Token verification error:', error);
     return NextResponse.json(
-      { valid: false, error: 'Invalid or expired token' },
+      { valid: false, error: '令牌无效或已过期' },
       { status: 400 }
     );
   }

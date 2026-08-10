@@ -14,14 +14,14 @@ export async function GET(
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const { id } = await params;
 
     if (!id) {
       return NextResponse.json(
-        { error: 'Missing interview ID' },
+        { error: '缺少访谈 ID' },
         { status: 400 }
       );
     }
@@ -30,7 +30,7 @@ export async function GET(
 
     if (!interview) {
       return NextResponse.json(
-        { error: 'Interview not found' },
+        { error: '未找到访谈' },
         { status: 404 }
       );
     }
@@ -39,7 +39,7 @@ export async function GET(
   } catch (error) {
     console.error('Get interview API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch interview' },
+      { error: '获取访谈失败' },
       { status: 500 }
     );
   }

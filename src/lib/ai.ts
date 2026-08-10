@@ -57,18 +57,18 @@ export const interviewResponseSchema = {
   properties: {
     message: {
       type: 'STRING' as const,
-      description: 'Your response to the participant'
+      description: '对参与者的回复'
     },
     questionAddressed: {
       type: 'NUMBER' as const,
       nullable: true,
-      description: '0-based index of core question substantially addressed in this exchange, or null'
+      description: '本轮中已得到实质性回应的核心问题索引（从 0 开始），或 null'
     },
     phaseTransition: {
       type: 'STRING' as const,
       nullable: true,
       enum: ['background', 'core-questions', 'exploration', 'feedback', 'wrap-up'],
-      description: 'If interview should move to a new phase, specify it'
+      description: '若访谈应进入新阶段，请指定该阶段'
     },
     profileUpdates: {
       type: 'ARRAY' as const,
@@ -84,11 +84,11 @@ export const interviewResponseSchema = {
         },
         required: ['fieldId', 'status']
       },
-      description: 'Profile fields extracted or updated from user response'
+      description: '从用户回答中提取或更新的档案字段'
     },
     shouldConclude: {
       type: 'BOOLEAN' as const,
-      description: 'True if interview should end (after wrap-up message)'
+      description: '若访谈应结束（在收尾消息后），则为 true'
     }
   },
   required: ['message', 'profileUpdates', 'shouldConclude']
@@ -101,12 +101,12 @@ export const synthesisResponseSchema = {
     statedPreferences: {
       type: 'ARRAY' as const,
       items: { type: 'STRING' as const },
-      description: 'What participant explicitly said they value/want'
+      description: '参与者明确表示其重视或希望获得的内容'
     },
     revealedPreferences: {
       type: 'ARRAY' as const,
       items: { type: 'STRING' as const },
-      description: 'What their behavior/emphasis revealed'
+      description: '其行为或侧重点所揭示的内容'
     },
     themes: {
       type: 'ARRAY' as const,
@@ -129,7 +129,7 @@ export const synthesisResponseSchema = {
     },
     bottomLine: {
       type: 'STRING' as const,
-      description: 'One-sentence summary insight for the researcher'
+      description: '面向研究者的一句话总结洞见'
     }
   },
   required: ['statedPreferences', 'revealedPreferences', 'themes', 'keyInsights', 'bottomLine']
@@ -166,7 +166,7 @@ export const cleanJSON = (text: string): string => {
 
 // Default fallback responses
 export const defaultInterviewResponse: AIInterviewResponse = {
-  message: "I appreciate you sharing that. What else comes to mind?",
+  message: "感谢您的分享。还有什么想法浮现在您脑海中吗？",
   questionAddressed: null,
   phaseTransition: null,
   profileUpdates: [],
@@ -178,8 +178,8 @@ export const defaultSynthesisResult: SynthesisResult = {
   revealedPreferences: [],
   themes: [],
   contradictions: [],
-  keyInsights: ['Analysis pending...'],
-  bottomLine: 'Interview synthesis in progress.'
+  keyInsights: ['分析待完成……'],
+  bottomLine: '访谈综合分析正在进行。'
 };
 
 // Aggregate synthesis response schema (Gemini format)
@@ -199,7 +199,7 @@ export const aggregateSynthesisResponseSchema = {
           }
         }
       },
-      description: 'Patterns appearing across multiple interviews'
+      description: '跨多场访谈出现的模式'
     },
     divergentViews: {
       type: 'ARRAY' as const,
@@ -211,21 +211,21 @@ export const aggregateSynthesisResponseSchema = {
           viewB: { type: 'STRING' as const }
         }
       },
-      description: 'Areas where participants had different perspectives'
+      description: '参与者观点不同的领域'
     },
     keyFindings: {
       type: 'ARRAY' as const,
       items: { type: 'STRING' as const },
-      description: 'Major discoveries that answer the research question'
+      description: '回答研究问题的主要发现'
     },
     researchImplications: {
       type: 'ARRAY' as const,
       items: { type: 'STRING' as const },
-      description: 'What these findings mean for the field/practice'
+      description: '这些发现对领域或实践的意义'
     },
     bottomLine: {
       type: 'STRING' as const,
-      description: 'One paragraph summarizing key takeaways from all interviews'
+      description: '用一段话概述所有访谈的关键要点'
     }
   },
   required: ['commonThemes', 'keyFindings', 'bottomLine']
@@ -235,7 +235,7 @@ export const aggregateSynthesisResponseSchema = {
 export const defaultAggregateSynthesisResult = {
   commonThemes: [],
   divergentViews: [],
-  keyFindings: ['Analysis pending...'],
+  keyFindings: ['分析待完成……'],
   researchImplications: [],
-  bottomLine: 'Aggregate synthesis in progress.'
+  bottomLine: '汇总综合分析正在进行。'
 };

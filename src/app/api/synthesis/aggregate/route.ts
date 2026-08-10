@@ -14,13 +14,13 @@ export async function POST(request: Request) {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured. Connect Vercel KV to enable this feature.' },
+        { error: '尚未配置存储。 Connect Vercel KV to enable this feature.' },
         { status: 503 }
       );
     }
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
 
     if (!studyId) {
       return NextResponse.json(
-        { error: 'Missing required field: studyId' },
+        { error: '缺少必填字段：studyId' },
         { status: 400 }
       );
     }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     const study = await getStudy(studyId, context.kvClient);
     if (!study) {
       return NextResponse.json(
-        { error: 'Study not found' },
+        { error: '未找到研究' },
         { status: 404 }
       );
     }
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     const interviews = await getStudyInterviews(studyId, context.kvClient);
     if (interviews.length < 2) {
       return NextResponse.json(
-        { error: 'Need at least 2 interviews to generate aggregate synthesis' },
+        { error: '至少需要 2 场访谈才能生成汇总综合分析' },
         { status: 400 }
       );
     }
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
     if (syntheses.length < 2) {
       return NextResponse.json(
-        { error: 'Need at least 2 interviews with synthesis results' },
+        { error: '至少需要 2 场含综合分析结果的访谈' },
         { status: 400 }
       );
     }
@@ -70,6 +70,7 @@ export async function POST(request: Request) {
     const provider = getInterviewProvider(study.config, {
       geminiApiKey: context.geminiApiKey,
       anthropicApiKey: context.anthropicApiKey,
+      openaiApiKey: context.openaiApiKey,
     });
 
     // Generate aggregate synthesis
@@ -91,7 +92,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Aggregate synthesis API error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate aggregate synthesis' },
+      { error: '生成汇总综合分析失败' },
       { status: 500 }
     );
   }

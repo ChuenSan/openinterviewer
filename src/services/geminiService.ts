@@ -50,7 +50,7 @@ export const generateInterviewResponse = async (
   } catch (error) {
     console.error('Error generating interview response:', error);
     return {
-      message: "I appreciate you sharing that. What else comes to mind?",
+      message: "感谢您的分享。还有什么想法浮现在您脑海中吗？",
       questionAddressed: null,
       phaseTransition: null,
       profileUpdates: [],
@@ -115,8 +115,8 @@ export const synthesizeInterview = async (
       revealedPreferences: [],
       themes: [],
       contradictions: [],
-      keyInsights: ['Analysis pending...'],
-      bottomLine: 'Interview synthesis in progress.'
+      keyInsights: ['分析待完成……'],
+      bottomLine: '访谈综合分析正在进行。'
     };
   }
 };

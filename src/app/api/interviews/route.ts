@@ -11,14 +11,14 @@ export async function GET(request: Request) {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json({
         interviews: [],
-        warning: 'Storage not configured. Connect Vercel KV to enable persistence.'
+        warning: '尚未配置存储。 Connect Vercel KV to enable persistence.'
       });
     }
 
@@ -35,7 +35,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error('Interviews API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch interviews' },
+      { error: '获取访谈失败' },
       { status: 500 }
     );
   }

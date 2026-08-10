@@ -20,34 +20,34 @@ const DEMO_STUDY_ID = 'demo-study-adaptive-self';
 
 export const DEMO_STUDY_CONFIG: StudyConfig = {
   id: DEMO_STUDY_ID,
-  name: 'The Adaptive Self: Professional Identity in the Age of AI',
-  description: 'Exploring how knowledge workers are adapting their professional identities and practices as AI tools become integral to their daily work. This study examines the psychological, practical, and social dimensions of AI adoption in creative and analytical professions.',
-  researchQuestion: 'How are professionals redefining their value and identity as AI tools reshape the nature of their work?',
+  name: '适应性自我：AI 时代的职业身份',
+  description: '探讨知识工作者如何在 AI 工具成为日常工作重要组成部分的过程中，调整职业身份与实践方式。本研究考察创意和分析类职业采用 AI 的心理、实践与社会维度。',
+  researchQuestion: '当 AI 工具重塑工作性质时，专业人士如何重新定义自身价值与身份？',
   coreQuestions: [
-    'Tell me about a recent project where you used AI tools. What was your experience like?',
-    'How has your daily work routine changed since you started using AI assistants?',
-    'What aspects of your work do you feel AI handles well, and what do you prefer to do yourself?',
-    'Have your colleagues or team adopted AI tools differently than you? How does that affect collaboration?',
-    'Looking ahead, how do you see your professional role evolving alongside AI capabilities?'
+    '请谈谈您最近使用 AI 工具的一个项目。您的体验如何？',
+    '自从开始使用 AI 助手后，您的日常工作流程发生了哪些变化？',
+    '您认为 AI 擅长处理工作中的哪些部分？哪些部分您更愿意亲自完成？',
+    '您的同事或团队成员采用 AI 工具的方式与您不同吗？这如何影响协作？',
+    '展望未来，您认为自己的职业角色将如何随 AI 能力的发展而演变？'
   ],
   topicAreas: [
-    'AI Tool Usage',
-    'Professional Identity',
-    'Workflow Changes',
-    'Team Dynamics',
-    'Future Outlook'
+    'AI 工具使用情况',
+    '职业身份',
+    '工作流程变化',
+    '团队动态',
+    '未来展望'
   ],
   profileSchema: [
-    { id: 'role', label: 'Current Role', extractionHint: 'Their job title or professional role', required: true },
-    { id: 'industry', label: 'Industry', extractionHint: 'The field or industry they work in', required: true },
-    { id: 'ai_frequency', label: 'AI Usage Frequency', extractionHint: 'How often they use AI tools (daily, weekly, etc.)', required: true, options: ['Daily', 'Several times a week', 'Weekly', 'Monthly', 'Rarely'] },
-    { id: 'comfort_level', label: 'Comfort with AI', extractionHint: 'Their self-reported comfort level with AI tools', required: false, options: ['Very comfortable', 'Comfortable', 'Neutral', 'Uncomfortable', 'Very uncomfortable'] },
-    { id: 'years_experience', label: 'Years in Role', extractionHint: 'How long they have been in their current role or profession', required: false }
+    { id: 'role', label: '当前职位', extractionHint: '其职位名称或职业角色', required: true },
+    { id: 'industry', label: '行业', extractionHint: '其所在的领域或行业', required: true },
+    { id: 'ai_frequency', label: 'AI 使用频率', extractionHint: '其使用 AI 工具的频率（每天、每周等）', required: true, options: ['每天', '每周数次', '每周', '每月', '很少'] },
+    { id: 'comfort_level', label: '对 AI 的适应程度', extractionHint: '其自述的 AI 工具适应程度', required: false, options: ['非常适应', '适应', '一般', '不适应', '非常不适应'] },
+    { id: 'years_experience', label: '当前职位年限', extractionHint: '其担任当前职位或从事当前职业的时长', required: false }
   ],
   aiBehavior: 'standard',
   aiProvider: 'gemini',
   enableReasoning: true,
-  consentText: 'This interview is part of a research study on professional adaptation to AI tools. Your responses will be anonymized and used for research purposes only. The interview takes approximately 15-20 minutes. You may skip any question or end the interview at any time.',
+  consentText: '本访谈属于一项关于专业人士适应 AI 工具的研究。您的回答将被匿名化，仅用于研究目的。访谈约需 15-20 分钟。您可以跳过任何问题，或随时结束访谈。',
   createdAt: Date.now() - 7 * 24 * 60 * 60 * 1000 // 7 days ago
 };
 
@@ -61,91 +61,91 @@ export const DEMO_STORED_STUDY: StoredStudy = {
 };
 
 // ============================================
-// Demo Interview 1: Sarah - Product Manager
+// Demo Interview 1: Sarah - 产品经理
 // ============================================
 
 const SARAH_PROFILE: ParticipantProfile = {
   id: 'profile-sarah',
   fields: [
-    { fieldId: 'role', value: 'Product Manager', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'industry', value: 'Fintech Startup', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'ai_frequency', value: 'Daily', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'comfort_level', value: 'Very comfortable', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'years_experience', value: '6 years', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 }
+    { fieldId: 'role', value: '产品经理', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'industry', value: '金融科技初创公司', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'ai_frequency', value: '每天', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'comfort_level', value: '非常适应', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'years_experience', value: '6 年', status: 'extracted', extractedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 }
   ],
-  rawContext: 'Sarah is a senior product manager at a fintech startup with 6 years of experience. She uses Claude daily for drafting specs, analyzing user feedback, and brainstorming product strategies. Very enthusiastic about AI and sees it as empowering rather than threatening.',
+  rawContext: 'Sarah 是一家金融科技初创公司的高级产品经理,拥有 6 年经验。她每天使用 Claude 起草规格、分析用户反馈和头脑风暴产品策略。对 AI 非常热情,认为它是赋能而非威胁。',
   timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000
 };
 
 const SARAH_TRANSCRIPT: InterviewMessage[] = [
-  { id: 'msg-s1', role: 'ai', content: "Hello! Thank you for participating in this research interview about professional experiences with AI tools. I'm curious to learn about your work and how AI has been part of your journey. To start, could you tell me a bit about your current role?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-  { id: 'msg-s2', role: 'user', content: "Sure! I'm a product manager at a fintech startup. Been doing this for about 6 years now, the last 2 at this company. We're building tools for small business lending.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 60000 },
-  { id: 'msg-s3', role: 'ai', content: "That's fascinating work - fintech is such a dynamic space. Now, I'd love to hear about a recent project where you used AI tools. What was that experience like for you?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 120000 },
-  { id: 'msg-s4', role: 'user', content: "Oh, I use Claude literally every day now. Last week I was working on a major product spec for our new credit scoring feature. I used it to analyze about 200 pieces of user feedback, draft the initial spec, and even help me think through edge cases. What used to take me 3-4 days took maybe 8 hours.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 180000 },
-  { id: 'msg-s5', role: 'ai', content: "That's a remarkable efficiency gain. I'm curious though - when you say it helped you 'think through edge cases,' how did that work? Did it feel like collaborating with a colleague?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 240000 },
-  { id: 'msg-s6', role: 'user', content: "Hmm, it's different from a colleague. With a colleague there's back and forth, pushback, their own experiences. With Claude it's more like... a really well-read assistant who never gets tired of my questions? It surfaces things I might miss, but I'm still the one making judgment calls.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 300000 },
-  { id: 'msg-s7', role: 'ai', content: "That distinction feels important - you maintaining the judgment while it handles the breadth. How has this changed your daily work routine since you started using these tools?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 360000 },
-  { id: 'msg-s8', role: 'user', content: "Honestly? I spend way more time on strategy now. Before, so much of my day was just... processing. Reading tickets, summarizing meetings, drafting emails. Now I can do those in a fraction of the time and actually think about the bigger picture. It's like I got promoted without changing jobs.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 420000 },
-  { id: 'msg-s9', role: 'ai', content: "'Got promoted without changing jobs' - I love that framing. But I'm also curious if there's a flip side. Anything you've lost or that feels different in a way you didn't expect?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 480000 },
-  { id: 'msg-s10', role: 'user', content: "That's a good question. Sometimes I worry I'm losing some muscle. Like, my writing used to be really sharp because I did so much of it. Now when I write something from scratch it feels... rustier? Though maybe that's just because I'm comparing it to Claude's output.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 540000 },
-  { id: 'msg-s11', role: 'ai', content: "That tension between capability and skill maintenance is really interesting. Let me ask about your team - have your colleagues adopted AI tools differently than you? How does that affect how you all work together?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 600000 },
-  { id: 'msg-s12', role: 'user', content: "It's mixed! Our engineers use Copilot a lot but are skeptical about other AI. My CEO is a huge AI enthusiast, maybe even more than me. But some of our more senior folks barely touch it. It creates this weird dynamic where I can turn around work so fast that others can't keep up, and I have to be careful not to make them feel slow.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 660000 },
-  { id: 'msg-s13', role: 'ai', content: "So there's a social dimension to navigate too - being mindful of how your AI-enabled speed might affect team dynamics. Looking ahead, how do you see your professional role evolving as these capabilities continue to develop?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 720000 },
-  { id: 'msg-s14', role: 'user', content: "I genuinely feel optimistic. I think PMs who embrace AI will become more like mini-CEOs - we'll have so much more capacity to think strategically, make connections, understand users deeply. The ones who don't... honestly, they'll get left behind. Not because AI replaces them, but because AI-enabled PMs will just outperform.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 780000 },
-  { id: 'msg-s15', role: 'ai', content: "It sounds like you see AI as an amplifier rather than a replacement - expanding what's possible for those who adopt it. Before we wrap up, is there anything else about your experience with AI in your work that you'd like to share?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 840000 },
-  { id: 'msg-s16', role: 'user', content: "Just that I think we're still at the very beginning. When I imagine what work will look like in 5 years, I genuinely can't picture it. But I know I want to be someone who helped shape that future rather than just reacting to it.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 900000 },
-  { id: 'msg-s17', role: 'ai', content: "That forward-looking, agency-oriented perspective is really compelling. Thank you so much for sharing your experiences and insights, Sarah. This has been a rich conversation about navigating AI in professional life.", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 960000 }
+  { id: 'msg-s1', role: 'ai', content: "您好！感谢您参与这场关于专业人士使用 AI 工具体验的研究访谈。我很想了解您的工作，以及 AI 如何参与您的职业历程。首先，您能简单介绍一下目前的职位吗？", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+  { id: 'msg-s2', role: 'user', content: "当然可以!我是一家金融科技初创公司的产品经理,入行大约 6 年,最近 2 年在现在这家公司。我们在做面向小微企业的贷款工具。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 60000 },
+  { id: 'msg-s3', role: 'ai', content: "这个领域很有活力。我想听听您最近一个使用 AI 工具的项目——那段体验是怎样的?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 120000 },
+  { id: 'msg-s4', role: 'user', content: "我现在几乎每天都在用 Claude。上周我在为新的信用评分功能写一份重要的产品规格,用它分析了约 200 条用户反馈、起草初稿,还帮我梳理边界情况。以前要花 3-4 天的事,现在大概 8 小时就完成了。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 180000 },
+  { id: 'msg-s5', role: 'ai', content: "效率提升很惊人。不过我很好奇——您说它帮您“梳理边界情况”,具体是怎么做到的?感觉像在和同事协作吗?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 240000 },
+  { id: 'msg-s6', role: 'user', content: "嗯,和同事不太一样。和同事会有来回讨论、质疑和各自的经验。Claude 更像是一位博览群书、从不厌烦我提问的助手——它会提出我可能忽略的点,但最终做判断的还是我。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 300000 },
+  { id: 'msg-s7', role: 'ai', content: "这个区分很重要——您保留判断,它处理广度。自从用上这些工具后,您的日常工作方式发生了什么变化?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 360000 },
+  { id: 'msg-s8', role: 'user', content: "说实话?我现在花在策略上的时间多多了。以前一天大部分都在“处理”——看工单、整理会议纪要、写邮件。现在这些事只需一小部分时间,我可以真正思考全局。就像没换工作却升了职。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 420000 },
+  { id: 'msg-s9', role: 'ai', content: "“没换工作却升了职”——这个说法很妙。但我也想知道另一面:有没有什么是您失去了的,或发生了意料之外的变化?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 480000 },
+  { id: 'msg-s10', role: 'user', content: "问得好。有时我担心自己在丢失一些“肌肉”。比如我以前写作很利落,因为写得够多。现在从零写东西时感觉……有点生疏了?不过也可能只是因为我拿它跟 Claude 的产出比。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 540000 },
+  { id: 'msg-s11', role: 'ai', content: "能力提升与技能保持之间的张力很有意思。我想问问您的团队——同事们采用 AI 工具的方式和您不同吗?这对协作有什么影响?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 600000 },
+  { id: 'msg-s12', role: 'user', content: "情况不一!我们的工程师很常用 Copilot,但对其他 AI 持怀疑态度。我的 CEO 是超级 AI 爱好者,可能比我更甚。但一些资深同事几乎不用。这就造成一种微妙的局面:我出活太快,其他人跟不上,我得小心别让他们觉得自己慢。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 660000 },
+  { id: 'msg-s13', role: 'ai', content: "看来还有人际层面需要平衡——要注意 AI 带来的速度对团队动态的影响。展望未来,随着这些能力继续发展,您如何看待自己职业角色的演变?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 720000 },
+  { id: 'msg-s14', role: 'user', content: "我真心感到乐观。我认为拥抱 AI 的产品经理会变得像“迷你 CEO”——我们会有更多精力进行战略思考、建立关联、深入理解用户。而那些不用的人……说实话会被甩开。不是因为 AI 取代他们,而是用 AI 的产品经理就是会更出色。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 780000 },
+  { id: 'msg-s15', role: 'ai', content: "听起来您把 AI 看作放大器而非替代品——扩展采用者的可能性。结束前,关于工作中使用 AI 的体验,您还有什么想分享的吗?", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 840000 },
+  { id: 'msg-s16', role: 'user', content: "只是觉得我们还处在非常早期的阶段。让我想象 5 年后的工作,我真的想象不出来。但我知道,我想成为参与塑造那个未来的人,而不只是被动应对。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 900000 },
+  { id: 'msg-s17', role: 'ai', content: "这种面向未来、主动塑造的视角很有感染力。非常感谢您分享这些经历与洞见,Sarah。这是一场关于职业生活中如何驾驭 AI 的丰富对话。", timestamp: Date.now() - 5 * 24 * 60 * 60 * 1000 + 960000 }
 ];
 
 const SARAH_SYNTHESIS: SynthesisResult = {
   statedPreferences: [
-    'Values strategic thinking over routine processing tasks',
-    'Prefers maintaining judgment and decision-making authority',
-    'Wants to be proactive in shaping AI-influenced future',
-    'Values efficiency gains from AI tools'
+    '重视战略性思考胜过常规处理性事务',
+    '倾向于保留判断与决策权',
+    '希望主动塑造受 AI 影响的未来',
+    '重视 AI 工具带来的效率提升'
   ],
   revealedPreferences: [
-    'Derives professional identity from high-level strategic work',
-    'Cares about team dynamics and not making others feel inadequate',
-    'Has some anxiety about skill atrophy despite enthusiasm',
-    'Sees AI adoption as competitive differentiation'
+    '从高层次战略性工作中获得职业身份认同',
+    '在意团队动态,不希望让他人感到相形见绌',
+    '尽管热情高涨,仍对技能退化有些焦虑',
+    '将 AI 采用视为职业竞争力的差异点'
   ],
   themes: [
-    { theme: 'Role Elevation', evidence: '"It\'s like I got promoted without changing jobs" - AI enables more strategic focus', frequency: 4 },
-    { theme: 'Skill Tension', evidence: 'Worries about writing feeling "rustier" - capability vs. skill maintenance', frequency: 2 },
-    { theme: 'Team Navigation', evidence: 'Careful not to make slower colleagues "feel slow" - social awareness', frequency: 2 },
-    { theme: 'Competitive Framing', evidence: 'Non-adopters "will get left behind" - AI as professional differentiator', frequency: 3 }
+    { theme: '角色跃升', evidence: '“就像没换工作却升了职”——AI 让她能聚焦更战略性的工作', frequency: 4 },
+    { theme: '技能张力', evidence: '担心写作变得“生疏”——能力提升与技能保持之间的矛盾', frequency: 2 },
+    { theme: '团队平衡', evidence: '小心不让较慢的同事“觉得自己慢”——人际敏感度', frequency: 2 },
+    { theme: '竞争叙事', evidence: '不采用者“会被甩开”——AI 作为职业分化因素', frequency: 3 }
   ],
   contradictions: [
-    'Enthusiastic about AI\'s benefits while expressing concern about losing personal skills',
-    'Sees AI as empowering but frames non-adoption as professionally dangerous'
+    '对 AI 的益处充满热情,同时又担心个人技能的流失',
+    '认为 AI 是一种赋能,但又把不采用 AI 视为职业风险'
   ],
   keyInsights: [
-    'AI adoption is experienced as capability expansion rather than replacement',
-    'Speed differential creates social dynamics that require active management',
-    'Skill atrophy concern persists even among enthusiastic adopters',
-    'Professional identity is shifting from "doer" to "strategic thinker"'
+    '采用 AI 被体验为能力的扩展,而非替代',
+    '速度差异催生了需要主动管理的团队动态',
+    '即使在热情的采用者中,技能退化的担忧依然存在',
+    '职业身份正从“执行者”转向“战略思考者”'
   ],
-  bottomLine: 'Sarah represents the enthusiastic AI adopter who has successfully reframed AI tools as capability amplifiers, enabling a shift toward more strategic work. However, beneath the enthusiasm lies nuanced concerns about skill maintenance and team dynamics.'
+  bottomLine: 'Sarah 代表了热情的 AI 采用者:她成功地将 AI 工具重构为能力放大器,从而转向更具战略性的工作。然而,热情之下也隐藏着对技能保持与团队动态的细腻担忧。'
 };
 
 const SARAH_BEHAVIOR: BehaviorData = {
   timePerTopic: {
-    'AI Tool Usage': 180000,
-    'Professional Identity': 240000,
-    'Workflow Changes': 180000,
-    'Team Dynamics': 120000,
-    'Future Outlook': 180000
+    'AI 工具使用情况': 180000,
+    '职业身份': 240000,
+    '工作流程变化': 180000,
+    '团队动态': 120000,
+    '未来展望': 180000
   },
   messagesPerTopic: {
-    'AI Tool Usage': 4,
-    'Professional Identity': 4,
-    'Workflow Changes': 3,
-    'Team Dynamics': 2,
-    'Future Outlook': 3
+    'AI 工具使用情况': 4,
+    '职业身份': 4,
+    '工作流程变化': 3,
+    '团队动态': 2,
+    '未来展望': 3
   },
-  topicsExplored: ['AI Tool Usage', 'Professional Identity', 'Workflow Changes', 'Team Dynamics', 'Future Outlook'],
-  contradictions: ['Enthusiasm vs. skill atrophy concern']
+  topicsExplored: ['AI 工具使用情况', '职业身份', '工作流程变化', '团队动态', '未来展望'],
+  contradictions: ['热情与技能退化担忧并存']
 };
 
 export const SARAH_INTERVIEW: StoredInterview = {
@@ -168,85 +168,85 @@ export const SARAH_INTERVIEW: StoredInterview = {
 const MARCUS_PROFILE: ParticipantProfile = {
   id: 'profile-marcus',
   fields: [
-    { fieldId: 'role', value: 'Senior UX Designer', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'industry', value: 'Enterprise Software', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'ai_frequency', value: 'Several times a week', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'comfort_level', value: 'Comfortable', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'years_experience', value: '12 years', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 }
+    { fieldId: 'role', value: '高级用户体验设计师', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'industry', value: '企业软件', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'ai_frequency', value: '每周数次', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'comfort_level', value: '适应', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'years_experience', value: '12 年', status: 'extracted', extractedAt: Date.now() - 4 * 24 * 60 * 60 * 1000 }
   ],
-  rawContext: 'Marcus is a senior UX designer with 12 years of experience in enterprise software. Initially skeptical of AI tools, he has gradually adopted them for ideation and iteration. Maintains strong beliefs about the irreplaceable value of human judgment in design.',
+  rawContext: 'Marcus 是一名拥有 12 年企业软件经验的高级 UX 设计师。他最初对 AI 工具持怀疑态度,后来逐渐将其用于创意发散与迭代。他坚信人类判断力在设计中的不可替代价值。',
   timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000
 };
 
 const MARCUS_TRANSCRIPT: InterviewMessage[] = [
-  { id: 'msg-m1', role: 'ai', content: "Welcome! I appreciate you taking the time for this interview. We're exploring how professionals are experiencing AI tools in their work. Could you start by telling me about your role?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-  { id: 'msg-m2', role: 'user', content: "I'm a senior UX designer, been doing this for about 12 years now. Currently at an enterprise software company - we build tools for healthcare administration.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 60000 },
-  { id: 'msg-m3', role: 'ai', content: "That's a lot of experience in a field that values deep expertise. I'd love to hear about a recent project where you used AI tools - what was that experience like?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 120000 },
-  { id: 'msg-m4', role: 'user', content: "Honestly, I was a skeptic for a long time. 'AI can't do real design' was basically my stance. But our team lead pushed us to try Midjourney for ideation. I was... surprised. In one session I generated probably 100 visual directions in an hour. Normally that would take days of sketching.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 180000 },
-  { id: 'msg-m5', role: 'ai', content: "That's quite a shift from skepticism! When you saw those 100 directions, what was going through your mind? How did it feel?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 240000 },
-  { id: 'msg-m6', role: 'user', content: "Mixed feelings. Part of me was like, 'wow, this is amazing for exploration.' But another part felt almost... threatened? Like if I can do in an hour what used to take days, what does that say about the value of my days?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 300000 },
-  { id: 'msg-m7', role: 'ai', content: "That tension between amazement and threat is so human. How did you resolve that, or are you still working through it?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 360000 },
-  { id: 'msg-m8', role: 'user', content: "I think I've landed somewhere useful. The AI can generate variations infinitely, but it can't tell which one actually solves the user's problem. That's still me. It's like having an incredibly fast sketch artist who has no taste - I provide the taste.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 420000 },
-  { id: 'msg-m9', role: 'ai', content: "'I provide the taste' - that's a powerful reframe. Has this changed your daily workflow at all?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 480000 },
-  { id: 'msg-m10', role: 'user', content: "Definitely. I iterate much faster now. Where I used to bring 3 concepts to a stakeholder meeting, I can bring 15 and refine in real-time based on their feedback. It's made the design process more collaborative somehow, because there's less preciousness about any single direction.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 540000 },
-  { id: 'msg-m11', role: 'ai', content: "Less preciousness - that's interesting. It sounds like AI might be changing not just the speed but the emotional relationship with work. How have your colleagues adapted compared to you?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 600000 },
-  { id: 'msg-m12', role: 'user', content: "Split down the middle. Junior designers love it - they feel like they can punch above their weight. But some of my senior peers are really resistant. One guy literally said 'I didn't spend 15 years mastering Photoshop to have a machine do it.' I get it, but I also think that's a losing battle.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 660000 },
-  { id: 'msg-m13', role: 'ai', content: "You understand their resistance but see it as futile. Looking ahead, how do you see the designer role evolving?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 720000 },
-  { id: 'msg-m14', role: 'user', content: "I think designers become more like creative directors. Less hands-on-tools, more guiding and curating. The craft part - pushing pixels, precise execution - that's getting automated. What stays human is understanding people, making judgment calls, telling stories. If you can only push pixels, yeah, you're in trouble.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 780000 },
-  { id: 'msg-m15', role: 'ai', content: "The shift from execution to judgment and curation. Is there anything you're doing differently to prepare for that future?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 840000 },
-  { id: 'msg-m16', role: 'user', content: "Yeah, actually. I'm spending more time on research, user interviews, understanding context. The stuff that AI can't just generate. And honestly, rediscovering why I got into design in the first place - it was never about the tools, it was about solving problems for people.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 900000 },
-  { id: 'msg-m17', role: 'ai', content: "That's a beautiful reconnection with purpose. Thank you for sharing such an honest journey from skepticism to integration, Marcus. Your insights about taste, judgment, and the evolution of design expertise are really valuable.", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 960000 }
+  { id: 'msg-m1', role: 'ai', content: "欢迎您！感谢您抽出时间参加本次访谈。我们正在探讨专业人士如何在工作中体验 AI 工具。您能先介绍一下自己的职位吗？", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+  { id: 'msg-m2', role: 'user', content: "我是一名高级 UX 设计师,从业约 12 年,目前在一家为医疗行政管理开发工具的企业软件公司工作。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 60000 },
+  { id: 'msg-m3', role: 'ai', content: "在一个重视深厚专业能力的领域里,这是很丰富的经验。我想听听您最近一个使用 AI 工具的项目——体验如何?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 120000 },
+  { id: 'msg-m4', role: 'user', content: "说实话,我长期以来都是怀疑派,“AI 做不了真正的设计”基本是我的立场。但团队负责人推动我们尝试用 Midjourney 做创意发散,结果我……很惊讶。一次操作一小时就生成了大约 100 个视觉方向,正常情况下那要画好几天的草图。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 180000 },
+  { id: 'msg-m5', role: 'ai', content: "从怀疑到这样,转变很大!看到那 100 个方向时,您在想什么?感受如何?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 240000 },
+  { id: 'msg-m6', role: 'user', content: "百感交集。一方面觉得“哇,这对探索太有用了”;另一方面又几乎感到……被威胁?如果一小时能做完过去几天的工作,那我那些日子的价值又算什么?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 300000 },
+  { id: 'msg-m7', role: 'ai', content: "这种惊叹与威胁并存的感受非常真实。您是如何化解的,还是仍在消化中?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 360000 },
+  { id: 'msg-m8', role: 'user', content: "我想我找到了一个有用的定位。AI 可以无限生成变体,但它不知道哪一个真正解决了用户的问题。那仍然是我的工作。就像有一个极快但毫无品味的速写画师——品味由我来提供。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 420000 },
+  { id: 'msg-m9', role: 'ai', content: "“品味由我来提供”——这是很有力的重构。这改变了您的日常工作流程吗?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 480000 },
+  { id: 'msg-m10', role: 'user', content: "当然。现在迭代快多了。以前开利益相关方会议我只带 3 个概念,现在能带 15 个,并根据反馈现场调整。不知怎么,这让设计过程更具协作性了,因为大家对单个方向不再那么敝帚自珍。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 540000 },
+  { id: 'msg-m11', role: 'ai', content: "不再敝帚自珍——很有意思。听起来 AI 改变的不只是速度,还有与工作的情感关系。与您相比,同事们的适应情况如何?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 600000 },
+  { id: 'msg-m12', role: 'user', content: "一半一半。初级设计师很喜欢——他们觉得自己能做出超出资历水准的东西。但我的一些资深同行非常抵触。有位同行直接说:“我花 15 年精通 Photoshop,不是为了让机器来做。”我理解,但我也认为那是在打一场必输的仗。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 660000 },
+  { id: 'msg-m13', role: 'ai', content: "您理解他们的抵触,但认为那是徒劳的。展望未来,您认为设计师这个角色会如何演变?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 720000 },
+  { id: 'msg-m14', role: 'user', content: "我认为设计师会变得更像创意总监——少一些亲手操作工具,多一些引导与筛选。技艺部分——推像素、精确执行——正在被自动化。仍然属于人类的是理解人、做判断、讲故事。如果只会推像素,那确实危险了。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 780000 },
+  { id: 'msg-m15', role: 'ai', content: "从执行转向判断与筛选。您现在有什么不同的做法,来为那个未来做准备吗?", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 840000 },
+  { id: 'msg-m16', role: 'user', content: "有的。我把更多时间花在研究、用户访谈和理解场景上——这些 AI 无法直接生成的东西。说实话,也让我重新找回了当初进入设计行业的原因:那从来不是关于工具,而是为人们解决问题。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 900000 },
+  { id: 'msg-m17', role: 'ai', content: "与初心的重新连接非常美好。感谢您坦诚地分享从怀疑到融合的历程,Marcus。您关于品味、判断与设计专业能力演变的见解非常有价值。", timestamp: Date.now() - 4 * 24 * 60 * 60 * 1000 + 960000 }
 ];
 
 const MARCUS_SYNTHESIS: SynthesisResult = {
   statedPreferences: [
-    'Values human judgment and "taste" as irreplaceable',
-    'Prefers collaborative, iterative design processes',
-    'Wants to focus on user understanding over tool mastery',
-    'Believes in adapting to change rather than resisting'
+    '认为人类判断力与“品味”不可替代',
+    '偏好协作式、迭代式的设计流程',
+    '希望专注于理解用户,而非精通工具',
+    '主张适应变化而非抗拒'
   ],
   revealedPreferences: [
-    'Needed external push to try AI tools despite skepticism',
-    'Found initial threat response diminished when he reframed his value',
-    'Empathizes with resistant colleagues while viewing their stance as futile',
-    'Returning to design fundamentals as a response to AI change'
+    '尽管心存怀疑,仍需外部推动才尝试 AI 工具',
+    '在重构自身价值后,最初的威胁感减弱了',
+    '同情抵触的同事,同时认为他们的立场没有出路',
+    '以回归设计本质来回应 AI 带来的变化'
   ],
   themes: [
-    { theme: 'Skeptic Conversion', evidence: '"AI can\'t do real design" to "100 directions in an hour" - external push led to reevaluation', frequency: 3 },
-    { theme: 'Value Reframe', evidence: '"I provide the taste" - separating generation from judgment', frequency: 4 },
-    { theme: 'Reduced Preciousness', evidence: 'More concepts, less attachment, more collaborative', frequency: 2 },
-    { theme: 'Generational Split', evidence: 'Juniors embrace, seniors resist - different relationships to craft', frequency: 2 }
+    { theme: '怀疑者转变', evidence: '从“AI 做不了真正的设计”到“一小时 100 个方向”——外部推动促成了重新评估', frequency: 3 },
+    { theme: '价值重构', evidence: '“品味由我来提供”——将生成与判断分离', frequency: 4 },
+    { theme: '执念减弱', evidence: '更多概念、更少执念、更强协作', frequency: 2 },
+    { theme: '代际分化', evidence: '初级设计师拥抱,资深同行抵触——对技艺的不同态度', frequency: 2 }
   ],
   contradictions: [
-    'Sees resistant colleagues\' stance as futile while deeply understanding it',
-    'Values craft mastery while acknowledging its diminishing importance'
+    '既深切理解抵触同事的立场,又认为那没有出路',
+    '重视技艺造诣,同时承认其重要性正在下降'
   ],
   keyInsights: [
-    'External forcing functions can convert AI skeptics through direct experience',
-    'Reframing personal value proposition (taste vs. generation) resolves threat feelings',
-    'AI tools may reduce emotional attachment to individual designs, enabling better collaboration',
-    'Senior professionals face identity crisis when craft skills become automated'
+    '外部推动机制能通过直接体验转化 AI 怀疑者',
+    '重构个人价值主张(品味 vs. 生成)能化解威胁感',
+    'AI 工具可能降低对单个设计方案的情感执念,从而促进协作',
+    '当技艺技能被自动化时,资深专业人士面临身份危机'
   ],
-  bottomLine: 'Marcus represents the converted skeptic who found peace by reframing his value from execution to judgment. His journey suggests that direct experience, combined with new mental models, can transform AI resistance into productive adoption.'
+  bottomLine: 'Marcus 代表了转变后的怀疑者:他通过将自身价值从执行重构为判断而找到了平衡。他的经历表明,直接体验加上新的心智模型,可以把对 AI 的抵触转化为富有成效的采用。'
 };
 
 const MARCUS_BEHAVIOR: BehaviorData = {
   timePerTopic: {
-    'AI Tool Usage': 240000,
-    'Professional Identity': 300000,
-    'Workflow Changes': 120000,
-    'Team Dynamics': 120000,
-    'Future Outlook': 180000
+    'AI 工具使用情况': 240000,
+    '职业身份': 300000,
+    '工作流程变化': 120000,
+    '团队动态': 120000,
+    '未来展望': 180000
   },
   messagesPerTopic: {
-    'AI Tool Usage': 4,
-    'Professional Identity': 5,
-    'Workflow Changes': 2,
-    'Team Dynamics': 2,
-    'Future Outlook': 3
+    'AI 工具使用情况': 4,
+    '职业身份': 5,
+    '工作流程变化': 2,
+    '团队动态': 2,
+    '未来展望': 3
   },
-  topicsExplored: ['AI Tool Usage', 'Professional Identity', 'Workflow Changes', 'Team Dynamics', 'Future Outlook'],
-  contradictions: ['Understanding resistance while seeing it as futile']
+  topicsExplored: ['AI 工具使用情况', '职业身份', '工作流程变化', '团队动态', '未来展望'],
+  contradictions: ['理解抵触的同时认为其徒劳']
 };
 
 export const MARCUS_INTERVIEW: StoredInterview = {
@@ -263,92 +263,92 @@ export const MARCUS_INTERVIEW: StoredInterview = {
 };
 
 // ============================================
-// Demo Interview 3: Priya - Content Manager
+// Demo Interview 3: Priya - 内容经理
 // ============================================
 
 const PRIYA_PROFILE: ParticipantProfile = {
   id: 'profile-priya',
   fields: [
-    { fieldId: 'role', value: 'Content Manager', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'industry', value: 'Digital Media', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'ai_frequency', value: 'Daily', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'comfort_level', value: 'Comfortable', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-    { fieldId: 'years_experience', value: '8 years', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 }
+    { fieldId: 'role', value: '内容经理', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'industry', value: '数字媒体', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'ai_frequency', value: '每天', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'comfort_level', value: '适应', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+    { fieldId: 'years_experience', value: '8 年', status: 'extracted', extractedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 }
   ],
-  rawContext: 'Priya is a content manager at a digital media company with 8 years of experience. Uses AI daily for drafts but maintains strong editorial oversight. Wrestling with tensions between efficiency and authenticity, particularly around audience trust.',
+  rawContext: 'Priya 是一家数字媒体公司的内容经理,从业 8 年。她每天用 AI 起草初稿,但坚持严格的编辑把关。她正纠结于效率与真实性之间的张力,尤其是受众信任问题。',
   timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000
 };
 
 const PRIYA_TRANSCRIPT: InterviewMessage[] = [
-  { id: 'msg-p1', role: 'ai', content: "Hello! Thanks for joining this research interview. We're exploring how professionals are navigating AI in their work. Could you tell me about your current role?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-  { id: 'msg-p2', role: 'user', content: "I'm a content manager at a digital media company - we do news and lifestyle content. Been in content/editorial for about 8 years total.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 60000 },
-  { id: 'msg-p3', role: 'ai', content: "Content and media is right at the heart of the AI conversation. I'd love to hear about a recent project where you used AI tools - what was your experience?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 120000 },
-  { id: 'msg-p4', role: 'user', content: "We use AI every day for first drafts. I'll take a topic, feed in research materials and our style guide, and get a draft back in minutes instead of hours. My job has shifted from writing to editing and refining.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 180000 },
-  { id: 'msg-p5', role: 'ai', content: "That's a significant shift - from creator to editor. How do you feel about that change in your role?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 240000 },
-  { id: 'msg-p6', role: 'user', content: "Complicated. On one hand, we can produce 3x the content. On the other... I got into this because I love writing. Now I spend more time fixing AI prose than crafting my own. It's efficient but sometimes feels hollow.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 300000 },
-  { id: 'msg-p7', role: 'ai', content: "'Efficient but hollow' - that's a striking way to put it. Can you tell me more about what feels hollow?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 360000 },
-  { id: 'msg-p8', role: 'user', content: "There's something about struggling with a sentence, finding just the right word... that creative friction feels important. Now I sometimes publish pieces that are technically fine but that I don't feel ownership over. Like I'm a machine operator, not a writer.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 420000 },
-  { id: 'msg-p9', role: 'ai', content: "The loss of creative ownership and struggle. Does this affect how you think about your audience?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 480000 },
-  { id: 'msg-p10', role: 'user', content: "That's actually my biggest tension. Our readers trust us for authentic perspective. If they knew how much was AI-assisted, would they still trust us? We don't disclose it, and that feels... not quite right. But also, the edited output IS my perspective, isn't it?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 540000 },
-  { id: 'msg-p11', role: 'ai', content: "You're wrestling with real transparency and authenticity questions. How does this play out with your team?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 600000 },
-  { id: 'msg-p12', role: 'user', content: "We don't really talk about it openly. Everyone uses AI, but there's this unspoken sense of... shame? Like it's a dirty secret. Which is weird because management explicitly encourages it for efficiency. But old journalistic values die hard.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 660000 },
-  { id: 'msg-p13', role: 'ai', content: "That gap between official encouragement and unspoken shame is fascinating. Looking forward, how do you see content work evolving?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 720000 },
-  { id: 'msg-p14', role: 'user', content: "I think disclosure is coming whether we like it or not. Readers will demand it. And honestly, maybe that's good - it forces us to be clear about where human value actually is. The investigative pieces, the deeply human stories, the original perspectives - that's what I want to focus on.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 780000 },
-  { id: 'msg-p15', role: 'ai', content: "So the pressure might clarify where human contribution truly matters. What are you doing to prepare for that clarity?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 840000 },
-  { id: 'msg-p16', role: 'user', content: "I'm actively trying to protect time for the human-only work. Real interviews, original reporting, essays with genuine voice. It's harder because AI can fill any time you give it, but I think those skills are what will matter most.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 900000 },
-  { id: 'msg-p17', role: 'ai', content: "Protecting space for irreducibly human work while AI expands everywhere else. Thank you for such a thoughtful and honest conversation, Priya. Your reflections on authenticity, disclosure, and the changing nature of creative work are really valuable.", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 960000 }
+  { id: 'msg-p1', role: 'ai', content: "您好！感谢您参加本次研究访谈。我们正在探讨专业人士如何在工作中应对 AI。您能介绍一下您目前的职位吗？", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+  { id: 'msg-p2', role: 'user', content: "我是一家数字媒体公司的内容经理,主要做新闻和生活方式内容。我在内容/编辑领域一共做了大约 8 年。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 60000 },
+  { id: 'msg-p3', role: 'ai', content: "内容与媒体正处在 AI 讨论的中心。我想听听您最近一个使用 AI 工具的项目——您的体验如何?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 120000 },
+  { id: 'msg-p4', role: 'user', content: "我们每天都用 AI 写初稿。我选定一个主题,喂入研究资料和我们的风格指南,几分钟就能拿回一版草稿,而不是几个小时。我的工作已从写作转向编辑与打磨。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 180000 },
+  { id: 'msg-p5', role: 'ai', content: "这是很大的转变——从创作者变成编辑。您如何看待这个角色的变化?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 240000 },
+  { id: 'msg-p6', role: 'user', content: "很复杂。一方面,我们的产量能达到 3 倍;另一方面……我入行是因为热爱写作。现在我花在修补 AI 文稿上的时间,比写自己的东西还多。效率很高,但有时会感到空洞。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 300000 },
+  { id: 'msg-p7', role: 'ai', content: "“高效但空洞”——这个说法很触动人心。能多说说那种空洞感吗?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 360000 },
+  { id: 'msg-p8', role: 'user', content: "为一句子反复推敲、找到恰好那个词……那种创作上的摩擦力感觉很重要。现在我有时会发布技术上没问题的文章,但感觉不到那是自己的作品。就像我是机器操作员,而不是作者。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 420000 },
+  { id: 'msg-p9', role: 'ai', content: "创作归属感与挣扎的丧失。这会影响您如何看待自己的受众吗?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 480000 },
+  { id: 'msg-p10', role: 'user', content: "这其实是我最大的矛盾。读者信任我们是因为真实的观点。如果他们知道有多少内容是 AI 辅助的,还会信任我们吗?我们没有披露这一点,这感觉……不太对。但话又说回来,经过编辑的产出就是我的观点,不是吗?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 540000 },
+  { id: 'msg-p11', role: 'ai', content: "您正在纠结于真实的透明度与真实性问题。在团队里这种情况如何体现?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 600000 },
+  { id: 'msg-p12', role: 'user', content: "我们并不公开谈论这件事。每个人都在用 AI,但有一种心照不宣的……羞耻感?好像那是个不可告人的秘密。这很奇怪,因为管理层明确鼓励用它提效。但老派的新闻价值观根深蒂固。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 660000 },
+  { id: 'msg-p13', role: 'ai', content: "官方鼓励与心照不宣的羞耻之间的落差很有意思。展望未来,您认为内容工作会如何演变?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 720000 },
+  { id: 'msg-p14', role: 'user', content: "我认为不管我们愿不愿意,披露要求终会到来。读者会要求的。说实话,这也许是好事——它迫使我们想清楚人的价值究竟在哪里。调查报道、深度的人文故事、原创的观点——那才是我想专注的。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 780000 },
+  { id: 'msg-p15', role: 'ai', content: "所以这种压力或许能让人看清人类贡献的真正价值所在。您在为那一刻做什么准备?", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 840000 },
+  { id: 'msg-p16', role: 'user', content: "我在主动为只有人能做的工作保留时间——真实的采访、原创报道、有真诚声音的随笔。这更难,因为 AI 能填满你给它的任何时间,但我认为那些能力才是未来最重要的。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 900000 },
+  { id: 'msg-p17', role: 'ai', content: "在 AI 扩张到各处的同时,为不可化约的人性工作保留空间。感谢您如此深思熟虑且坦诚的分享,Priya。您关于真实性、披露与创作工作性质变化的思考非常有价值。", timestamp: Date.now() - 3 * 24 * 60 * 60 * 1000 + 960000 }
 ];
 
 const PRIYA_SYNTHESIS: SynthesisResult = {
   statedPreferences: [
-    'Values authentic voice and original perspective',
-    'Believes in transparency with audiences',
-    'Wants to focus on uniquely human journalism',
-    'Efficiency is valuable but not sufficient'
+    '珍视真实的声音与原创观点',
+    '认同对受众保持透明',
+    '希望专注于独属于人类的新闻工作',
+    '效率有价值,但并非全部'
   ],
   revealedPreferences: [
-    'Complicit in non-disclosure despite discomfort',
-    'Misses the creative struggle of writing',
-    'Feels loss of ownership over published work',
-    'Tension between professional practice and personal values'
+    '尽管不安,仍参与了不披露的做法',
+    '怀念写作中的创作挣扎',
+    '对已发布作品感到归属感的丧失',
+    '职业实践与个人价值观之间的张力'
   ],
   themes: [
-    { theme: 'Authenticity Crisis', evidence: '"Efficient but hollow" - volume gains at cost of creative ownership', frequency: 4 },
-    { theme: 'Disclosure Tension', evidence: 'Non-disclosure "feels not quite right" - unresolved ethical question', frequency: 3 },
-    { theme: 'Organizational Shame', evidence: '"Unspoken sense of shame" despite management encouragement', frequency: 2 },
-    { theme: 'Protective Strategy', evidence: 'Actively protecting time for "human-only work"', frequency: 2 }
+    { theme: '真实性危机', evidence: '“高效但空洞”——产量提升以创作归属感为代价', frequency: 4 },
+    { theme: '披露张力', evidence: '不披露“感觉不太对”——悬而未决的伦理问题', frequency: 3 },
+    { theme: '组织性羞耻', evidence: '尽管管理层鼓励,仍“心照不宣地感到羞耻”', frequency: 2 },
+    { theme: '防御性策略', evidence: '主动为“只有人能做的工作”保留时间', frequency: 2 }
   ],
   contradictions: [
-    'Uses AI daily while feeling it undermines authentic voice',
-    'Values transparency while participating in non-disclosure',
-    'Management encourages AI use while team feels shame about it'
+    '每天使用 AI,同时觉得它削弱了真实的声音',
+    '认同透明,却参与了不披露',
+    '管理层鼓励使用 AI,团队却对此感到羞耻'
   ],
   keyInsights: [
-    'AI adoption can create ethical tensions around authenticity and disclosure',
-    'Creative professions may experience loss of ownership and identity',
-    'Organizational cultures can simultaneously mandate and stigmatize AI use',
-    'Future clarity about human value may come from external pressure (disclosure requirements)'
+    '采用 AI 可能在真实性与披露方面引发伦理张力',
+    '创意型职业可能经历归属感与身份认同的丧失',
+    '组织文化可能同时强制推行 AI 又对其污名化',
+    '对人类价值的清晰认知可能来自外部压力(披露要求)'
   ],
-  bottomLine: 'Priya represents the ethically conflicted adopter who uses AI extensively while harboring real concerns about authenticity and disclosure. Her experience highlights how AI efficiency can hollow out creative satisfaction even while boosting productivity.'
+  bottomLine: 'Priya 代表了在伦理上充满矛盾的采用者:她大量使用 AI,同时真切地担忧真实性与披露问题。她的经历凸显了一个事实:AI 的效率在提升产能的同时,也可能掏空创作的满足感。'
 };
 
 const PRIYA_BEHAVIOR: BehaviorData = {
   timePerTopic: {
-    'AI Tool Usage': 180000,
-    'Professional Identity': 360000,
-    'Workflow Changes': 60000,
-    'Team Dynamics': 120000,
-    'Future Outlook': 180000
+    'AI 工具使用情况': 180000,
+    '职业身份': 360000,
+    '工作流程变化': 60000,
+    '团队动态': 120000,
+    '未来展望': 180000
   },
   messagesPerTopic: {
-    'AI Tool Usage': 3,
-    'Professional Identity': 6,
-    'Workflow Changes': 1,
-    'Team Dynamics': 2,
-    'Future Outlook': 3
+    'AI 工具使用情况': 3,
+    '职业身份': 6,
+    '工作流程变化': 1,
+    '团队动态': 2,
+    '未来展望': 3
   },
-  topicsExplored: ['AI Tool Usage', 'Professional Identity', 'Workflow Changes', 'Team Dynamics', 'Future Outlook'],
-  contradictions: ['Daily use vs. authenticity concerns', 'Values transparency vs. participates in non-disclosure']
+  topicsExplored: ['AI 工具使用情况', '职业身份', '工作流程变化', '团队动态', '未来展望'],
+  contradictions: ['每天使用与真实性担忧并存', '认同透明却参与不披露']
 };
 
 export const PRIYA_INTERVIEW: StoredInterview = {
@@ -373,73 +373,73 @@ export const DEMO_AGGREGATE_SYNTHESIS: AggregateSynthesisResult = {
   interviewCount: 3,
   commonThemes: [
     {
-      theme: 'Role Evolution from Execution to Judgment',
+      theme: '角色从执行转向判断',
       frequency: 3,
       representativeQuotes: [
-        '"It\'s like I got promoted without changing jobs" - Sarah',
-        '"I provide the taste" - Marcus',
-        '"My job has shifted from writing to editing and refining" - Priya'
+        '“就像没换工作却升了职”——Sarah',
+        '“品味由我来提供”——Marcus',
+        '“我的工作已从写作转向编辑与打磨”——Priya'
       ]
     },
     {
-      theme: 'Skill Atrophy Concerns',
+      theme: '技能退化担忧',
       frequency: 3,
       representativeQuotes: [
-        '"My writing used to be really sharp... now it feels rustier" - Sarah',
-        '"I didn\'t spend 15 years mastering Photoshop to have a machine do it" - Marcus\'s colleague',
-        '"I spend more time fixing AI prose than crafting my own" - Priya'
+        '“我以前写作很利落……现在感觉有点生疏了”——Sarah',
+        '“我花 15 年精通 Photoshop,不是为了让机器来做”——Marcus 的同事',
+        '“我花在修补 AI 文稿上的时间,比写自己的东西还多”——Priya'
       ]
     },
     {
-      theme: 'Social Navigation Required',
+      theme: '需要人际层面的平衡',
       frequency: 3,
       representativeQuotes: [
-        '"I have to be careful not to make them feel slow" - Sarah',
-        '"Junior designers love it... senior peers are really resistant" - Marcus',
-        '"There\'s this unspoken sense of shame" - Priya'
+        '“我得小心别让他们觉得自己慢”——Sarah',
+        '“初级设计师很喜欢……资深同行非常抵触”——Marcus',
+        '“有一种心照不宣的羞耻感”——Priya'
       ]
     },
     {
-      theme: 'Identity Reframing as Adaptation Strategy',
+      theme: '以身份重构作为适应策略',
       frequency: 3,
       representativeQuotes: [
-        '"PMs who embrace AI will become more like mini-CEOs" - Sarah',
-        '"Designers become more like creative directors" - Marcus',
-        '"Investigative pieces, deeply human stories - that\'s what I want to focus on" - Priya'
+        '“拥抱 AI 的产品经理会变得像迷你 CEO”——Sarah',
+        '“设计师会变得更像创意总监”——Marcus',
+        '“调查报道、深度的人文故事——那才是我想专注的”——Priya'
       ]
     }
   ],
   divergentViews: [
     {
-      topic: 'Emotional Relationship with AI',
-      viewA: 'Sarah: Enthusiastic amplifier - AI as pure capability expansion',
-      viewB: 'Priya: Conflicted user - AI as efficiency gain with authenticity costs'
+      topic: '与 AI 的情感关系',
+      viewA: 'Sarah:热情的放大器视角——AI 是纯粹的能力扩展',
+      viewB: 'Priya:矛盾的使用者——AI 带来效率,却伴随真实性代价'
     },
     {
-      topic: 'Path to Adoption',
-      viewA: 'Sarah: Self-driven early adopter, intrinsically motivated',
-      viewB: 'Marcus: Skeptic converted through external push and direct experience'
+      topic: '采用路径',
+      viewA: 'Sarah:自我驱动的早期采用者,内在动机强',
+      viewB: 'Marcus:在外部推动与直接体验中转变的怀疑者'
     },
     {
-      topic: 'Transparency Concerns',
-      viewA: 'Sarah & Marcus: Focused on personal capability, not disclosure',
-      viewB: 'Priya: Wrestling with ethical questions about audience trust'
+      topic: '透明度关切',
+      viewA: 'Sarah 与 Marcus:聚焦个人能力,而非披露问题',
+      viewB: 'Priya:纠结于受众信任相关的伦理问题'
     }
   ],
   keyFindings: [
-    'AI adoption triggers identity renegotiation across all professions studied, with professionals redefining their value from execution to judgment, curation, and strategic thinking',
-    'Even enthusiastic adopters harbor concerns about skill atrophy, suggesting this is a near-universal anxiety regardless of adoption stance',
-    'AI speed differentials create new social dynamics in teams, requiring active management and creating generational tensions',
-    'Different professions face different ethical tensions - creative/media fields especially grapple with authenticity and disclosure questions',
-    'Successful adaptation involves finding new mental models ("I provide the taste," "mini-CEO") that preserve professional identity while incorporating AI capabilities'
+    '在所有受访职业中,采用 AI 都会引发身份再协商:专业人士正将自身价值从执行重新定义为判断、筛选与战略思考',
+    '即使是热情的采用者也对技能退化心存担忧,说明无论采用态度如何,这几乎是一种普遍焦虑',
+    'AI 带来的速度差异在团队中催生了新的动态,需要主动管理,并造成代际张力',
+    '不同职业面临不同的伦理张力——创意/媒体领域尤其纠结于真实性与披露问题',
+    '成功的适应需要找到新的心智模型(“品味由我来提供”、“迷你 CEO”),在融入 AI 能力的同时保住职业身份'
   ],
   researchImplications: [
-    'Training programs should address both tool proficiency and identity/value reframing',
-    'Organizations need explicit norms around AI disclosure and team dynamics',
-    'Future research should explore how skill atrophy concerns affect long-term career development',
-    'Industry-specific ethical frameworks for AI use may be needed, especially in creative/media fields'
+    '培训项目应同时覆盖工具熟练度与身份/价值重构',
+    '组织需要围绕 AI 披露与团队动态建立明确规范',
+    '后续研究应探讨技能退化担忧如何影响长期职业发展',
+    '可能需要针对特定行业的 AI 使用伦理框架,尤其是在创意/媒体领域'
   ],
-  bottomLine: 'Across three knowledge workers in different fields, AI adoption emerges as fundamentally an identity challenge rather than a skills challenge. All participants successfully use AI tools, but their deeper work involves redefining professional value and navigating social and ethical complexities. The enthusiastic (Sarah), converted skeptic (Marcus), and ethically conflicted (Priya) represent different positions on a shared journey of professional redefinition in the AI age.',
+  bottomLine: '在三位来自不同领域的知识工作者中,采用 AI 根本上是一场身份挑战,而非技能挑战。所有参与者都能成功使用 AI 工具,但更深层的工作在于重新定义职业价值,并应对社会与伦理层面的复杂性。热情者(Sarah)、转变后的怀疑者(Marcus)与伦理上矛盾的采用者(Priya),代表了 AI 时代职业重塑这一共同旅程上的不同位置。',
   generatedAt: Date.now() - 1 * 24 * 60 * 60 * 1000
 };
 

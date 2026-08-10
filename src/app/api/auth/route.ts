@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     // In hosted mode, password login is disabled — use OAuth
     if (isHostedMode()) {
       return NextResponse.json(
-        { error: 'Password login is not available in hosted mode. Use OAuth to sign in.' },
+        { error: '托管模式下不支持密码登录。请使用 OAuth 登录。' },
         { status: 404 }
       );
     }
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     // Validate password is provided
     if (!password || typeof password !== 'string') {
       return NextResponse.json(
-        { error: 'Password is required' },
+        { error: '需要提供密码' },
         { status: 400 }
       );
     }
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       // SECURITY: Never allow access without ADMIN_PASSWORD configured
       console.error('ADMIN_PASSWORD not configured - authentication disabled');
       return NextResponse.json(
-        { error: 'Authentication not configured. Set ADMIN_PASSWORD environment variable.' },
+        { error: '尚未配置身份验证。请设置 ADMIN_PASSWORD 环境变量。' },
         { status: 500 }
       );
     }
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
     const adminBuf = Buffer.from(adminPassword);
     if (passwordBuf.length !== adminBuf.length || !timingSafeEqual(passwordBuf, adminBuf)) {
       return NextResponse.json(
-        { error: 'Invalid password' },
+        { error: '密码无效' },
         { status: 401 }
       );
     }
@@ -69,7 +69,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Auth API error:', error);
     return NextResponse.json(
-      { error: 'Authentication failed' },
+      { error: '身份验证失败' },
       { status: 500 }
     );
   }
@@ -105,7 +105,7 @@ export async function DELETE() {
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json(
-      { error: 'Logout failed' },
+      { error: '退出登录失败' },
       { status: 500 }
     );
   }

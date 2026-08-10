@@ -54,19 +54,19 @@ export class OpenAIProvider implements AIProvider {
       type: 'function',
       function: {
         name: 'interview_response',
-        description: 'Generate a structured interview response',
+        description: '生成结构化访谈回复',
         parameters: {
           type: 'object',
           properties: {
-            message: { type: 'string', description: 'Your response to the participant' },
+            message: { type: 'string', description: '对参与者的回复' },
             questionAddressed: {
               type: ['number', 'null'],
-              description: '0-based index of core question substantially addressed in this exchange, or null'
+              description: '本轮中已得到实质性回应的核心问题索引（从 0 开始），或 null'
             },
             phaseTransition: {
               type: ['string', 'null'],
               enum: ['background', 'core-questions', 'exploration', 'feedback', 'wrap-up'],
-              description: 'If interview should move to a new phase, specify it'
+              description: '若访谈应进入新阶段，请指定该阶段'
             },
             profileUpdates: {
               type: 'array',
@@ -79,11 +79,11 @@ export class OpenAIProvider implements AIProvider {
                 },
                 required: ['fieldId', 'status']
               },
-              description: 'Profile fields extracted or updated from user response'
+              description: '从用户回答中提取或更新的档案字段'
             },
             shouldConclude: {
               type: 'boolean',
-              description: 'True if interview should end (after wrap-up message)'
+              description: '若访谈应结束（在收尾消息后），则为 true'
             }
           },
           required: ['message', 'profileUpdates', 'shouldConclude']
@@ -104,7 +104,7 @@ export class OpenAIProvider implements AIProvider {
     );
 
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
-      { role: 'system', content: systemPrompt + '\n\nYou MUST use the interview_response function to provide your response.' },
+      { role: 'system', content: systemPrompt + '\n\n你必须使用 interview_response 函数提供回复。' },
       ...history.slice(-10).map(h => ({
         role: (h.role === 'ai' ? 'assistant' : 'user') as 'assistant' | 'user',
         content: h.content
@@ -124,7 +124,7 @@ export class OpenAIProvider implements AIProvider {
       if (toolCall && toolCall.type === 'function' && toolCall.function.arguments) {
         const input = JSON.parse(toolCall.function.arguments);
         return {
-          message: input.message || "That's interesting. Could you tell me more?",
+          message: input.message || "这很有意思。您能再多说一些吗？",
           questionAddressed: input.questionAddressed ?? null,
           phaseTransition: input.phaseTransition ?? null,
           profileUpdates: input.profileUpdates || [],
@@ -163,7 +163,7 @@ export class OpenAIProvider implements AIProvider {
     participantProfile: ParticipantProfile | null
   ): Promise<SynthesisResult> {
     const prompt = buildSynthesisPrompt(history, studyConfig, behaviorData, participantProfile) +
-      '\n\nUse the synthesis_result function to provide your analysis.';
+      '\n\n请使用 synthesis_result 函数提供分析。';
 
     try {
       const response = await this.client.chat.completions.create({
@@ -174,17 +174,17 @@ export class OpenAIProvider implements AIProvider {
           type: 'function',
           function: {
             name: 'synthesis_result',
-            description: 'Generate a structured interview synthesis',
+            description: '生成结构化访谈综合分析',
             parameters: {
               type: 'object',
               properties: {
                 statedPreferences: {
                   type: 'array', items: { type: 'string' },
-                  description: 'What participant explicitly said they value/want'
+                  description: '参与者明确表示其重视或希望获得的内容'
                 },
                 revealedPreferences: {
                   type: 'array', items: { type: 'string' },
-                  description: 'What their behavior/emphasis revealed'
+                  description: '其行为或侧重点所揭示的内容'
                 },
                 themes: {
                   type: 'array',
@@ -202,7 +202,7 @@ export class OpenAIProvider implements AIProvider {
                 keyInsights: { type: 'array', items: { type: 'string' } },
                 bottomLine: {
                   type: 'string',
-                  description: 'One-sentence summary insight for the researcher'
+                  description: '面向研究者的一句话总结洞见'
                 }
               },
               required: ['statedPreferences', 'revealedPreferences', 'themes', 'keyInsights', 'bottomLine']
@@ -230,7 +230,7 @@ export class OpenAIProvider implements AIProvider {
     interviewCount: number
   ) {
     const prompt = buildAggregateSynthesisPrompt(studyConfig, syntheses, interviewCount) +
-      '\n\nUse the aggregate_synthesis_result function to provide your analysis.';
+      '\n\n请使用 aggregate_synthesis_result 函数提供分析。';
 
     try {
       const response = await this.client.chat.completions.create({
@@ -241,7 +241,7 @@ export class OpenAIProvider implements AIProvider {
           type: 'function',
           function: {
             name: 'aggregate_synthesis_result',
-            description: 'Generate a structured aggregate synthesis across multiple interviews',
+            description: '生成跨多场访谈的结构化汇总分析',
             parameters: {
               type: 'object',
               properties: {
@@ -256,7 +256,7 @@ export class OpenAIProvider implements AIProvider {
                     },
                     required: ['theme', 'frequency', 'representativeQuotes']
                   },
-                  description: 'Patterns appearing across multiple interviews'
+                  description: '跨多场访谈出现的模式'
                 },
                 divergentViews: {
                   type: 'array',
@@ -269,19 +269,19 @@ export class OpenAIProvider implements AIProvider {
                     },
                     required: ['topic', 'viewA', 'viewB']
                   },
-                  description: 'Areas where participants had different perspectives'
+                  description: '参与者观点不同的领域'
                 },
                 keyFindings: {
                   type: 'array', items: { type: 'string' },
-                  description: 'Major discoveries that answer the research question'
+                  description: '回答研究问题的主要发现'
                 },
                 researchImplications: {
                   type: 'array', items: { type: 'string' },
-                  description: 'What these findings mean for the field/practice'
+                  description: '这些发现对领域或实践的意义'
                 },
                 bottomLine: {
                   type: 'string',
-                  description: 'One paragraph summarizing key takeaways from all interviews'
+                  description: '用一段话概述所有访谈的关键要点'
                 }
               },
               required: ['commonThemes', 'keyFindings', 'bottomLine']
@@ -307,24 +307,24 @@ export class OpenAIProvider implements AIProvider {
     parentConfig: StudyConfig,
     synthesis: AggregateSynthesisResult
   ): Promise<{ name: string; researchQuestion: string; coreQuestions: string[] }> {
-    const prompt = `You are helping design a follow-up research study.
+    const prompt = `你正在协助设计一项后续研究。
 
-PARENT STUDY: "${parentConfig.name}"
-PARENT SUMMARY: ${synthesis.bottomLine}
+原研究： "${parentConfig.name}"
+原研究摘要： ${synthesis.bottomLine}
 
-KEY FINDINGS:
+关键发现：
 ${synthesis.keyFindings.map((f, i) => `${i + 1}. ${f}`).join('\n')}
 
-RESEARCH IMPLICATIONS:
-${(synthesis.researchImplications || []).map((r, i) => `${i + 1}. ${r}`).join('\n') || 'None specified'}
+研究启示：
+${(synthesis.researchImplications || []).map((r, i) => `${i + 1}. ${r}`).join('\n') || '未说明'}
 
-DIVERGENT VIEWS:
-${(synthesis.divergentViews || []).map(d => `- ${d.topic}: "${d.viewA}" vs "${d.viewB}"`).join('\n') || 'None identified'}
+分歧观点：
+${(synthesis.divergentViews || []).map(d => `- ${d.topic}: "${d.viewA}" vs "${d.viewB}"`).join('\n') || '未发现'}
 
-Generate a follow-up study that digs deeper into gaps or tensions found.
-The follow-up should explore unanswered questions or interesting patterns from the original study.
+生成一项后续研究，深入探讨已发现的缺口或张力。
+后续研究应探讨原研究中未解答的问题或有意思的模式。
 
-Use the followup_study function to provide your response.`;
+请使用 followup_study 函数提供回复。`;
 
     try {
       const response = await this.client.chat.completions.create({
@@ -335,15 +335,15 @@ Use the followup_study function to provide your response.`;
           type: 'function',
           function: {
             name: 'followup_study',
-            description: 'Generate a follow-up research study based on synthesis findings',
+            description: '基于综合分析发现生成后续研究',
             parameters: {
               type: 'object',
               properties: {
-                name: { type: 'string', description: 'A concise study name (should start with "Follow-up: ")' },
-                researchQuestion: { type: 'string', description: 'A specific, researchable question building on the findings' },
+                name: { type: 'string', description: '简洁的研究名称（应以“后续研究：”开头）' },
+                researchQuestion: { type: 'string', description: '基于这些发现的具体、可研究的问题' },
                 coreQuestions: {
                   type: 'array', items: { type: 'string' },
-                  description: '3-5 interview questions to explore this further'
+                  description: '用于进一步探讨的 3-5 个访谈问题'
                 }
               },
               required: ['name', 'researchQuestion', 'coreQuestions']
@@ -357,26 +357,26 @@ Use the followup_study function to provide your response.`;
       if (toolCall && toolCall.type === 'function' && toolCall.function.arguments) {
         const input = JSON.parse(toolCall.function.arguments);
         return {
-          name: input.name || `Follow-up: ${parentConfig.name}`,
+          name: input.name || `后续研究：${parentConfig.name}`,
           researchQuestion: input.researchQuestion || synthesis.keyFindings[0] || '',
           coreQuestions: input.coreQuestions || []
         };
       }
 
       return {
-        name: `Follow-up: ${parentConfig.name}`,
-        researchQuestion: `What deeper insights emerge from exploring: ${synthesis.keyFindings[0] || 'the findings'}?`,
+        name: `后续研究：${parentConfig.name}`,
+        researchQuestion: `深入探讨以下内容后，会浮现哪些更深层的洞见：${synthesis.keyFindings[0] || '这些发现'}?`,
         coreQuestions: synthesis.keyFindings.slice(0, 3).map(f =>
-          `Can you tell me more about your experience with: ${f}?`
+          `您能再详细说说您与以下内容相关的经历吗：${f}?`
         )
       };
     } catch (error) {
       console.error('OpenAI follow-up generation error:', error);
       return {
-        name: `Follow-up: ${parentConfig.name}`,
-        researchQuestion: `What deeper insights emerge from exploring: ${synthesis.keyFindings[0] || 'the findings'}?`,
+        name: `后续研究：${parentConfig.name}`,
+        researchQuestion: `深入探讨以下内容后，会浮现哪些更深层的洞见：${synthesis.keyFindings[0] || '这些发现'}?`,
         coreQuestions: synthesis.keyFindings.slice(0, 3).map(f =>
-          `Can you tell me more about your experience with: ${f}?`
+          `您能再详细说说您与以下内容相关的经历吗：${f}?`
         )
       };
     }

@@ -1,6 +1,6 @@
 // GET /api/auth/oauth/github - Initiate GitHub OAuth flow
 // Redirects user to GitHub's authorization page
-// Only available in hosted mode
+// 仅在托管模式下可用
 
 import { NextResponse } from 'next/server';
 import * as arctic from 'arctic';
@@ -24,7 +24,7 @@ function getGitHubClient() {
 export async function GET() {
   if (!isHostedMode()) {
     return NextResponse.json(
-      { error: 'OAuth is only available in hosted mode' },
+      { error: 'OAuth 仅在托管模式下可用' },
       { status: 404 }
     );
   }

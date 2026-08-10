@@ -33,7 +33,7 @@ function getBaseUrl(): string {
 export async function GET(request: Request) {
   if (!isHostedMode()) {
     return NextResponse.json(
-      { error: 'OAuth is only available in hosted mode' },
+      { error: 'OAuth 仅在托管模式下可用' },
       { status: 404 }
     );
   }

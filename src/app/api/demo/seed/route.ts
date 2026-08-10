@@ -13,13 +13,13 @@ export async function POST() {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured. Please connect Vercel KV (Upstash Redis) first.' },
+        { error: '尚未配置存储。请先连接 Vercel KV（Upstash Redis）。' },
         { status: 503 }
       );
     }
@@ -29,7 +29,7 @@ export async function POST() {
     const demoExists = existingStudies.some(s => s.id.startsWith('demo-'));
     if (demoExists) {
       return NextResponse.json(
-        { error: 'Demo data already loaded. Clear it first if you want to reload.' },
+        { error: '演示数据已加载。如需重新加载，请先清除。' },
         { status: 409 }
       );
     }
@@ -50,7 +50,7 @@ export async function POST() {
 
     return NextResponse.json({
       success: true,
-      message: 'Demo data loaded successfully',
+      message: '演示数据加载成功',
       data: {
         studiesSeeded,
         interviewsSeeded,
@@ -60,7 +60,7 @@ export async function POST() {
   } catch (error) {
     console.error('Demo seed error:', error);
     return NextResponse.json(
-      { error: 'Failed to seed demo data' },
+      { error: '植入演示数据失败' },
       { status: 500 }
     );
   }
@@ -71,13 +71,13 @@ export async function DELETE() {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured.' },
+        { error: '尚未配置存储。' },
         { status: 503 }
       );
     }
@@ -104,7 +104,7 @@ export async function DELETE() {
 
     return NextResponse.json({
       success: true,
-      message: 'Demo data cleared',
+      message: '演示数据已清除',
       data: {
         studiesDeleted,
         interviewsDeleted
@@ -113,7 +113,7 @@ export async function DELETE() {
   } catch (error) {
     console.error('Demo clear error:', error);
     return NextResponse.json(
-      { error: 'Failed to clear demo data' },
+      { error: '清除演示数据失败' },
       { status: 500 }
     );
   }

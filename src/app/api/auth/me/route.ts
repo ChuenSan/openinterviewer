@@ -12,7 +12,7 @@ export async function GET() {
   try {
     const { authorized, context, researcherId, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     // In standalone mode, return basic info
@@ -25,12 +25,12 @@ export async function GET() {
 
     // In hosted mode, return researcher profile
     if (!researcherId) {
-      return NextResponse.json({ error: 'No researcher identity' }, { status: 401 });
+      return NextResponse.json({ error: '未找到研究者身份' }, { status: 401 });
     }
 
     const researcher = await getResearcherById(researcherId);
     if (!researcher) {
-      return NextResponse.json({ error: 'Researcher not found' }, { status: 404 });
+      return NextResponse.json({ error: '未找到研究者' }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -41,7 +41,7 @@ export async function GET() {
   } catch (error) {
     console.error('Auth me error:', error);
     return NextResponse.json(
-      { error: 'Failed to get profile' },
+      { error: '获取个人资料失败' },
       { status: 500 }
     );
   }

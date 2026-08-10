@@ -66,23 +66,23 @@ export interface AIModelOption {
 
 // Available Gemini models (verified from official docs)
 export const GEMINI_MODELS: AIModelOption[] = [
-  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', desc: 'Fast, cost-effective' },
-  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro', desc: 'Higher quality' },
-  { id: 'gemini-3.1-pro-preview', label: 'Gemini 3.1 Pro Preview', desc: 'Higher capability (preview)' },
+  { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', desc: '快速、经济高效' },
+  { id: 'gemini-2.5-pro', label: 'Gemini 2.5 Pro', desc: '质量更高' },
+  { id: 'gemini-3.1-pro-preview', label: 'Gemini 3.1 Pro Preview', desc: '能力更强（预览版）' },
 ];
 
 // Available Claude models (verified from official docs)
 export const CLAUDE_MODELS: AIModelOption[] = [
-  { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5', desc: 'Fastest ($1/$5 per MTok)' },
-  { id: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5', desc: 'Balanced ($3/$15 per MTok)' },
-  { id: 'claude-opus-4-5', label: 'Claude Opus 4.5', desc: 'Higher capability ($5/$25 per MTok)' },
+  { id: 'claude-haiku-4-5', label: 'Claude Haiku 4.5', desc: '最快（每百万 Token $1/$5）' },
+  { id: 'claude-sonnet-4-5', label: 'Claude Sonnet 4.5', desc: '均衡（每百万 Token $3/$15）' },
+  { id: 'claude-opus-4-5', label: 'Claude Opus 4.5', desc: '能力更强（每百万 Token $5/$25）' },
 ];
 
 // Available OpenAI / OpenAI-compatible models
 export const OPENAI_MODELS: AIModelOption[] = [
-  { id: 'gpt-4o-mini', label: 'GPT-4o mini', desc: 'Fast, cost-effective' },
-  { id: 'gpt-4o', label: 'GPT-4o', desc: 'Higher capability' },
-  { id: 'o4-mini', label: 'o4-mini', desc: 'Reasoning model' },
+  { id: 'gpt-4o-mini', label: 'GPT-4o mini', desc: '快速、经济高效' },
+  { id: 'gpt-4o', label: 'GPT-4o', desc: '能力更强' },
+  { id: 'o4-mini', label: 'o4-mini', desc: '推理模型' },
 ];
 
 // Default models for each provider

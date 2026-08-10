@@ -19,47 +19,47 @@ import {
 
 // Example Study: "The Adaptive Self"
 const EXAMPLE_STUDY: Omit<StudyConfig, 'id' | 'createdAt'> = {
-  name: 'The Adaptive Self: Professional Identity in the Age of AI',
-  description: 'This study explores how professionals across industries are rewriting their career narratives in response to AI. It investigates shifts in how workers perceive their value, future relevance, and the changing definition of expertise.',
-  researchQuestion: 'How does the integration of generative AI into the workspace reshape an individual\'s sense of professional agency, creative identity, and long-term career planning?',
+  name: '适应性自我：AI 时代的职业身份',
+  description: '本研究探讨各行业专业人士如何因应 AI 重塑自己的职业叙事，并考察他们对自身价值、未来相关性及专业能力定义变化的看法。',
+  researchQuestion: '生成式 AI 融入职场,如何重塑个人对职业能动性、创作身份与长期职业规划的认知?',
   coreQuestions: [
-    'When you look at tasks you used to consider "highly skilled" or "uniquely yours," how has your perspective on them changed since tools like ChatGPT emerged?',
-    'Can you describe a specific moment where you felt either significantly empowered by AI or, conversely, diminished by its capabilities?',
-    'If you project your career forward five years, what human qualities do you believe will become your most valuable currency?',
-    'There\'s often a gap between how we talk about AI publicly (efficiency!) and how we feel privately (uncertainty). Do you feel that tension?',
-    'You\'re currently discussing AI\'s impact with an AI. Does this feel like collaboration, utility, or something else entirely?'
+    '回顾您曾认为“高度专业”或“独属于自己”的任务，自 ChatGPT 等工具出现后，您对它们的看法有何变化？',
+    '您能描述一个具体时刻吗：AI 让您感到明显更有能力，或相反地因其能力而感到被削弱？',
+    '如果将职业发展展望至五年后，您认为哪些人类特质将成为自己最有价值的资本？',
+    '我们公开谈论 AI 时(效率!)与私下感受 AI 时(不确定感)之间往往存在落差。您是否感受到这种张力?',
+    '您此刻正在与一个 AI 讨论 AI 的影响。这感觉像是协作、工具,还是别的什么?'
   ],
   topicAreas: [
-    'The "Hollow Middle" - fears about disappearing entry-level work',
-    'Creative Authenticity - ownership over AI-assisted work',
-    'The Cyborg Identity - where "me" ends and "the tool" begins',
-    'Social Comparison - peers adopting faster/slower',
-    'Meaning of Work - satisfaction from process vs outcome'
+    '“空心化中层”——对入门岗位消失的担忧',
+    '创作真实性——AI 辅助作品的归属感',
+    '赛博格身份——“我”与“工具”的边界',
+    '社会比较——同事采用速度的差异',
+    '工作的意义——过程与结果带来的满足感'
   ],
   profileSchema: [
     {
       id: 'role',
-      label: 'Current Role',
-      extractionHint: 'Their job title or professional role',
+      label: '当前职位',
+      extractionHint: '其职位名称或职业角色',
       required: true
     },
     {
       id: 'ai_usage',
-      label: 'AI Tool Usage',
-      extractionHint: 'How frequently they use AI tools (daily, weekly, rarely, never)',
+      label: 'AI 工具使用情况',
+      extractionHint: '其使用 AI 工具的频率（每天、每周、很少、从不）',
       required: true,
-      options: ['Daily', 'Weekly', 'Monthly', 'Rarely', 'Never']
+      options: ['每天', '每周', '每月', '很少', '从不']
     },
     {
       id: 'ai_comfort',
-      label: 'Comfort with AI',
-      extractionHint: 'Their comfort level working alongside AI (scale: low/medium/high)',
+      label: '对 AI 的适应程度',
+      extractionHint: '其与 AI 协作时的适应程度（低/中/高）',
       required: false,
-      options: ['Low', 'Medium', 'High']
+      options: ['低', '中', '高']
     }
   ],
   aiBehavior: 'standard',
-  consentText: 'Welcome to The Adaptive Self study.\n\nBefore we begin, please understand you will be interviewed by an AI research assistant, not a human.\n\nThe purpose is to understand your personal thoughts and experiences regarding AI and your career. There are no right or wrong answers—we\'re interested in nuance: your hopes, anxieties, and honest reflections.\n\nYour responses will be anonymized and analyzed for research themes. You may decline any question or end the session anytime.\n\nBy proceeding, you acknowledge you\'re interacting with an AI and consent to this conversation being collected for research purposes.'
+  consentText: '欢迎参与“适应性自我”研究。\n\n在开始之前,请知悉:本次访谈将由 AI 研究助手进行,而非真人。\n\n本研究旨在了解您对 AI 与职业的个人想法与经历。回答没有对错之分——我们关注的是细节:您的期待、焦虑与真实思考。\n\n您的回答将被匿名化,并用于研究主题分析。您可以拒绝回答任何问题,或随时结束访谈。\n\n继续参与即表示您知悉自己正在与 AI 互动,并同意本次对话被收集用于研究目的。'
 };
 
 // Initial question progress state

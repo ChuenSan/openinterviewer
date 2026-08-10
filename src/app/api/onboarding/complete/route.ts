@@ -1,5 +1,5 @@
 // POST /api/onboarding/complete - Mark onboarding as complete
-// Only available in hosted mode
+// 仅在托管模式下可用
 
 export const dynamic = 'force-dynamic';
 
@@ -10,12 +10,12 @@ import { isHostedMode } from '@/lib/mode';
 
 export async function POST() {
   if (!isHostedMode()) {
-    return NextResponse.json({ error: 'Only available in hosted mode' }, { status: 404 });
+    return NextResponse.json({ error: '仅在托管模式下可用' }, { status: 404 });
   }
 
   const { authorized, researcherId, error } = await getRequestContext();
   if (!authorized || !researcherId) {
-    return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: error || '未授权' }, { status: 401 });
   }
 
   try {
@@ -24,14 +24,14 @@ export async function POST() {
     });
 
     if (!success) {
-      return NextResponse.json({ error: 'Failed to complete onboarding' }, { status: 500 });
+      return NextResponse.json({ error: '完成引导设置失败' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Onboarding complete error:', error);
     return NextResponse.json(
-      { error: 'Failed to complete onboarding' },
+      { error: '完成引导设置失败' },
       { status: 500 }
     );
   }
