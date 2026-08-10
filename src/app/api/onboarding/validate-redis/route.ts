@@ -1,5 +1,5 @@
 // POST /api/onboarding/validate-redis - Test Redis credentials with ping
-// Only available in hosted mode
+// 仅在托管模式下可用
 
 export const dynamic = 'force-dynamic';
 
@@ -23,12 +23,12 @@ function isValidUpstashUrl(url: string): boolean {
 
 export async function POST(request: Request) {
   if (!isHostedMode()) {
-    return NextResponse.json({ error: 'Only available in hosted mode' }, { status: 404 });
+    return NextResponse.json({ error: '仅在托管模式下可用' }, { status: 404 });
   }
 
   const { authorized, error } = await getRequestContext();
   if (!authorized) {
-    return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: error || '未授权' }, { status: 401 });
   }
 
   try {
@@ -36,13 +36,13 @@ export async function POST(request: Request) {
     const { redisUrl, redisToken } = body as { redisUrl: string; redisToken: string };
 
     if (!redisUrl || !redisToken) {
-      return NextResponse.json({ error: 'Missing redisUrl or redisToken' }, { status: 400 });
+      return NextResponse.json({ error: '缺少 redisUrl 或 redisToken' }, { status: 400 });
     }
 
     if (!isValidUpstashUrl(redisUrl)) {
       return NextResponse.json({
         valid: false,
-        error: 'Only Upstash Redis URLs (https://*.upstash.io) are supported.',
+        error: '仅支持 Upstash Redis URL（https://*.upstash.io）。',
       }, { status: 400 });
     }
 

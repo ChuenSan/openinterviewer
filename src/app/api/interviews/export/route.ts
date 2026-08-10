@@ -12,36 +12,36 @@ import { StoredInterview } from '@/types';
 // Generate markdown transcript for an interview
 function generateTranscript(interview: StoredInterview): string {
   const lines = [
-    `# Interview Transcript`,
-    `Study: ${interview.studyName}`,
-    `Interview ID: ${interview.id}`,
-    `Date: ${new Date(interview.createdAt).toLocaleDateString()}`,
-    `Duration: ${Math.round((interview.completedAt - interview.createdAt) / 1000 / 60)} minutes`,
+    `# 访谈记录`,
+    `研究:${interview.studyName}`,
+    `访谈 ID:${interview.id}`,
+    `日期:${new Date(interview.createdAt).toLocaleDateString('zh-CN')}`,
+    `时长:${Math.round((interview.completedAt - interview.createdAt) / 1000 / 60)} 分钟`,
     ``
   ];
 
   // Add participant profile summary
   if (interview.participantProfile && interview.participantProfile.fields.length > 0) {
-    lines.push(`## Participant Profile`);
+    lines.push(`## 参与者档案`);
     interview.participantProfile.fields.forEach(f => {
       const value = f.status === 'extracted' ? f.value : `(${f.status})`;
       lines.push(`- **${f.fieldId}**: ${value}`);
     });
     if (interview.participantProfile.rawContext) {
       lines.push(``);
-      lines.push(`**Context**: ${interview.participantProfile.rawContext}`);
+      lines.push(`**背景**:${interview.participantProfile.rawContext}`);
     }
     lines.push(``);
   }
 
   lines.push(`---`);
   lines.push(``);
-  lines.push(`## Conversation`);
+  lines.push(`## 对话记录`);
   lines.push(``);
 
   interview.transcript.forEach(msg => {
-    const time = new Date(msg.timestamp).toLocaleTimeString();
-    const role = msg.role === 'user' ? 'PARTICIPANT' : 'INTERVIEWER';
+    const time = new Date(msg.timestamp).toLocaleTimeString('zh-CN');
+    const role = msg.role === 'user' ? '参与者' : '访谈员';
     lines.push(`[${time}] ${role}:`);
     lines.push(msg.content);
     lines.push('');
@@ -50,19 +50,19 @@ function generateTranscript(interview: StoredInterview): string {
   if (interview.synthesis) {
     lines.push('---');
     lines.push('');
-    lines.push('## Analysis Summary');
+    lines.push('## 分析摘要');
     lines.push('');
-    lines.push(`**Key Insight:** ${interview.synthesis.bottomLine}`);
+    lines.push(`**核心洞察:** ${interview.synthesis.bottomLine}`);
     lines.push('');
     if (interview.synthesis.themes.length > 0) {
-      lines.push('**Themes:**');
+      lines.push('**主题:**');
       interview.synthesis.themes.forEach(t => {
         lines.push(`- ${t.theme}: ${t.evidence}`);
       });
       lines.push('');
     }
     if (interview.synthesis.keyInsights.length > 0) {
-      lines.push('**Key Insights:**');
+      lines.push('**关键洞察:**');
       interview.synthesis.keyInsights.forEach(insight => {
         lines.push(`- ${insight}`);
       });
@@ -76,13 +76,13 @@ export async function GET() {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured' },
+        { error: '尚未配置存储' },
         { status: 400 }
       );
     }
@@ -92,7 +92,7 @@ export async function GET() {
 
     if (interviews.length === 0) {
       return NextResponse.json(
-        { error: 'No interviews to export' },
+        { error: '没有可导出的访谈' },
         { status: 404 }
       );
     }
@@ -140,7 +140,7 @@ export async function GET() {
   } catch (error) {
     console.error('Export API error:', error);
     return NextResponse.json(
-      { error: 'Failed to export interviews' },
+      { error: '导出访谈失败' },
       { status: 500 }
     );
   }

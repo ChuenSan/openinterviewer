@@ -1,6 +1,6 @@
 // POST /api/onboarding/validate-ai-key - Test if an AI API key works
 // Makes a small test call to verify the key is valid
-// Only available in hosted mode
+// 仅在托管模式下可用
 
 export const dynamic = 'force-dynamic';
 
@@ -10,12 +10,12 @@ import { isHostedMode } from '@/lib/mode';
 
 export async function POST(request: Request) {
   if (!isHostedMode()) {
-    return NextResponse.json({ error: 'Only available in hosted mode' }, { status: 404 });
+    return NextResponse.json({ error: '仅在托管模式下可用' }, { status: 404 });
   }
 
   const { authorized, error } = await getRequestContext();
   if (!authorized) {
-    return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: error || '未授权' }, { status: 401 });
   }
 
   try {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const { provider, apiKey } = body as { provider: 'gemini' | 'claude' | 'openai'; apiKey: string };
 
     if (!provider || !apiKey) {
-      return NextResponse.json({ error: 'Missing provider or apiKey' }, { status: 400 });
+      return NextResponse.json({ error: '缺少 provider 或 apiKey' }, { status: 400 });
     }
 
     if (provider === 'gemini') {
@@ -109,7 +109,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ valid: true });
     }
 
-    return NextResponse.json({ error: 'Unknown provider' }, { status: 400 });
+    return NextResponse.json({ error: '未知提供商' }, { status: 400 });
   } catch (error) {
     console.error('AI key validation error:', error);
     return NextResponse.json({ valid: false, error: 'Validation request failed' });

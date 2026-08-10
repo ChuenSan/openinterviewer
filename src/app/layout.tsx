@@ -3,8 +3,8 @@ import './globals.css'
 import PreviewBanner from '@/components/PreviewBanner'
 
 export const metadata: Metadata = {
-  title: 'Research Interview Tool',
-  description: 'AI-powered qualitative research interview platform',
+  title: 'OpenInterviewer 研究访谈工具',
+  description: '由 AI 驱动的定性研究访谈平台',
 }
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="zh-CN">
       <body className="min-h-screen bg-stone-900 font-sans antialiased">
         <PreviewBanner />
         {children}

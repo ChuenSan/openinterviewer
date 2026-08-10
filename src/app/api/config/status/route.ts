@@ -10,7 +10,7 @@ export async function GET() {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Authentication required' }, { status: 401 });
+      return NextResponse.json({ error: error || '需要身份验证' }, { status: 401 });
     }
 
     // Return researcher-specific key status from context
@@ -26,7 +26,7 @@ export async function GET() {
   } catch (error) {
     console.error('Config status API error:', error);
     return NextResponse.json(
-      { error: 'Failed to check configuration status' },
+      { error: '检查配置状态失败' },
       { status: 500 }
     );
   }

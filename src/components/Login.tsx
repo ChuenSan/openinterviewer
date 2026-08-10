@@ -27,14 +27,14 @@ const Login: React.FC = () => {
     const oauthError = searchParams.get('error');
     if (oauthError) {
       const errorMessages: Record<string, string> = {
-        oauth_init_failed: 'Failed to start sign-in. Please try again.',
-        oauth_failed: 'Sign-in failed. Please try again.',
-        missing_params: 'Invalid callback. Please try again.',
-        invalid_state: 'Session expired. Please try again.',
-        user_fetch_failed: 'Failed to get your profile. Please try again.',
-        no_email: 'Could not get your email. Make sure your GitHub email is verified.',
+        oauth_init_failed: '无法开始登录,请重试。',
+        oauth_failed: '登录失败,请重试。',
+        missing_params: '无效的回调,请重试。',
+        invalid_state: '会话已过期,请重试。',
+        user_fetch_failed: '无法获取您的个人资料,请重试。',
+        no_email: '无法获取您的邮箱,请确认 GitHub 邮箱已验证。',
       };
-      setError(errorMessages[oauthError] || 'Sign-in failed. Please try again.');
+      setError(errorMessages[oauthError] || '登录失败,请重试。');
     }
   }, [searchParams]);
 
@@ -53,7 +53,7 @@ const Login: React.FC = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data.error || 'Authentication failed');
+        setError(data.error || '身份验证失败');
         return;
       }
 
@@ -64,7 +64,7 @@ const Login: React.FC = () => {
         : '/studies';
       router.push(redirect);
     } catch {
-      setError('Connection error. Please try again.');
+      setError('连接出错,请重试。');
     } finally {
       setLoading(false);
     }
@@ -91,11 +91,11 @@ const Login: React.FC = () => {
             <div className="w-12 h-12 rounded-full bg-stone-700 flex items-center justify-center mx-auto mb-4">
               <Lock size={24} className="text-stone-300" />
             </div>
-            <h1 className="text-xl font-bold text-white">Researcher Login</h1>
+            <h1 className="text-xl font-bold text-white">研究者登录</h1>
             <p className="text-stone-400 text-sm mt-1">
               {mode === 'hosted'
-                ? 'Sign in to access your research dashboard'
-                : 'Enter your admin password to access the dashboard'
+                ? '登录以访问您的研究仪表盘'
+                : '请输入管理员密码以访问仪表盘'
               }
             </p>
           </div>
@@ -113,14 +113,14 @@ const Login: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="password" className="block text-sm font-medium text-stone-300 mb-1">
-                  Password
+                  密码
                 </label>
                 <input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
+                  placeholder="请输入管理员密码"
                   className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
                   autoFocus
                 />
@@ -134,10 +134,10 @@ const Login: React.FC = () => {
                 {loading ? (
                   <>
                     <Loader2 size={18} className="animate-spin" />
-                    Logging in...
+                    登录中...
                   </>
                 ) : (
-                  'Login'
+                  '登录'
                 )}
               </button>
             </form>
@@ -148,7 +148,7 @@ const Login: React.FC = () => {
               onClick={() => router.push('/setup')}
               className="text-sm text-stone-400 hover:text-stone-300 transition-colors"
             >
-              Back to Study Setup
+              返回研究设置
             </button>
           </div>
         </div>

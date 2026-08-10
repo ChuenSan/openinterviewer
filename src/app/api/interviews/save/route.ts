@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const { valid, context, studyId, isAdmin, error } = await getParticipantRequestContext(request);
     if (!valid || !context) {
       return NextResponse.json(
-        { error: error || 'Valid participant token or admin session required' },
+        { error: error || '需要有效的参与者令牌或管理员会话' },
         { status: 401 }
       );
     }
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     // Validate studyId matches the token's studyId (skip for admin sessions)
     if (!isAdmin && studyId && clientData.studyId && studyId !== clientData.studyId) {
       return NextResponse.json(
-        { error: 'Study ID mismatch - token is for a different study' },
+        { error: '研究 ID 不匹配：令牌属于其他研究' },
         { status: 403 }
       );
     }
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     // Validate required fields exist
     if (!clientData.id || !clientData.studyId || !clientData.transcript) {
       return NextResponse.json(
-        { error: 'Missing required fields: id, studyId, transcript' },
+        { error: '缺少必填字段：id、studyId、transcript' },
         { status: 400 }
       );
     }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     // Validate transcript is a non-empty array
     if (!Array.isArray(clientData.transcript) || clientData.transcript.length === 0) {
       return NextResponse.json(
-        { error: 'Invalid transcript: must be a non-empty array' },
+        { error: '访谈记录无效：必须是非空数组' },
         { status: 400 }
       );
     }
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     // Validate studyId format (alphanumeric with hyphens)
     if (!/^[a-zA-Z0-9-]+$/.test(clientData.studyId)) {
       return NextResponse.json(
-        { error: 'Invalid studyId format' },
+        { error: 'studyId 格式无效' },
         { status: 400 }
       );
     }
@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     // Validate id format
     if (!/^[a-zA-Z0-9-]+$/.test(clientData.id)) {
       return NextResponse.json(
-        { error: 'Invalid interview id format' },
+        { error: '访谈 ID 格式无效' },
         { status: 400 }
       );
     }
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: false,
         id: interview.id,
-        warning: 'Storage not configured. Interview not persisted.'
+        warning: '尚未配置存储。 Interview not persisted.'
       });
     }
 
@@ -108,7 +108,7 @@ export async function POST(request: Request) {
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Failed to save interview' },
+        { error: '保存访谈失败' },
         { status: 500 }
       );
     }
@@ -120,14 +120,14 @@ export async function POST(request: Request) {
       await lockStudy(interview.studyId, context.kvClient);
     } catch (studyUpdateError) {
       // Log but don't fail - study may not exist in KV (legacy/token-only studies)
-      console.warn('Failed to update study metadata:', studyUpdateError);
+      console.warn('更新研究失败 metadata:', studyUpdateError);
     }
 
     return NextResponse.json({ success: true, id: interview.id });
   } catch (error) {
     console.error('Save interview API error:', error);
     return NextResponse.json(
-      { error: 'Failed to save interview' },
+      { error: '保存访谈失败' },
       { status: 500 }
     );
   }

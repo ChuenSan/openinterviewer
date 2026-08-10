@@ -17,14 +17,14 @@ export async function GET() {
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json({
         studies: [],
-        warning: 'Storage not configured. Connect Vercel KV to enable persistence.'
+        warning: '尚未配置存储。 Connect Vercel KV to enable persistence.'
       });
     }
 
@@ -33,7 +33,7 @@ export async function GET() {
   } catch (error) {
     console.error('Studies API error:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch studies' },
+      { error: '获取研究列表失败' },
       { status: 500 }
     );
   }
@@ -44,13 +44,13 @@ export async function POST(request: Request) {
   try {
     const { authorized, context, researcherId, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured. Connect Vercel KV to enable persistence.' },
+        { error: '尚未配置存储。 Connect Vercel KV to enable persistence.' },
         { status: 503 }
       );
     }
@@ -60,7 +60,7 @@ export async function POST(request: Request) {
 
     if (!config) {
       return NextResponse.json(
-        { error: 'Missing required field: config' },
+        { error: '缺少必填字段：config' },
         { status: 400 }
       );
     }
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!config.name || !config.researchQuestion || !config.coreQuestions?.length) {
       return NextResponse.json(
-        { error: 'Study must have name, researchQuestion, and at least one core question' },
+        { error: '研究必须包含 name、researchQuestion 和至少一个核心问题' },
         { status: 400 }
       );
     }
@@ -96,7 +96,7 @@ export async function POST(request: Request) {
     const success = await saveStudy(storedStudy, context.kvClient);
     if (!success) {
       return NextResponse.json(
-        { error: 'Failed to save study' },
+        { error: '保存研究失败' },
         { status: 500 }
       );
     }
@@ -112,12 +112,12 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       study: storedStudy,
-      message: 'Study saved successfully'
+      message: '研究保存成功'
     });
   } catch (error) {
     console.error('Create study API error:', error);
     return NextResponse.json(
-      { error: 'Failed to create study' },
+      { error: '创建研究失败' },
       { status: 500 }
     );
   }

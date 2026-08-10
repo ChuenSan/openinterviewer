@@ -17,7 +17,7 @@ export async function POST(
   try {
     const { authorized, context, error } = await getRequestContext();
     if (!authorized || !context) {
-      return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: error || '未授权' }, { status: 401 });
     }
 
     const { id: studyId } = await params;
@@ -25,7 +25,7 @@ export async function POST(
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: 'Storage not configured' },
+        { error: '尚未配置存储' },
         { status: 503 }
       );
     }
@@ -34,7 +34,7 @@ export async function POST(
     const parentStudy = await getStudy(studyId, context.kvClient);
     if (!parentStudy) {
       return NextResponse.json(
-        { error: 'Study not found' },
+        { error: '未找到研究' },
         { status: 404 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(
 
     if (!synthesis || !synthesis.keyFindings?.length) {
       return NextResponse.json(
-        { error: 'Missing or invalid synthesis data' },
+        { error: '缺少综合分析数据或数据无效' },
         { status: 400 }
       );
     }
@@ -54,6 +54,7 @@ export async function POST(
     const provider = getInterviewProvider(parentStudy.config, {
       geminiApiKey: context.geminiApiKey,
       anthropicApiKey: context.anthropicApiKey,
+      openaiApiKey: context.openaiApiKey,
     });
 
     // Generate follow-up study suggestions
@@ -92,7 +93,7 @@ export async function POST(
   } catch (error) {
     console.error('Generate follow-up API error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate follow-up study' },
+      { error: '生成后续研究失败' },
       { status: 500 }
     );
   }

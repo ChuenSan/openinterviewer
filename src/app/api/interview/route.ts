@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const { valid, context, studyId, isAdmin, error } = await getParticipantRequestContext(request);
     if (!valid || !context) {
       return NextResponse.json(
-        { error: error || 'Valid participant token required' },
+        { error: error || '需要有效的参与者令牌' },
         { status: 401 }
       );
     }
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     // Validate required fields
     if (!history || !studyConfig || !questionProgress) {
       return NextResponse.json(
-        { error: 'Missing required fields: history, studyConfig, questionProgress' },
+        { error: '缺少必填字段：history、studyConfig、questionProgress' },
         { status: 400 }
       );
     }
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     // Skip for admin users (researchers previewing their studies)
     if (!isAdmin && studyId && studyConfig.id && studyId !== studyConfig.id) {
       return NextResponse.json(
-        { error: 'Token not valid for this study' },
+        { error: '该令牌对此研究无效' },
         { status: 403 }
       );
     }
@@ -77,6 +77,7 @@ export async function POST(request: Request) {
     const provider = getInterviewProvider(studyConfig, {
       geminiApiKey: context.geminiApiKey,
       anthropicApiKey: context.anthropicApiKey,
+      openaiApiKey: context.openaiApiKey,
     });
 
     // Generate response using the provider
@@ -92,7 +93,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error('Interview API error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate interview response' },
+      { error: '生成访谈回复失败' },
       { status: 500 }
     );
   }

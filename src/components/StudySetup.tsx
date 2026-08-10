@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useStore } from '@/store';
 import { generateParticipantLink } from '@/services/geminiService';
-import { StudyConfig, ProfileField, AIBehavior, AIProviderType, LinkExpirationOption, GEMINI_MODELS, CLAUDE_MODELS, OPENAI_MODELS, DEFAULT_GEMINI_MODEL, DEFAULT_CLAUDE_MODEL, DEFAULT_OPENAI_MODEL } from '@/types';
+import { StudyConfig, ProfileField, AIBehavior, AIProviderType, LinkExpirationOption, GEMINI_MODELS, CLAUDE_MODELS, DEFAULT_GEMINI_MODEL, DEFAULT_CLAUDE_MODEL, DEFAULT_OPENAI_MODEL } from '@/types';
 import {
   FileText,
   Plus,
@@ -33,11 +33,11 @@ import {
 
 // Common profile field presets
 const PROFILE_PRESETS: ProfileField[] = [
-  { id: 'role', label: 'Current Role', extractionHint: 'Their job title or position', required: true },
-  { id: 'industry', label: 'Industry', extractionHint: 'The industry they work in', required: false },
-  { id: 'experience', label: 'Years of Experience', extractionHint: 'How many years in their field', required: false },
-  { id: 'team_size', label: 'Team Size', extractionHint: 'Size of team they work with', required: false },
-  { id: 'location', label: 'Location', extractionHint: 'Where they are based (city/region)', required: false }
+  { id: 'role', label: '当前职位', extractionHint: '其职位或岗位', required: true },
+  { id: 'industry', label: '所属行业', extractionHint: '其所在的行业', required: false },
+  { id: 'experience', label: '工作年限', extractionHint: '其所在领域的工作年数', required: false },
+  { id: 'team_size', label: '团队规模', extractionHint: '其所在团队的人数', required: false },
+  { id: 'location', label: '所在地', extractionHint: '其所在城市或地区', required: false }
 ];
 
 const StudySetup: React.FC = () => {
@@ -77,7 +77,7 @@ const StudySetup: React.FC = () => {
   );
   const [consentText, setConsentText] = useState(
     studyConfig?.consentText ||
-    'Thank you for participating in this research study. Your responses will be used to understand [research topic]. You may stop at any time. Do you consent to participate?'
+    '感谢您参与本次研究。您的回答将用于了解[研究主题]。您可随时停止参与。您是否同意参与？'
   );
 
   // Participant link generation
@@ -89,7 +89,7 @@ const StudySetup: React.FC = () => {
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
-  // Preview state
+  // 预览 state
   const [isPreviewLoading, setIsPreviewLoading] = useState(false);
 
   // Study save state
@@ -103,6 +103,7 @@ const StudySetup: React.FC = () => {
   const [configStatus, setConfigStatus] = useState<{
     hasAnthropicKey: boolean;
     hasGeminiKey: boolean;
+    hasOpenAIKey: boolean;
   } | null>(null);
 
   // Sync savedStudyId with persisted config
@@ -285,29 +286,32 @@ const StudySetup: React.FC = () => {
     setIsDirty(true);
   };
 
-  const buildConfig = (): StudyConfig => ({
-    id: studyConfig?.id || `study-${Date.now()}`,
-    name: name || 'Untitled Study',
-    description,
-    researchQuestion,
-    coreQuestions: coreQuestions.filter(q => q.trim()),
-    topicAreas: topicAreas.filter(t => t.trim()),
-    profileSchema: profileSchema.filter(f => f.label.trim()),
-    aiBehavior,
-    aiProvider,
-    aiModel,
-    enableReasoning,
-    linkExpiration,
-    linksEnabled: true, // Always true when creating/editing (revocation is in StudyDetail)
-    consentText,
-    createdAt: studyConfig?.createdAt || Date.now(),
-    // Include parent study info if this is a follow-up
-    ...(parentStudyInfo && {
-      parentStudyId: parentStudyInfo.id,
-      parentStudyName: parentStudyInfo.name,
-      generatedFrom: 'synthesis' as const
-    })
-  });
+  const buildConfig = (): StudyConfig => {
+    const normalizedAiModel = aiProvider === 'openai' ? aiModel.trim() : aiModel;
+
+    return {
+      id: studyConfig?.id || `study-${Date.now()}`,
+      name: name || '未命名研究',
+      description,
+      researchQuestion,
+      coreQuestions: coreQuestions.filter(q => q.trim()),
+      topicAreas: topicAreas.filter(t => t.trim()),
+      profileSchema: profileSchema.filter(f => f.label.trim()),
+      aiBehavior,
+      aiProvider,
+      aiModel: normalizedAiModel,
+      enableReasoning,
+      linkExpiration,
+      linksEnabled: true,
+      consentText,
+      createdAt: studyConfig?.createdAt || Date.now(),
+      ...(parentStudyInfo && {
+        parentStudyId: parentStudyInfo.id,
+        parentStudyName: parentStudyInfo.name,
+        generatedFrom: 'synthesis' as const
+      })
+    };
+  };
 
   const handleSubmit = () => {
     const config = buildConfig();
@@ -356,7 +360,7 @@ const StudySetup: React.FC = () => {
           setIsAuthenticated(false);
         } else {
           const data = await response.json();
-          setLinkError(data.error || 'Failed to generate link');
+          setLinkError(data.error || '生成链接失败');
         }
         return;
       }
@@ -365,7 +369,7 @@ const StudySetup: React.FC = () => {
       setParticipantLink(data.url);
     } catch (error) {
       console.error('Error generating link:', error);
-      setLinkError('Network error. Please try again.');
+      setLinkError('网络错误，请重试。');
     } finally {
       setIsGeneratingLink(false);
     }
@@ -416,7 +420,7 @@ const StudySetup: React.FC = () => {
 
         // Handle storage not configured (503)
         if (response.status === 503) {
-          setSaveError('Storage not configured. Please connect Vercel KV (Upstash Redis) in your deployment settings.');
+          setSaveError('尚未配置存储。请在部署设置中连接 Vercel KV（Upstash Redis）。');
           return;
         }
 
@@ -425,7 +429,7 @@ const StudySetup: React.FC = () => {
           const data = await response.json();
           if (data.requiresConfirmation) {
             const confirmed = window.confirm(
-              `${data.warning}\n\nDo you want to continue?`
+              `${data.warning}\n\n是否继续？`
             );
             if (confirmed) {
               // Retry with confirmed: true
@@ -450,7 +454,7 @@ const StudySetup: React.FC = () => {
 
         // Generic error
         const data = await response.json().catch(() => ({}));
-        setSaveError(data.error || 'Failed to save study. Please try again.');
+        setSaveError(data.error || '保存研究失败，请重试。');
         return;
       }
 
@@ -464,29 +468,33 @@ const StudySetup: React.FC = () => {
       router.push(`/studies/${data.study.id}`);
     } catch (error) {
       console.error('Error saving study:', error);
-      setSaveError('Network error. Please check your connection and try again.');
+      setSaveError('网络错误，请检查网络连接后重试。');
     } finally {
       setIsSaving(false);
     }
   };
 
-  const isValid = name.trim() && researchQuestion.trim();
+  const isValid = Boolean(
+    name.trim() &&
+    researchQuestion.trim() &&
+    (aiProvider !== 'openai' || aiModel.trim())
+  );
 
   const behaviorOptions: { id: AIBehavior; label: string; desc: string }[] = [
     {
       id: 'structured',
-      label: 'Focus on covering all questions (Structured)',
-      desc: 'Prioritize completion. Minimal follow-ups, redirect tangents.'
+      label: '覆盖所有问题（结构化）',
+      desc: '优先完成访谈，减少追问，并将跑题内容拉回主题。'
     },
     {
       id: 'standard',
-      label: 'Balance coverage and depth (Standard)',
-      desc: 'Default mode. Follow up on key insights, then move on.'
+      label: '兼顾覆盖与深度（标准）',
+      desc: '默认模式：追问关键洞察后继续下一个问题。'
     },
     {
       id: 'exploratory',
-      label: 'Focus on uncovering new insights (Exploratory)',
-      desc: 'Prioritize depth. Chase interesting threads, probe emotions.'
+      label: '发掘新洞察（探索式）',
+      desc: '优先深入探究，跟进有价值的线索和情绪。'
     }
   ];
 
@@ -494,17 +502,17 @@ const StudySetup: React.FC = () => {
     {
       id: 'gemini',
       label: 'Google Gemini',
-      desc: 'Fast, cost-effective. Best for high-volume studies.'
+      desc: '速度快、成本低，适合高频研究。'
     },
     {
       id: 'claude',
       label: 'Anthropic Claude',
-      desc: 'Nuanced reasoning. Best for complex, exploratory interviews.'
+      desc: '推理细腻，适合复杂的探索式访谈。'
     },
     {
       id: 'openai',
-      label: 'OpenAI (Chat API)',
-      desc: 'Broad compatibility. Works with any OpenAI Chat API-compatible endpoint.'
+      label: 'OpenAI（Chat API）',
+      desc: '兼容性广，可配合任何兼容 OpenAI Chat API 的端点使用。'
     }
   ];
 
@@ -524,14 +532,14 @@ const StudySetup: React.FC = () => {
             <button
               onClick={() => router.push('/studies')}
               className="p-2 text-stone-400 hover:text-stone-300 rounded-lg hover:bg-stone-800 transition-colors"
-              title="Back to All Studies"
+              title="返回全部研究"
             >
               <ArrowLeft size={20} />
             </button>
             <div className="w-10 h-10 rounded-xl bg-stone-700 flex items-center justify-center">
               <FileText className="text-stone-300" size={20} />
             </div>
-            <h1 className="text-3xl font-bold text-white">Study Setup</h1>
+            <h1 className="text-3xl font-bold text-white">研究设置</h1>
 
             <div className="flex gap-2 ml-auto">
               <button
@@ -539,7 +547,7 @@ const StudySetup: React.FC = () => {
                 className="px-4 py-2 text-sm bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
               >
                 <Lightbulb size={16} />
-                Load Example
+                加载示例
               </button>
               {isValid && (
                 <>
@@ -563,7 +571,7 @@ const StudySetup: React.FC = () => {
                     ) : (
                       <Save size={16} />
                     )}
-                    {isSaving ? 'Saving...' : savedStudyId && isDirty ? 'Update Study' : savedStudyId ? 'Saved' : saveSuccess ? 'Saved!' : 'Save Study'}
+                    {isSaving ? '保存中...' : savedStudyId && isDirty ? '更新研究' : savedStudyId ? '已保存' : saveSuccess ? '已保存！' : '保存研究'}
                   </button>
                   <button
                     onClick={handlePreview}
@@ -575,14 +583,14 @@ const StudySetup: React.FC = () => {
                     ) : (
                       <Eye size={16} />
                     )}
-                    {isPreviewLoading ? 'Loading...' : 'Preview'}
+                    {isPreviewLoading ? '加载中...' : '预览'}
                   </button>
                 </>
               )}
             </div>
           </div>
           <p className="text-stone-400 ml-[52px]">
-            Configure your research interview study
+            配置您的研究访谈
           </p>
         </motion.div>
 
@@ -601,7 +609,7 @@ const StudySetup: React.FC = () => {
               </svg>
             </div>
             <div className="flex-1">
-              <h4 className="font-medium text-red-300 mb-1">Save Failed</h4>
+              <h4 className="font-medium text-red-300 mb-1">保存失败</h4>
               <p className="text-sm text-red-400/80">{saveError}</p>
             </div>
             <button
@@ -622,14 +630,14 @@ const StudySetup: React.FC = () => {
           transition={{ delay: 0.1 }}
           className="bg-stone-800/50 rounded-2xl border border-stone-700 p-8 space-y-8"
         >
-          {/* Follow-up Study Banner */}
+          {/* 后续研究 Banner */}
           {parentStudyInfo && (
             <div className="bg-blue-900/30 border border-blue-700/50 rounded-xl p-4 flex items-start gap-3">
               <GitBranch size={20} className="text-blue-400 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="font-medium text-white">Follow-up Study</h4>
+                <h4 className="font-medium text-white">后续研究</h4>
                 <p className="text-sm text-stone-400">
-                  Based on findings from{' '}
+                  基于以下研究的发现：{' '}
                   <button
                     onClick={() => router.push(`/studies/${parentStudyInfo.id}`)}
                     className="text-blue-400 hover:text-blue-300 underline"
@@ -645,30 +653,30 @@ const StudySetup: React.FC = () => {
           <div className="space-y-4">
             <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
               <Sparkles size={18} className="text-stone-400" />
-              Study Details
+              研究详情
             </h2>
 
             <div>
               <label className="block text-sm font-medium text-stone-300 mb-1">
-                Study Name *
+                研究名称 *
               </label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => { setName(e.target.value); setIsDirty(true); }}
-                placeholder="e.g., AI Adoption in Healthcare"
+                placeholder="例如：医疗健康领域的 AI 应用"
                 className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-stone-300 mb-1">
-                Research Question *
+                研究问题 *
               </label>
               <textarea
                 value={researchQuestion}
                 onChange={(e) => { setResearchQuestion(e.target.value); setIsDirty(true); }}
-                placeholder="What are you trying to understand?"
+                placeholder="您希望了解什么？"
                 rows={2}
                 className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 resize-none"
               />
@@ -676,39 +684,39 @@ const StudySetup: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-stone-300 mb-1">
-                Description (optional)
+                描述（可选）
               </label>
               <textarea
                 value={description}
                 onChange={(e) => { setDescription(e.target.value); setIsDirty(true); }}
-                placeholder="Brief context about the study..."
+                placeholder="简要说明研究背景..."
                 rows={2}
                 className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 resize-none"
               />
             </div>
           </div>
 
-          {/* Profile Fields */}
+          {/* 受访者信息字段 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
                 <User size={18} className="text-stone-400" />
-                Profile Fields
+                受访者信息字段
               </h2>
               <button
                 onClick={() => addProfileField()}
                 className="text-sm text-stone-400 hover:text-stone-300 flex items-center gap-1"
               >
-                <Plus size={16} /> Add Custom
+                <Plus size={16} /> 添加自定义字段
               </button>
             </div>
             <p className="text-sm text-stone-400">
-              Information to gather about participants during the interview
+              访谈中需要收集的受访者信息
             </p>
 
             {availablePresets.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                <span className="text-xs text-stone-500">Quick add:</span>
+                <span className="text-xs text-stone-500">快速添加：</span>
                 {availablePresets.map(preset => (
                   <button
                     key={preset.id}
@@ -733,14 +741,14 @@ const StudySetup: React.FC = () => {
                         type="text"
                         value={field.label}
                         onChange={(e) => updateProfileField(field.id, { label: e.target.value })}
-                        placeholder="Field label (e.g., Current Role)"
+                        placeholder="Field label (e.g., 当前职位)"
                         className="w-full px-3 py-2 rounded-lg bg-stone-900 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 text-sm"
                       />
                       <input
                         type="text"
                         value={field.extractionHint}
                         onChange={(e) => updateProfileField(field.id, { extractionHint: e.target.value })}
-                        placeholder="Hint for AI (e.g., Their job title or position)"
+                        placeholder="Hint for AI (e.g., 其职位或岗位)"
                         className="w-full px-3 py-2 rounded-lg bg-stone-900 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 text-sm"
                       />
                     </div>
@@ -752,10 +760,10 @@ const StudySetup: React.FC = () => {
                             ? 'bg-stone-600 text-stone-200'
                             : 'bg-stone-700 text-stone-400'
                         }`}
-                        title={field.required ? 'Required field' : 'Optional field'}
+                        title={field.required ? '必填字段' : '可选字段'}
                       >
                         {field.required ? <ToggleRight size={14} /> : <ToggleLeft size={14} />}
-                        {field.required ? 'REQ' : 'OPT'}
+                        {field.required ? '必填' : '可选'}
                       </button>
                       <button
                         onClick={() => removeProfileField(field.id)}
@@ -770,27 +778,27 @@ const StudySetup: React.FC = () => {
 
               {profileSchema.length === 0 && (
                 <div className="text-center py-4 text-stone-500 text-sm">
-                  No profile fields yet. Add some above to gather participant information.
+                  暂未添加受访者信息字段。请在上方添加以收集受访者信息。
                 </div>
               )}
             </div>
           </div>
 
-          {/* Core Questions */}
+          {/* 核心问题 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-stone-100">
-                Core Questions
+                核心问题
               </h2>
               <button
                 onClick={addQuestion}
                 className="text-sm text-stone-400 hover:text-stone-300 flex items-center gap-1"
               >
-                <Plus size={16} /> Add Question
+                <Plus size={16} /> 添加问题
               </button>
             </div>
             <p className="text-sm text-stone-400">
-              Must-ask questions for your interview
+              访谈中必须提出的问题
             </p>
             <div className="space-y-2">
               {coreQuestions.map((q, i) => (
@@ -799,7 +807,7 @@ const StudySetup: React.FC = () => {
                   <textarea
                     value={q}
                     onChange={(e) => updateQuestion(i, e.target.value)}
-                    placeholder={`Question ${i + 1}...`}
+                    placeholder={`问题 ${i + 1}...`}
                     rows={2}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 resize-none"
                   />
@@ -816,21 +824,21 @@ const StudySetup: React.FC = () => {
             </div>
           </div>
 
-          {/* Topic Areas */}
+          {/* 主题领域 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-stone-100">
-                Topic Areas
+                主题领域
               </h2>
               <button
                 onClick={addTopic}
                 className="text-sm text-stone-400 hover:text-stone-300 flex items-center gap-1"
               >
-                <Plus size={16} /> Add Topic
+                <Plus size={16} /> 添加主题
               </button>
             </div>
             <p className="text-sm text-stone-400">
-              Themes the AI should probe on (e.g., fears, motivations, trade-offs)
+              AI 应深入探讨的主题（例如：担忧、动机、权衡）
             </p>
             <div className="space-y-2">
               {topicAreas.map((t, i) => (
@@ -839,7 +847,7 @@ const StudySetup: React.FC = () => {
                   <textarea
                     value={t}
                     onChange={(e) => updateTopic(i, e.target.value)}
-                    placeholder={`Topic area ${i + 1}...`}
+                    placeholder={`主题领域 ${i + 1}...`}
                     rows={2}
                     className="flex-1 px-4 py-2.5 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 resize-none"
                   />
@@ -856,11 +864,11 @@ const StudySetup: React.FC = () => {
             </div>
           </div>
 
-          {/* AI Provider */}
+          {/* AI 服务商 */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-lg text-stone-100">AI Provider</h2>
+            <h2 className="font-semibold text-lg text-stone-100">AI 服务商</h2>
             <p className="text-sm text-stone-400">
-              Choose which AI model powers your interviews
+              选择驱动访谈的 AI 模型
             </p>
             <div className="space-y-2">
               {providerOptions.map((option) => (
@@ -897,26 +905,44 @@ const StudySetup: React.FC = () => {
               <label className="block text-sm font-medium text-stone-300">
                 Model
               </label>
-              <select
-                value={aiModel}
-                onChange={(e) => { setAiModel(e.target.value); setIsDirty(true); }}
-                className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
-              >
-                {(aiProvider === 'gemini' ? GEMINI_MODELS : aiProvider === 'claude' ? CLAUDE_MODELS : OPENAI_MODELS).map((model) => (
-                  <option key={model.id} value={model.id}>
-                    {model.label}
-                  </option>
-                ))}
-              </select>
-              <p className="text-xs text-stone-500">
-                {(aiProvider === 'gemini' ? GEMINI_MODELS : aiProvider === 'claude' ? CLAUDE_MODELS : OPENAI_MODELS).find(m => m.id === aiModel)?.desc || ''}
-              </p>
+              {aiProvider === 'openai' ? (
+                <>
+                  <input
+                    type="text"
+                    value={aiModel}
+                    onChange={(e) => { setAiModel(e.target.value); setIsDirty(true); }}
+                    placeholder="例如：gpt-4o-mini"
+                    required
+                    className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
+                  />
+                  <p className="text-xs text-stone-500">
+                    输入 OpenAI Chat Completions API 支持的模型 ID。兼容端点由部署环境中的 OPENAI_BASE_URL 配置。
+                  </p>
+                </>
+              ) : (
+                <>
+                  <select
+                    value={aiModel}
+                    onChange={(e) => { setAiModel(e.target.value); setIsDirty(true); }}
+                    className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
+                  >
+                    {(aiProvider === 'gemini' ? GEMINI_MODELS : CLAUDE_MODELS).map((model) => (
+                      <option key={model.id} value={model.id}>
+                        {model.label}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-xs text-stone-500">
+                    {(aiProvider === 'gemini' ? GEMINI_MODELS : CLAUDE_MODELS).find(m => m.id === aiModel)?.desc || ''}
+                  </p>
+                </>
+              )}
             </div>
 
-            {/* AI Reasoning Mode */}
+            {/* AI 推理模式 */}
             <div className="mt-4 space-y-2">
               <label className="block text-sm font-medium text-stone-300">
-                AI Reasoning Mode
+                AI 推理模式
               </label>
               <select
                 value={enableReasoning === undefined ? 'auto' : enableReasoning ? 'on' : 'off'}
@@ -927,12 +953,12 @@ const StudySetup: React.FC = () => {
                 }}
                 className="w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
               >
-                <option value="auto">Automatic (recommended)</option>
-                <option value="on">Always enabled</option>
-                <option value="off">Always disabled</option>
+                <option value="auto">自动（推荐）</option>
+                <option value="on">始终启用</option>
+                <option value="off">始终禁用</option>
               </select>
               <p className="text-xs text-stone-500">
-                Automatic: OFF for interviews (faster responses), ON for synthesis (deeper analysis using the configured synthesis model - may increase API costs)
+                自动：访谈时关闭（响应更快），综合分析时开启（使用已配置的综合模型进行更深入分析，可能增加 API 成本）。
               </p>
             </div>
 
@@ -941,10 +967,10 @@ const StudySetup: React.FC = () => {
               <div className="bg-amber-900/30 border border-amber-700/50 rounded-xl p-4 flex items-start gap-3">
                 <AlertTriangle size={18} className="text-amber-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="font-medium text-amber-200 text-sm">Anthropic API Key Missing</h4>
+                  <h4 className="font-medium text-amber-200 text-sm">缺少 Anthropic API 密钥</h4>
                   <p className="text-xs text-stone-400 mt-1">
-                    Claude interviews require the <code className="text-stone-300">ANTHROPIC_API_KEY</code> environment variable.
-                    Set this in your Vercel dashboard under Project Settings → Environment Variables.
+                    Claude 访谈需要环境变量 <code className="text-stone-300">ANTHROPIC_API_KEY</code> environment variable.
+                    请在 Vercel 控制台的“项目设置 → 环境变量”中配置。
                   </p>
                   <a
                     href="https://github.com/your-repo/research-tool-v2#configuring-api-keys"
@@ -952,7 +978,7 @@ const StudySetup: React.FC = () => {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-xs text-amber-400 hover:text-amber-300 mt-2"
                   >
-                    View setup guide <ExternalLink size={12} />
+                    查看配置指南 <ExternalLink size={12} />
                   </a>
                 </div>
               </div>
@@ -961,7 +987,7 @@ const StudySetup: React.FC = () => {
 
           {/* AI Behavior */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-lg text-stone-100">AI Interview Style</h2>
+            <h2 className="font-semibold text-lg text-stone-100">AI 访谈风格</h2>
             <div className="space-y-2">
               {behaviorOptions.map((option) => (
                 <label
@@ -988,39 +1014,39 @@ const StudySetup: React.FC = () => {
             </div>
           </div>
 
-          {/* Link Settings */}
+          {/* 链接设置 */}
           <div className="space-y-4">
             <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
               <Clock size={18} className="text-stone-400" />
-              Link Settings
+              链接设置
             </h2>
             <p className="text-sm text-stone-400">
-              Configure when participant links expire. You can also revoke links from the study detail page.
+              设置受访者链接的过期时间。您也可以在研究详情页撤销链接。
             </p>
 
             <div className="space-y-3">
               <label className="block">
-                <span className="text-sm font-medium text-stone-300">Link Expiration</span>
+                <span className="text-sm font-medium text-stone-300">链接有效期</span>
                 <select
                   value={linkExpiration}
                   onChange={(e) => { setLinkExpiration(e.target.value as LinkExpirationOption); setIsDirty(true); }}
                   className="mt-1 w-full px-4 py-3 rounded-xl bg-stone-800 border border-stone-600 text-stone-100 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500"
                 >
-                  <option value="never">Never expire</option>
-                  <option value="7days">Expire after 7 days</option>
-                  <option value="30days">Expire after 30 days</option>
-                  <option value="90days">Expire after 90 days</option>
+                  <option value="never">永不过期</option>
+                  <option value="7days">7 天后过期</option>
+                  <option value="30days">30 天后过期</option>
+                  <option value="90days">90 天后过期</option>
                 </select>
               </label>
               <p className="text-xs text-stone-500">
-                Expired links will show an error message when participants try to access them.
+                受访者访问已过期链接时将看到错误提示。
               </p>
             </div>
           </div>
 
-          {/* Consent Text */}
+          {/* 同意说明 */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-lg text-stone-100">Consent Text</h2>
+            <h2 className="font-semibold text-lg text-stone-100">同意说明</h2>
             <textarea
               value={consentText}
               onChange={(e) => { setConsentText(e.target.value); setIsDirty(true); }}
@@ -1029,12 +1055,12 @@ const StudySetup: React.FC = () => {
             />
           </div>
 
-          {/* Generate Participant Link */}
+          {/* 生成受访者链接 */}
           {isValid && (
             <div className="space-y-4 pt-4 border-t border-stone-700">
               <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
                 <LinkIcon size={18} className="text-stone-400" />
-                Participant Link
+                受访者链接
               </h2>
 
               {participantLink ? (
@@ -1052,24 +1078,24 @@ const StudySetup: React.FC = () => {
                       className="px-4 py-3 bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
                     >
                       {linkCopied ? <Check size={18} /> : <Copy size={18} />}
-                      {linkCopied ? 'Copied!' : 'Copy'}
+                      {linkCopied ? '已复制！' : '复制'}
                     </button>
                   </div>
                   <p className="text-xs text-stone-500">
-                    Share this link with participants. The study configuration is embedded in the URL.
+                    将此链接分享给受访者。研究配置已嵌入链接中。
                   </p>
                 </div>
               ) : isAuthenticated === false || linkError === 'auth' ? (
                 <div className="space-y-3">
                   <div className="bg-stone-800 border border-stone-600 rounded-xl p-4 text-sm text-stone-300">
-                    <p className="mb-3">Login required to generate participant links.</p>
+                    <p className="mb-3">需要登录后才能生成受访者链接。</p>
                     <button
                       type="button"
                       onClick={() => router.push('/login')}
                       className="px-4 py-2 bg-stone-600 hover:bg-stone-500 text-white rounded-lg transition-colors flex items-center gap-2"
                     >
                       <LogIn size={16} />
-                      Login as Researcher
+                      以研究者身份登录
                     </button>
                   </div>
                 </div>
@@ -1082,7 +1108,7 @@ const StudySetup: React.FC = () => {
                     className="w-full py-3 bg-stone-700 hover:bg-stone-600 text-stone-300 font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <LinkIcon size={18} />
-                    {isGeneratingLink ? 'Generating...' : 'Generate Participant Link'}
+                    {isGeneratingLink ? '生成中...' : '生成受访者链接'}
                   </button>
                   {linkError && linkError !== 'auth' && (
                     <p className="text-sm text-red-400">{linkError}</p>
@@ -1099,7 +1125,7 @@ const StudySetup: React.FC = () => {
               disabled={!isValid}
               className="w-full py-4 bg-stone-600 hover:bg-stone-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
             >
-              Start Interview <ArrowRight size={18} />
+              开始访谈 <ArrowRight size={18} />
             </button>
           </div>
         </motion.div>

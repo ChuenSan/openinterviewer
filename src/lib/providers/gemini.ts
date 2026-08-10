@@ -98,18 +98,18 @@ export class GeminiProvider implements AIProvider {
             properties: {
               message: {
                 type: Type.STRING,
-                description: 'Your response to the participant'
+                description: '对参与者的回复'
               },
               questionAddressed: {
                 type: Type.NUMBER,
                 nullable: true,
-                description: '0-based index of core question substantially addressed in this exchange, or null'
+                description: '本轮中已得到实质性回应的核心问题索引（从 0 开始），或 null'
               },
               phaseTransition: {
                 type: Type.STRING,
                 nullable: true,
                 enum: ['background', 'core-questions', 'exploration', 'feedback', 'wrap-up'],
-                description: 'If interview should move to a new phase, specify it'
+                description: '若访谈应进入新阶段，请指定该阶段'
               },
               profileUpdates: {
                 type: Type.ARRAY,
@@ -125,11 +125,11 @@ export class GeminiProvider implements AIProvider {
                   },
                   required: ['fieldId', 'status']
                 },
-                description: 'Profile fields extracted or updated from user response'
+                description: '从用户回答中提取或更新的档案字段'
               },
               shouldConclude: {
                 type: Type.BOOLEAN,
-                description: 'True if interview should end (after wrap-up message)'
+                description: '若访谈应结束（在收尾消息后），则为 true'
               }
             },
             required: ['message', 'profileUpdates', 'shouldConclude']
@@ -143,12 +143,12 @@ export class GeminiProvider implements AIProvider {
 
       const lastUserMessage = history.filter(m => m.role === 'user').pop();
       const result = await chat.sendMessage({
-        message: lastUserMessage?.content || 'Please continue the interview.'
+        message: lastUserMessage?.content || '请继续访谈。'
       });
 
       const parsed = JSON.parse(cleanJSON(result.text || '{}'));
       return {
-        message: parsed.message || "That's interesting. Could you tell me more?",
+        message: parsed.message || "这很有意思。您能再多说一些吗？",
         questionAddressed: parsed.questionAddressed ?? null,
         phaseTransition: parsed.phaseTransition ?? null,
         profileUpdates: parsed.profileUpdates || [],
@@ -196,12 +196,12 @@ export class GeminiProvider implements AIProvider {
               statedPreferences: {
                 type: Type.ARRAY,
                 items: { type: Type.STRING },
-                description: 'What participant explicitly said they value/want'
+                description: '参与者明确表示其重视或希望获得的内容'
               },
               revealedPreferences: {
                 type: Type.ARRAY,
                 items: { type: Type.STRING },
-                description: 'What their behavior/emphasis revealed'
+                description: '其行为或侧重点所揭示的内容'
               },
               themes: {
                 type: Type.ARRAY,
@@ -224,7 +224,7 @@ export class GeminiProvider implements AIProvider {
               },
               bottomLine: {
                 type: Type.STRING,
-                description: 'One-sentence summary insight for the researcher'
+                description: '面向研究者的一句话总结洞见'
               }
             },
             required: ['statedPreferences', 'revealedPreferences', 'themes', 'keyInsights', 'bottomLine']
@@ -291,7 +291,7 @@ export class GeminiProvider implements AIProvider {
               },
               bottomLine: {
                 type: Type.STRING,
-                description: 'One paragraph summarizing key takeaways'
+                description: '用一段话概述关键要点'
               }
             },
             required: ['commonThemes', 'keyFindings', 'bottomLine']
@@ -310,27 +310,27 @@ export class GeminiProvider implements AIProvider {
     parentConfig: StudyConfig,
     synthesis: AggregateSynthesisResult
   ): Promise<{ name: string; researchQuestion: string; coreQuestions: string[] }> {
-    const prompt = `You are helping design a follow-up research study.
+    const prompt = `你正在协助设计一项后续研究。
 
-PARENT STUDY: "${parentConfig.name}"
-PARENT SUMMARY: ${synthesis.bottomLine}
+原研究： "${parentConfig.name}"
+原研究摘要： ${synthesis.bottomLine}
 
-KEY FINDINGS:
+关键发现：
 ${synthesis.keyFindings.map((f, i) => `${i + 1}. ${f}`).join('\n')}
 
-RESEARCH IMPLICATIONS:
-${(synthesis.researchImplications || []).map((r, i) => `${i + 1}. ${r}`).join('\n') || 'None specified'}
+研究启示：
+${(synthesis.researchImplications || []).map((r, i) => `${i + 1}. ${r}`).join('\n') || '未说明'}
 
-DIVERGENT VIEWS:
-${(synthesis.divergentViews || []).map(d => `- ${d.topic}: "${d.viewA}" vs "${d.viewB}"`).join('\n') || 'None identified'}
+分歧观点：
+${(synthesis.divergentViews || []).map(d => `- ${d.topic}: "${d.viewA}" vs "${d.viewB}"`).join('\n') || '未发现'}
 
-Generate a follow-up study that digs deeper into gaps or tensions found.
-The follow-up should explore unanswered questions or interesting patterns from the original study.
+生成一项后续研究，深入探讨已发现的缺口或张力。
+后续研究应探讨原研究中未解答的问题或有意思的模式。
 
-Return a JSON object with:
-- name: A concise study name (start with "Follow-up: ")
-- researchQuestion: A specific, researchable question building on the findings
-- coreQuestions: 3-5 interview questions to explore this further`;
+返回一个 JSON 对象，其中包含：
+- name: A concise study name (start with "后续研究：")
+- researchQuestion: 基于这些发现的具体、可研究的问题
+- coreQuestions: 用于进一步探讨的 3-5 个访谈问题`;
 
     try {
       const response = await this.ai.models.generateContent({
@@ -356,7 +356,7 @@ Return a JSON object with:
 
       const result = JSON.parse(cleanJSON(response.text || '{}'));
       return {
-        name: result.name || `Follow-up: ${parentConfig.name}`,
+        name: result.name || `后续研究：${parentConfig.name}`,
         researchQuestion: result.researchQuestion || synthesis.keyFindings[0] || '',
         coreQuestions: result.coreQuestions || []
       };
@@ -364,10 +364,10 @@ Return a JSON object with:
       console.error('Gemini follow-up generation error:', error);
       // Fallback to deterministic generation
       return {
-        name: `Follow-up: ${parentConfig.name}`,
-        researchQuestion: `What deeper insights emerge from exploring: ${synthesis.keyFindings[0] || 'the findings'}?`,
+        name: `后续研究：${parentConfig.name}`,
+        researchQuestion: `深入探讨以下内容后，会浮现哪些更深层的洞见：${synthesis.keyFindings[0] || '这些发现'}?`,
         coreQuestions: synthesis.keyFindings.slice(0, 3).map(f =>
-          `Can you tell me more about your experience with: ${f}?`
+          `您能再详细说说您与以下内容相关的经历吗：${f}?`
         )
       };
     }

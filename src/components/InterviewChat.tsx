@@ -22,11 +22,11 @@ import {
 
 // Phase display labels
 const phaseLabels: Record<InterviewPhase, string> = {
-  'background': 'Getting to know you',
-  'core-questions': 'Core Questions',
-  'exploration': 'Exploring further',
-  'feedback': 'Your feedback',
-  'wrap-up': 'Wrapping up'
+  'background': '了解您的背景',
+  'core-questions': '核心问题',
+  'exploration': '深入探讨',
+  'feedback': '您的反馈',
+  'wrap-up': '访谈结束'
 };
 
 const InterviewChat: React.FC = () => {
@@ -198,7 +198,7 @@ const InterviewChat: React.FC = () => {
   if (!studyConfig) {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
-        <p className="text-stone-400">No study configured.</p>
+        <p className="text-stone-400">尚未配置研究。</p>
       </div>
     );
   }
@@ -214,7 +214,7 @@ const InterviewChat: React.FC = () => {
       return phaseLabels['background'];
     }
     if (questionProgress.currentPhase === 'core-questions') {
-      return `Question ${Math.min(questionsCompleted + 1, totalQuestions)} of ${totalQuestions}`;
+      return `第 ${Math.min(questionsCompleted + 1, totalQuestions)} / ${totalQuestions} 个核心问题`;
     }
     return phaseLabels[questionProgress.currentPhase];
   };
@@ -254,7 +254,7 @@ const InterviewChat: React.FC = () => {
               onClick={handleFinishEarly}
               className="text-xs text-stone-500 hover:text-stone-400 transition-colors"
             >
-              Finish early
+              提前结束
             </button>
           )}
         </div>
@@ -280,12 +280,12 @@ const InterviewChat: React.FC = () => {
                 {msg.role === 'ai' && (
                   <div className="flex items-center gap-2 mb-2 text-xs text-stone-500">
                     <Bot size={14} />
-                    Interviewer
+                    访谈员
                   </div>
                 )}
                 {msg.role === 'user' && (
                   <div className="flex items-center gap-2 mb-2 text-xs text-stone-400 justify-end">
-                    You
+                    您
                     <User size={14} />
                   </div>
                 )}
@@ -307,7 +307,7 @@ const InterviewChat: React.FC = () => {
             <div className="bg-stone-800 border border-stone-700 rounded-2xl rounded-bl-md p-4">
               <div className="flex items-center gap-2 text-stone-400 text-sm">
                 <Loader2 size={16} className="animate-spin" />
-                Thinking...
+                正在思考...
               </div>
             </div>
           </motion.div>
@@ -350,7 +350,7 @@ const InterviewChat: React.FC = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && !isAiThinking && handleSend()}
-                placeholder="Type your response..."
+                placeholder="请输入您的回答..."
                 disabled={isAiThinking}
                 className="flex-1 px-4 py-3 bg-stone-900 border border-stone-600 text-stone-100 placeholder-stone-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-stone-500 focus:border-stone-500 disabled:opacity-50"
               />

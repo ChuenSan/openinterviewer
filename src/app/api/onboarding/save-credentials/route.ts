@@ -1,5 +1,5 @@
 // POST /api/onboarding/save-credentials - Encrypt and store researcher credentials
-// Only available in hosted mode
+// 仅在托管模式下可用
 
 export const dynamic = 'force-dynamic';
 
@@ -12,12 +12,12 @@ import { isValidUpstashUrl } from '@/lib/kvClient';
 
 export async function POST(request: Request) {
   if (!isHostedMode()) {
-    return NextResponse.json({ error: 'Only available in hosted mode' }, { status: 404 });
+    return NextResponse.json({ error: '仅在托管模式下可用' }, { status: 404 });
   }
 
   const { authorized, researcherId, error } = await getRequestContext();
   if (!authorized || !researcherId) {
-    return NextResponse.json({ error: error || 'Unauthorized' }, { status: 401 });
+    return NextResponse.json({ error: error || '未授权' }, { status: 401 });
   }
 
   try {
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     if (redisUrl && redisToken) {
       if (!isValidUpstashUrl(redisUrl)) {
         return NextResponse.json(
-          { error: 'Only Upstash Redis URLs (https://*.upstash.io) are supported.' },
+          { error: '仅支持 Upstash Redis URL（https://*.upstash.io）。' },
           { status: 400 }
         );
       }
@@ -58,19 +58,19 @@ export async function POST(request: Request) {
     }
 
     if (Object.keys(updates).length === 0) {
-      return NextResponse.json({ error: 'No credentials provided' }, { status: 400 });
+      return NextResponse.json({ error: '未提供凭据' }, { status: 400 });
     }
 
     const success = await updateResearcher(researcherId, updates);
     if (!success) {
-      return NextResponse.json({ error: 'Failed to save credentials' }, { status: 500 });
+      return NextResponse.json({ error: '保存凭据失败' }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Save credentials error:', error);
     return NextResponse.json(
-      { error: 'Failed to save credentials' },
+      { error: '保存凭据失败' },
       { status: 500 }
     );
   }
