@@ -78,38 +78,42 @@ const Export: React.FC = () => {
 
   const generateTranscript = () => {
     const lines = [
-      `# Interview Transcript`,
-      `Study: ${studyConfig?.name}`,
-      `Research Question: ${studyConfig?.researchQuestion}`,
-      `Date: ${new Date().toLocaleDateString()}`,
+      `# 访谈记录`,
+      `研究：${studyConfig?.name}`,
+      `研究问题：${studyConfig?.researchQuestion}`,
+      `日期：${new Date().toLocaleDateString('zh-CN')}`,
       ``
     ];
 
     // Add participant profile summary
     if (participantProfile && participantProfile.fields.length > 0) {
-      lines.push(`## Participant Profile`);
+      lines.push(`## 参与者画像`);
       participantProfile.fields.forEach(f => {
         const schema = studyConfig?.profileSchema.find(s => s.id === f.fieldId);
         const label = schema?.label || f.fieldId;
-        const value = f.status === 'extracted' ? f.value : `(${f.status})`;
-        lines.push(`- **${label}**: ${value}`);
+        const statusLabel = f.status === 'extracted' ? f.value
+          : f.status === 'refused' ? '已拒绝'
+          : f.status === 'vague' ? '不明确'
+          : '待收集';
+        const value = f.status === 'extracted' ? f.value : statusLabel;
+        lines.push(`- **${label}**：${value}`);
       });
       if (participantProfile.rawContext) {
         lines.push(``);
-        lines.push(`**Context**: ${participantProfile.rawContext}`);
+        lines.push(`**背景**：${participantProfile.rawContext}`);
       }
       lines.push(``);
     }
 
     lines.push(`---`);
     lines.push(``);
-    lines.push(`## Conversation`);
+    lines.push(`## 对话`);
     lines.push(``);
 
     interviewHistory.forEach(msg => {
-      const time = new Date(msg.timestamp).toLocaleTimeString();
-      const role = msg.role === 'user' ? 'PARTICIPANT' : 'INTERVIEWER';
-      lines.push(`[${time}] ${role}:`);
+      const time = new Date(msg.timestamp).toLocaleTimeString('zh-CN');
+      const role = msg.role === 'user' ? '参与者' : '访谈员';
+      lines.push(`[${time}] ${role}：`);
       lines.push(msg.content);
       lines.push('');
     });
@@ -117,19 +121,19 @@ const Export: React.FC = () => {
     if (synthesis) {
       lines.push('---');
       lines.push('');
-      lines.push('## Analysis Summary');
+      lines.push('## 分析摘要');
       lines.push('');
-      lines.push(`**Key Insight:** ${synthesis.bottomLine}`);
+      lines.push(`**关键洞察：** ${synthesis.bottomLine}`);
       lines.push('');
       if (synthesis.themes.length > 0) {
-        lines.push('**Themes:**');
+        lines.push('**主题：**');
         synthesis.themes.forEach(t => {
-          lines.push(`- ${t.theme}: ${t.evidence}`);
+          lines.push(`- ${t.theme}：${t.evidence}`);
         });
         lines.push('');
       }
       if (synthesis.keyInsights.length > 0) {
-        lines.push('**Key Insights:**');
+        lines.push('**关键洞察：**');
         synthesis.keyInsights.forEach(insight => {
           lines.push(`- ${insight}`);
         });
@@ -193,10 +197,10 @@ const Export: React.FC = () => {
             <CheckCircle className="text-stone-300" size={32} />
           </div>
           <h1 className="text-3xl font-bold text-white mb-2">
-            Interview Complete
+            访谈已完成
           </h1>
           <p className="text-stone-400">
-            Export your data and start a new session
+            导出数据并开始新的会话
           </p>
         </motion.div>
 
@@ -212,25 +216,25 @@ const Export: React.FC = () => {
               <div className="text-2xl font-bold text-white">
                 {interviewHistory.length}
               </div>
-              <div className="text-xs text-stone-500">Messages</div>
+              <div className="text-xs text-stone-500">消息</div>
             </div>
             <div className="bg-stone-800 rounded-xl p-4">
               <div className="text-2xl font-bold text-white">
                 {questionProgress.questionsAsked.length}/{studyConfig?.coreQuestions.length || 0}
               </div>
-              <div className="text-xs text-stone-500">Questions</div>
+              <div className="text-xs text-stone-500">问题</div>
             </div>
             <div className="bg-stone-800 rounded-xl p-4">
               <div className="text-2xl font-bold text-white">
                 {extractedFields.length}/{totalFields}
               </div>
-              <div className="text-xs text-stone-500">Profile</div>
+              <div className="text-xs text-stone-500">画像</div>
             </div>
             <div className="bg-stone-800 rounded-xl p-4">
               <div className="text-2xl font-bold text-white">
                 {synthesis?.themes.length || 0}
               </div>
-              <div className="text-xs text-stone-500">Themes</div>
+              <div className="text-xs text-stone-500">主题</div>
             </div>
           </div>
 
@@ -239,7 +243,7 @@ const Export: React.FC = () => {
             <div className="bg-stone-800 rounded-xl p-4 space-y-3">
               <h3 className="font-semibold text-white flex items-center gap-2">
                 <User size={16} className="text-stone-400" />
-                Participant Profile
+                参与者画像
               </h3>
               <div className="grid grid-cols-2 gap-2 text-sm">
                 {participantProfile.fields.map(f => {
@@ -253,8 +257,8 @@ const Export: React.FC = () => {
                         'text-stone-500'
                       }`}>
                         {f.status === 'extracted' ? f.value :
-                         f.status === 'refused' ? 'Declined' :
-                         f.status === 'vague' ? 'Unclear' : '—'}
+                         f.status === 'refused' ? '已拒绝' :
+                         f.status === 'vague' ? '不明确' : '—'}
                       </span>
                     </div>
                   );
@@ -265,7 +269,7 @@ const Export: React.FC = () => {
 
           {/* Export Options */}
           <div className="space-y-3">
-            <h2 className="font-semibold text-white">Export Data</h2>
+            <h2 className="font-semibold text-white">导出数据</h2>
 
             <button
               onClick={handleDownloadJSON}
@@ -275,9 +279,9 @@ const Export: React.FC = () => {
                 <FileJson size={20} className="text-stone-300" />
               </div>
               <div className="flex-1">
-                <div className="font-medium text-white">Download JSON</div>
+                <div className="font-medium text-white">下载 JSON</div>
                 <div className="text-sm text-stone-400">
-                  Full structured data with profile + transcript
+                  包含画像与访谈记录的完整结构化数据
                 </div>
               </div>
               <Download size={18} className="text-stone-500" />
@@ -291,9 +295,9 @@ const Export: React.FC = () => {
                 <FileText size={20} className="text-stone-300" />
               </div>
               <div className="flex-1">
-                <div className="font-medium text-white">Download Transcript</div>
+                <div className="font-medium text-white">下载访谈记录</div>
                 <div className="text-sm text-stone-400">
-                  Markdown transcript with profile summary
+                  含画像摘要的 Markdown 访谈记录
                 </div>
               </div>
               <Download size={18} className="text-stone-500" />
@@ -318,10 +322,10 @@ const Export: React.FC = () => {
               </div>
               <div className="flex-1">
                 <div className={`font-medium ${jsonCopied ? 'text-green-300' : 'text-white'}`}>
-                  {jsonCopied ? 'Copied!' : 'Copy to Clipboard'}
+                  {jsonCopied ? '已复制！' : '复制到剪贴板'}
                 </div>
                 <div className="text-sm text-stone-400">
-                  Copy JSON data to clipboard
+                  将 JSON 数据复制到剪贴板
                 </div>
               </div>
               {jsonCopied ? (
@@ -334,21 +338,21 @@ const Export: React.FC = () => {
 
           {/* Next Actions */}
           <div className="pt-4 border-t border-stone-700 space-y-3">
-            <h2 className="font-semibold text-white">What's Next?</h2>
+            <h2 className="font-semibold text-white">接下来？</h2>
 
             <button
               onClick={handleNewParticipant}
               className="w-full py-3 bg-stone-600 hover:bg-stone-500 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"
             >
               <RotateCcw size={18} />
-              New Participant (Same Study)
+              新参与者（同一研究）
             </button>
 
             <button
               onClick={handleNewStudy}
               className="w-full py-3 border border-stone-600 text-stone-400 rounded-xl hover:bg-stone-700 transition-colors"
             >
-              Create New Study
+              创建新研究
             </button>
           </div>
         </motion.div>

@@ -99,7 +99,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: false,
         id: interview.id,
-        warning: '尚未配置存储。 Interview not persisted.'
+        warning: '尚未配置存储。访谈未保存。'
       });
     }
 

@@ -168,7 +168,7 @@ export async function deleteStudy(id: string, client?: Redis): Promise<{ success
     // Check for existing interviews
     const interviewIds = await kv.smembers(`${STUDY_INDEX_PREFIX}${id}`);
     if (interviewIds && interviewIds.length > 0) {
-      return { success: false, error: 'Cannot delete study with existing interviews' };
+      return { success: false, error: '无法删除已有访谈的研究' };
     }
 
     await kv.del(`${STUDY_PREFIX}${id}`);
@@ -176,7 +176,7 @@ export async function deleteStudy(id: string, client?: Redis): Promise<{ success
     return { success: true };
   } catch (error) {
     console.error('Error deleting study:', error);
-    return { success: false, error: 'Failed to delete study' };
+    return { success: false, error: '删除研究失败' };
   }
 }
 

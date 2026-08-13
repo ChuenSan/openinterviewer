@@ -696,12 +696,12 @@ const StudySetup: React.FC = () => {
             </div>
           </div>
 
-          {/* 受访者信息字段 */}
+          {/* 参与者画像 */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
                 <User size={18} className="text-stone-400" />
-                受访者信息字段
+                参与者画像
               </h2>
               <button
                 onClick={() => addProfileField()}
@@ -711,7 +711,7 @@ const StudySetup: React.FC = () => {
               </button>
             </div>
             <p className="text-sm text-stone-400">
-              访谈中需要收集的受访者信息
+              访谈中需要收集的参与者信息
             </p>
 
             {availablePresets.length > 0 && (
@@ -741,14 +741,14 @@ const StudySetup: React.FC = () => {
                         type="text"
                         value={field.label}
                         onChange={(e) => updateProfileField(field.id, { label: e.target.value })}
-                        placeholder="Field label (e.g., 当前职位)"
+                        placeholder="字段标签（例如：当前职位）"
                         className="w-full px-3 py-2 rounded-lg bg-stone-900 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 text-sm"
                       />
                       <input
                         type="text"
                         value={field.extractionHint}
                         onChange={(e) => updateProfileField(field.id, { extractionHint: e.target.value })}
-                        placeholder="Hint for AI (e.g., 其职位或岗位)"
+                        placeholder="给 AI 的提取提示（例如：其职位或岗位）"
                         className="w-full px-3 py-2 rounded-lg bg-stone-900 border border-stone-600 text-stone-100 placeholder-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 text-sm"
                       />
                     </div>
@@ -778,7 +778,7 @@ const StudySetup: React.FC = () => {
 
               {profileSchema.length === 0 && (
                 <div className="text-center py-4 text-stone-500 text-sm">
-                  暂未添加受访者信息字段。请在上方添加以收集受访者信息。
+                  暂未添加参与者画像字段。请在上方添加以收集参与者信息。
                 </div>
               )}
             </div>
@@ -903,7 +903,7 @@ const StudySetup: React.FC = () => {
             {/* Model Selection */}
             <div className="mt-4 space-y-2">
               <label className="block text-sm font-medium text-stone-300">
-                Model
+                模型
               </label>
               {aiProvider === 'openai' ? (
                 <>
@@ -969,7 +969,7 @@ const StudySetup: React.FC = () => {
                 <div>
                   <h4 className="font-medium text-amber-200 text-sm">缺少 Anthropic API 密钥</h4>
                   <p className="text-xs text-stone-400 mt-1">
-                    Claude 访谈需要环境变量 <code className="text-stone-300">ANTHROPIC_API_KEY</code> environment variable.
+                    Claude 访谈需要环境变量 <code className="text-stone-300">ANTHROPIC_API_KEY</code>。
                     请在 Vercel 控制台的“项目设置 → 环境变量”中配置。
                   </p>
                   <a
@@ -1021,7 +1021,7 @@ const StudySetup: React.FC = () => {
               链接设置
             </h2>
             <p className="text-sm text-stone-400">
-              设置受访者链接的过期时间。您也可以在研究详情页撤销链接。
+              设置参与者链接的过期时间。您也可以在研究详情页撤销链接。
             </p>
 
             <div className="space-y-3">
@@ -1039,14 +1039,14 @@ const StudySetup: React.FC = () => {
                 </select>
               </label>
               <p className="text-xs text-stone-500">
-                受访者访问已过期链接时将看到错误提示。
+                参与者访问已过期链接时将看到错误提示。
               </p>
             </div>
           </div>
 
-          {/* 同意说明 */}
+          {/* 知情同意 */}
           <div className="space-y-4">
-            <h2 className="font-semibold text-lg text-stone-100">同意说明</h2>
+            <h2 className="font-semibold text-lg text-stone-100">知情同意</h2>
             <textarea
               value={consentText}
               onChange={(e) => { setConsentText(e.target.value); setIsDirty(true); }}
@@ -1055,12 +1055,12 @@ const StudySetup: React.FC = () => {
             />
           </div>
 
-          {/* 生成受访者链接 */}
+          {/* 生成参与者链接 */}
           {isValid && (
             <div className="space-y-4 pt-4 border-t border-stone-700">
               <h2 className="font-semibold text-lg text-stone-100 flex items-center gap-2">
                 <LinkIcon size={18} className="text-stone-400" />
-                受访者链接
+                参与者链接
               </h2>
 
               {participantLink ? (
@@ -1082,13 +1082,13 @@ const StudySetup: React.FC = () => {
                     </button>
                   </div>
                   <p className="text-xs text-stone-500">
-                    将此链接分享给受访者。研究配置已嵌入链接中。
+                    将此链接分享给参与者。研究配置已嵌入链接中。
                   </p>
                 </div>
               ) : isAuthenticated === false || linkError === 'auth' ? (
                 <div className="space-y-3">
                   <div className="bg-stone-800 border border-stone-600 rounded-xl p-4 text-sm text-stone-300">
-                    <p className="mb-3">需要登录后才能生成受访者链接。</p>
+                    <p className="mb-3">需要登录后才能生成参与者链接。</p>
                     <button
                       type="button"
                       onClick={() => router.push('/login')}
@@ -1108,7 +1108,7 @@ const StudySetup: React.FC = () => {
                     className="w-full py-3 bg-stone-700 hover:bg-stone-600 text-stone-300 font-medium rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <LinkIcon size={18} />
-                    {isGeneratingLink ? '生成中...' : '生成受访者链接'}
+                    {isGeneratingLink ? '生成中...' : '生成参与者链接'}
                   </button>
                   {linkError && linkError !== 'auth' && (
                     <p className="text-sm text-red-400">{linkError}</p>

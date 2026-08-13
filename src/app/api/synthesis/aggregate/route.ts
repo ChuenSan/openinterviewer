@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: '尚未配置存储。 Connect Vercel KV to enable this feature.' },
+        { error: '尚未配置存储。请连接 Vercel KV 以启用此功能。' },
         { status: 503 }
       );
     }

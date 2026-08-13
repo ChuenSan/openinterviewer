@@ -62,15 +62,15 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
     if (!interview) return;
 
     const lines = [
-      `# Interview Transcript`,
-      `Study: ${interview.studyName}`,
-      `Date: ${new Date(interview.createdAt).toLocaleDateString()}`,
+      `# 访谈记录`,
+      `研究：${interview.studyName}`,
+      `日期：${new Date(interview.createdAt).toLocaleDateString('zh-CN')}`,
       ``
     ];
 
     // Add participant profile
     if (interview.participantProfile?.fields.length > 0) {
-      lines.push(`## Participant Profile`);
+      lines.push(`## 参与者画像`);
       interview.participantProfile.fields.forEach(f => {
         if (f.status === 'extracted' && f.value) {
           lines.push(`- **${f.fieldId}**: ${f.value}`);
@@ -79,20 +79,20 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
       lines.push(``);
     }
 
-    lines.push(`## Conversation`);
+    lines.push(`## 对话`);
     lines.push(``);
 
     interview.transcript.forEach(msg => {
-      const time = new Date(msg.timestamp).toLocaleTimeString();
-      const role = msg.role === 'user' ? 'PARTICIPANT' : 'INTERVIEWER';
+      const time = new Date(msg.timestamp).toLocaleTimeString('zh-CN');
+      const role = msg.role === 'user' ? '参与者' : '访谈员';
       lines.push(`[${time}] ${role}:`);
       lines.push(msg.content);
       lines.push('');
     });
 
     if (interview.synthesis) {
-      lines.push(`## Analysis`);
-      lines.push(`**Key Insight:** ${interview.synthesis.bottomLine}`);
+      lines.push(`## 分析`);
+      lines.push(`**关键洞察：** ${interview.synthesis.bottomLine}`);
     }
 
     const content = lines.join('\n');
@@ -107,7 +107,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
 
   const formatDuration = (start: number, end: number) => {
     const minutes = Math.round((end - start) / 1000 / 60);
-    return `${minutes} minutes`;
+    return `${minutes} 分钟`;
   };
 
   if (loading) {
@@ -122,13 +122,13 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center p-8">
         <div className="text-center">
-          <h1 className="text-xl font-semibold text-white mb-2">Interview Not Found</h1>
-          <p className="text-stone-400 mb-4">This interview may have been deleted.</p>
+          <h1 className="text-xl font-semibold text-white mb-2">未找到访谈</h1>
+          <p className="text-stone-400 mb-4">该访谈可能已被删除。</p>
           <button
             onClick={() => router.push('/dashboard')}
             className="px-4 py-2 bg-stone-600 text-white rounded-xl"
           >
-            Back to Dashboard
+            返回仪表盘
           </button>
         </div>
       </div>
@@ -149,7 +149,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
             className="flex items-center gap-2 text-stone-400 hover:text-stone-300 mb-4 transition-colors"
           >
             <ArrowLeft size={18} />
-            Back to Dashboard
+            返回仪表盘
           </button>
 
           <div className="flex items-start justify-between">
@@ -162,10 +162,10 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                 </div>
                 <div className="flex items-center gap-1">
                   <MessageSquare size={14} />
-                  {interview.transcript.length} messages
+                  {interview.transcript.length} 条消息
                 </div>
                 <div>
-                  {new Date(interview.createdAt).toLocaleDateString('en-US', {
+                  {new Date(interview.createdAt).toLocaleDateString('zh-CN', {
                     month: 'short',
                     day: 'numeric',
                     year: 'numeric'
@@ -180,7 +180,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                 className="px-4 py-2 text-sm bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
               >
                 <Download size={16} />
-                Transcript
+                访谈记录
               </button>
               <button
                 onClick={handleDownloadJSON}
@@ -203,7 +203,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
           >
             <h3 className="font-semibold text-white flex items-center gap-2 mb-3">
               <User size={16} className="text-stone-400" />
-              Participant Profile
+              参与者画像
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
               {interview.participantProfile.fields
@@ -228,7 +228,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                 : 'text-stone-400 hover:text-stone-300'
             }`}
           >
-            Transcript
+            访谈记录
           </button>
           <button
             onClick={() => setActiveTab('analysis')}
@@ -238,7 +238,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                 : 'text-stone-400 hover:text-stone-300'
             }`}
           >
-            Analysis
+            分析
           </button>
         </div>
 
@@ -266,16 +266,16 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                       {msg.role === 'ai' ? (
                         <>
                           <Bot size={14} />
-                          Interviewer
+                          访谈员
                         </>
                       ) : (
                         <>
                           <User size={14} />
-                          Participant
+                          参与者
                         </>
                       )}
                       <span className="ml-auto">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
+                        {new Date(msg.timestamp).toLocaleTimeString('zh-CN')}
                       </span>
                     </div>
                     <div className="prose prose-sm max-w-none prose-invert">
@@ -299,7 +299,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                   <div className="flex items-center gap-2 mb-2 text-stone-400">
                     <Target size={18} />
                     <span className="text-sm font-medium uppercase tracking-wider">
-                      Key Insight
+                      关键洞察
                     </span>
                   </div>
                   <p className="text-xl font-medium">{interview.synthesis.bottomLine}</p>
@@ -310,13 +310,13 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                   <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                     <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                       <TrendingUp size={18} className="text-stone-400" />
-                      Stated vs Revealed
+                      明示偏好 vs 潜在偏好
                     </h3>
 
                     <div className="space-y-4">
                       <div>
                         <div className="text-xs font-medium text-stone-500 uppercase mb-2">
-                          What they said
+                          他们说了什么
                         </div>
                         <div className="space-y-1">
                           {interview.synthesis.statedPreferences.map((item, i) => (
@@ -332,7 +332,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
 
                       <div>
                         <div className="text-xs font-medium text-stone-500 uppercase mb-2">
-                          What behavior revealed
+                          行为所揭示的
                         </div>
                         <div className="space-y-1">
                           {interview.synthesis.revealedPreferences.map((item, i) => (
@@ -352,7 +352,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                   <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                     <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                       <Lightbulb size={18} className="text-stone-400" />
-                      Key Themes
+                      关键主题
                     </h3>
 
                     <div className="space-y-3">
@@ -371,7 +371,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                   <div className="bg-stone-800 border border-stone-600 rounded-xl p-6">
                     <h3 className="font-semibold text-stone-200 mb-3 flex items-center gap-2">
                       <AlertTriangle size={18} className="text-stone-400" />
-                      Potential Contradictions
+                      潜在矛盾点
                     </h3>
                     <ul className="space-y-2">
                       {interview.synthesis.contradictions.map((c, i) => (
@@ -386,7 +386,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
                 {/* Key Insights */}
                 <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                   <h3 className="font-semibold text-white mb-4">
-                    Additional Insights
+                    更多洞察
                   </h3>
                   <ul className="space-y-2">
                     {interview.synthesis.keyInsights.map((insight, i) => (
@@ -401,7 +401,7 @@ const InterviewDetail: React.FC<InterviewDetailProps> = ({ interviewId }) => {
             ) : (
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-12 text-center">
                 <p className="text-stone-400">
-                  No analysis available for this interview.
+                  该访谈暂无分析。
                 </p>
               </div>
             )}

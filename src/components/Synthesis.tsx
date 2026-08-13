@@ -151,7 +151,7 @@ const Synthesis: React.FC = () => {
   if (!studyConfig) {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
-        <p className="text-stone-400">No study configured.</p>
+        <p className="text-stone-400">尚未配置研究。</p>
       </div>
     );
   }
@@ -168,10 +168,10 @@ const Synthesis: React.FC = () => {
             <div className="w-10 h-10 rounded-xl bg-stone-700 flex items-center justify-center">
               <BarChart3 className="text-stone-300" size={20} />
             </div>
-            <h1 className="text-3xl font-bold text-white">Interview Analysis</h1>
+            <h1 className="text-3xl font-bold text-white">访谈分析</h1>
           </div>
           <p className="text-stone-400 ml-13">
-            Patterns and insights from the conversation
+            从对话中提炼的模式与洞察
           </p>
         </motion.div>
 
@@ -183,10 +183,10 @@ const Synthesis: React.FC = () => {
           >
             <Loader2 size={48} className="animate-spin text-stone-400 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-white mb-2">
-              Analyzing Interview...
+              正在分析访谈...
             </h2>
             <p className="text-stone-400">
-              Looking for patterns, themes, and insights
+              正在寻找模式、主题与洞察
             </p>
           </motion.div>
         ) : synthesis ? (
@@ -199,14 +199,14 @@ const Synthesis: React.FC = () => {
             {saveStatus === 'saved' && (
               <div className="bg-green-900/30 border border-green-700 text-green-300 rounded-xl p-4 flex items-center gap-3">
                 <CheckCircle size={20} />
-                <span>Interview saved successfully. View it in the researcher dashboard.</span>
+                <span>访谈已保存。可在研究者仪表盘中查看。</span>
               </div>
             )}
             {saveStatus === 'failed' && (
               <div className="bg-yellow-900/30 border border-yellow-700 text-yellow-300 rounded-xl p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <XCircle size={20} />
-                  <span>Could not save interview. You can still export locally below.</span>
+                  <span>访谈未能保存。你仍可在下方导出到本地。</span>
                 </div>
                 <button
                   onClick={handleRetrySave}
@@ -218,14 +218,14 @@ const Synthesis: React.FC = () => {
                   ) : (
                     <RefreshCw size={14} />
                   )}
-                  Retry Save
+                  重试保存
                 </button>
               </div>
             )}
             {saveStatus === 'pending' && isSaving && (
               <div className="bg-stone-800/50 border border-stone-600 text-stone-300 rounded-xl p-4 flex items-center gap-3">
                 <Loader2 size={20} className="animate-spin" />
-                <span>Saving interview...</span>
+                <span>正在保存访谈...</span>
               </div>
             )}
 
@@ -234,7 +234,7 @@ const Synthesis: React.FC = () => {
               <div className="flex items-center gap-2 mb-2 text-stone-400">
                 <Target size={18} />
                 <span className="text-sm font-medium uppercase tracking-wider">
-                  Key Insight
+                  关键洞察
                 </span>
               </div>
               <p className="text-xl font-medium">{synthesis.bottomLine}</p>
@@ -245,13 +245,13 @@ const Synthesis: React.FC = () => {
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <TrendingUp size={18} className="text-stone-400" />
-                  Stated vs Revealed
+                  明示偏好 vs 潜在偏好
                 </h3>
 
                 <div className="space-y-4">
                   <div>
                     <div className="text-xs font-medium text-stone-500 uppercase mb-2">
-                      What they said
+                      对方说了什么
                     </div>
                     <div className="space-y-1">
                       {synthesis.statedPreferences.map((item, i) => (
@@ -267,7 +267,7 @@ const Synthesis: React.FC = () => {
 
                   <div>
                     <div className="text-xs font-medium text-stone-500 uppercase mb-2">
-                      What their behavior revealed
+                      行为揭示了什么
                     </div>
                     <div className="space-y-1">
                       {synthesis.revealedPreferences.map((item, i) => (
@@ -287,7 +287,7 @@ const Synthesis: React.FC = () => {
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                 <h3 className="font-semibold text-white mb-4 flex items-center gap-2">
                   <Lightbulb size={18} className="text-stone-400" />
-                  Key Themes
+                  关键主题
                 </h3>
 
                 <div className="space-y-3">
@@ -306,7 +306,7 @@ const Synthesis: React.FC = () => {
               <div className="bg-stone-800 border border-stone-600 rounded-xl p-6">
                 <h3 className="font-semibold text-stone-200 mb-3 flex items-center gap-2">
                   <AlertTriangle size={18} className="text-stone-400" />
-                  Potential Contradictions
+                  潜在矛盾点
                 </h3>
                 <ul className="space-y-2">
                   {synthesis.contradictions.map((c, i) => (
@@ -321,7 +321,7 @@ const Synthesis: React.FC = () => {
             {/* Key Insights */}
             <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
               <h3 className="font-semibold text-white mb-4">
-                Additional Insights
+                更多洞察
               </h3>
               <ul className="space-y-2">
                 {synthesis.keyInsights.map((insight, i) => (
@@ -342,13 +342,13 @@ const Synthesis: React.FC = () => {
                 onClick={handleBack}
                 className="px-6 py-3 border border-stone-600 text-stone-400 rounded-xl hover:bg-stone-700 transition-colors flex items-center gap-2"
               >
-                <ArrowLeft size={18} /> Continue Interview
+                <ArrowLeft size={18} /> 继续访谈
               </button>
               <button
                 onClick={handleExport}
                 className="flex-1 py-3 bg-stone-600 hover:bg-stone-500 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-2"
               >
-                Export Data <ArrowRight size={18} />
+                导出数据 <ArrowRight size={18} />
               </button>
             </div>
           </motion.div>
@@ -362,37 +362,37 @@ const Synthesis: React.FC = () => {
               <AlertTriangle size={32} className="text-red-400" />
             </div>
             <h2 className="text-xl font-semibold text-white mb-2">
-              Analysis Failed
+              分析失败
             </h2>
             <p className="text-stone-400 mb-6">
-              There was an error analyzing the interview. Please try again.
+              分析访谈时出错，请重试。
             </p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={handleBack}
                 className="px-6 py-3 border border-stone-600 text-stone-400 rounded-xl hover:bg-stone-700 transition-colors"
               >
-                Back to Interview
+                返回访谈
               </button>
               <button
                 onClick={handleRetryAnalysis}
                 className="px-6 py-3 bg-stone-600 hover:bg-stone-500 text-white font-medium rounded-xl transition-colors flex items-center gap-2"
               >
                 <RefreshCw size={18} />
-                Retry Analysis
+                重试分析
               </button>
             </div>
           </motion.div>
         ) : (
           <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-12 text-center">
             <p className="text-stone-400">
-              No interview data to analyze yet.
+              暂无访谈数据可分析。
             </p>
             <button
               onClick={handleBack}
               className="mt-4 px-6 py-2 bg-stone-600 text-white rounded-lg"
             >
-              Go to Interview
+              前往访谈
             </button>
           </div>
         )}

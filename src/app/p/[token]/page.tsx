@@ -31,7 +31,7 @@ export default function ParticipantPage() {
   useEffect(() => {
     const loadStudyFromToken = async () => {
       if (!token) {
-        setError('No token provided');
+        setError('未提供访问令牌');
         setLoading(false);
         return;
       }
@@ -42,7 +42,7 @@ export default function ParticipantPage() {
         const result = await response.json();
 
         if (!result.valid || !result.data) {
-          setError('Invalid or expired link');
+          setError('链接无效或已过期');
           setLoading(false);
           return;
         }
@@ -57,7 +57,7 @@ export default function ParticipantPage() {
         setLoading(false);
       } catch (err) {
         console.error('Error loading study from token:', err);
-        setError('Failed to load study configuration');
+        setError('加载研究配置失败');
         setLoading(false);
       }
     };
@@ -71,7 +71,7 @@ export default function ParticipantPage() {
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
         <div className="text-center">
           <Loader2 size={48} className="animate-spin text-stone-400 mx-auto mb-4" />
-          <p className="text-stone-400">Loading interview...</p>
+          <p className="text-stone-400">正在加载访谈...</p>
         </div>
       </div>
     );
@@ -85,10 +85,10 @@ export default function ParticipantPage() {
           <div className="w-16 h-16 rounded-full bg-stone-800 flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">⚠️</span>
           </div>
-          <h1 className="text-xl font-semibold text-white mb-2">Unable to Load Interview</h1>
+          <h1 className="text-xl font-semibold text-white mb-2">无法加载访谈</h1>
           <p className="text-stone-400 mb-6">{error}</p>
           <p className="text-stone-500 text-sm">
-            Please check that you have the correct link or contact the researcher.
+            请确认链接是否正确，或联系研究者。
           </p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function ParticipantPage() {
   if (!studyConfig) {
     return (
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
-        <p className="text-stone-400">Study configuration not found.</p>
+        <p className="text-stone-400">未找到研究配置。</p>
       </div>
     );
   }

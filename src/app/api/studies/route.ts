@@ -24,7 +24,7 @@ export async function GET() {
     if (!kvAvailable) {
       return NextResponse.json({
         studies: [],
-        warning: '尚未配置存储。 Connect Vercel KV to enable persistence.'
+        warning: '尚未配置存储。请连接 Vercel KV 以启用持久化。'
       });
     }
 
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     const kvAvailable = await isKVAvailable(context.kvClient);
     if (!kvAvailable) {
       return NextResponse.json(
-        { error: '尚未配置存储。 Connect Vercel KV to enable persistence.' },
+        { error: '尚未配置存储。请连接 Vercel KV 以启用持久化。' },
         { status: 503 }
       );
     }

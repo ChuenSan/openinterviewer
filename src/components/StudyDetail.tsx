@@ -88,7 +88,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update study');
+        throw new Error('更新研究失败');
       }
 
       // Update local state
@@ -101,7 +101,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
       });
     } catch (error) {
       console.error('Error toggling links:', error);
-      alert('Failed to update link settings');
+      alert('更新链接设置失败');
     } finally {
       setIsTogglingLinks(false);
     }
@@ -120,7 +120,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to generate link');
+        throw new Error(error.error || '生成链接失败');
       }
 
       const data = await response.json();
@@ -129,7 +129,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
       }
     } catch (error) {
       console.error('Error generating link:', error);
-      alert(error instanceof Error ? error.message : 'Failed to generate link');
+      alert(error instanceof Error ? error.message : '生成链接失败');
     } finally {
       setGeneratingLink(false);
     }
@@ -145,7 +145,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
   const handleGenerateAggregateSynthesis = async () => {
     if (interviews.length < 2) {
-      alert('Need at least 2 interviews to generate aggregate synthesis');
+      alert('至少需要 2 场访谈才能生成汇总分析');
       return;
     }
 
@@ -159,14 +159,14 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to generate synthesis');
+        throw new Error(error.error || '生成综合分析失败');
       }
 
       const data = await response.json();
       setAggregateSynthesis(data.synthesis);
     } catch (error) {
       console.error('Error generating aggregate synthesis:', error);
-      alert(error instanceof Error ? error.message : 'Failed to generate synthesis');
+      alert(error instanceof Error ? error.message : '生成综合分析失败');
     } finally {
       setIsGeneratingAggregate(false);
     }
@@ -174,7 +174,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
   const handleGenerateFollowup = async () => {
     if (!aggregateSynthesis) {
-      alert('Generate aggregate analysis first');
+      alert('请先生成汇总分析');
       return;
     }
 
@@ -188,7 +188,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to generate follow-up study');
+        throw new Error(error.error || '生成后续研究失败');
       }
 
       const data = await response.json();
@@ -198,14 +198,14 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
       router.push('/setup?prefill=followup');
     } catch (error) {
       console.error('Error generating follow-up study:', error);
-      alert(error instanceof Error ? error.message : 'Failed to generate follow-up study');
+      alert(error instanceof Error ? error.message : '生成后续研究失败');
     } finally {
       setIsGeneratingFollowup(false);
     }
   };
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
+    return new Date(timestamp).toLocaleDateString('zh-CN', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
@@ -216,7 +216,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
   const formatDuration = (start: number, end: number) => {
     const minutes = Math.round((end - start) / 1000 / 60);
-    return `${minutes} min`;
+    return `${minutes} 分钟`;
   };
 
   if (loading) {
@@ -232,13 +232,13 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
       <div className="min-h-screen bg-stone-900 flex items-center justify-center">
         <div className="text-center">
           <AlertCircle size={48} className="text-stone-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-white mb-2">Study Not Found</h2>
-          <p className="text-stone-400 mb-4">The study you're looking for doesn't exist.</p>
+          <h2 className="text-xl font-semibold text-white mb-2">未找到研究</h2>
+          <p className="text-stone-400 mb-4">您查找的研究不存在。</p>
           <button
             onClick={() => router.push('/studies')}
             className="px-4 py-2 bg-stone-700 hover:bg-stone-600 text-white rounded-xl"
           >
-            Back to Studies
+            返回研究列表
           </button>
         </div>
       </div>
@@ -246,9 +246,9 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
   }
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [
-    { id: 'overview', label: 'Overview', icon: <BarChart3 size={16} /> },
-    { id: 'interviews', label: 'Interviews', icon: <Users size={16} /> },
-    { id: 'settings', label: 'Settings', icon: <Settings size={16} /> }
+    { id: 'overview', label: '概览', icon: <BarChart3 size={16} /> },
+    { id: 'interviews', label: '访谈', icon: <Users size={16} /> },
+    { id: 'settings', label: '设置', icon: <Settings size={16} /> }
   ];
 
   return (
@@ -265,7 +265,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
             className="text-stone-400 hover:text-stone-300 flex items-center gap-2 mb-4"
           >
             <ArrowLeft size={16} />
-            Back to Studies
+            返回研究列表
           </button>
 
           <div className="flex items-start justify-between">
@@ -278,11 +278,11 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                 <div className="flex items-center gap-3 mt-1 text-sm text-stone-400">
                   <span className="flex items-center gap-1">
                     <Users size={14} />
-                    {study.interviewCount} interviews
+                    {study.interviewCount} 场访谈
                   </span>
                   <span className="flex items-center gap-1">
                     <Calendar size={14} />
-                    Created {formatDate(study.createdAt)}
+                    创建于 {formatDate(study.createdAt)}
                   </span>
                   <span className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs ${
                     study.isLocked
@@ -290,7 +290,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                       : 'bg-green-900/50 text-green-400'
                   }`}>
                     {study.isLocked ? <Lock size={10} /> : <Unlock size={10} />}
-                    {study.isLocked ? 'Locked' : 'Editable'}
+                    {study.isLocked ? '已锁定' : '可编辑'}
                   </span>
                 </div>
               </div>
@@ -329,7 +329,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                 <h3 className="font-semibold text-white mb-2 flex items-center gap-2">
                   <Sparkles size={16} className="text-stone-400" />
-                  Research Question
+                  研究问题
                 </h3>
                 <p className="text-stone-300">{study.config.researchQuestion}</p>
               </div>
@@ -338,15 +338,15 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               <div className="grid grid-cols-3 gap-4">
                 <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-4 text-center">
                   <div className="text-3xl font-bold text-white">{study.interviewCount}</div>
-                  <div className="text-sm text-stone-400">Interviews</div>
+                  <div className="text-sm text-stone-400">访谈</div>
                 </div>
                 <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-4 text-center">
                   <div className="text-3xl font-bold text-white">{study.config.coreQuestions.length}</div>
-                  <div className="text-sm text-stone-400">Core Questions</div>
+                  <div className="text-sm text-stone-400">核心问题</div>
                 </div>
                 <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-4 text-center">
                   <div className="text-3xl font-bold text-white">{study.config.topicAreas.length}</div>
-                  <div className="text-sm text-stone-400">Topic Areas</div>
+                  <div className="text-sm text-stone-400">主题领域</div>
                 </div>
               </div>
 
@@ -355,7 +355,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-white flex items-center gap-2">
                     <BarChart3 size={16} className="text-stone-400" />
-                    Aggregate Analysis
+                    汇总分析
                   </h3>
                   <button
                     onClick={handleGenerateAggregateSynthesis}
@@ -367,18 +367,18 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                     ) : (
                       <Sparkles size={14} />
                     )}
-                    {isGeneratingAggregate ? 'Analyzing...' : 'Analyze All Interviews'}
+                    {isGeneratingAggregate ? '分析中...' : '分析全部访谈'}
                   </button>
                 </div>
 
                 {interviews.length < 2 ? (
                   <p className="text-stone-500 text-sm">
-                    Need at least 2 interviews to generate aggregate analysis.
+                    至少需要 2 场访谈才能生成汇总分析。
                   </p>
                 ) : aggregateSynthesis ? (
                   <div className="space-y-4">
                     <div>
-                      <h4 className="text-sm font-medium text-stone-400 mb-2">Key Findings</h4>
+                      <h4 className="text-sm font-medium text-stone-400 mb-2">关键发现</h4>
                       <ul className="space-y-1">
                         {aggregateSynthesis.keyFindings.map((finding, i) => (
                           <li key={i} className="text-stone-300 text-sm flex items-start gap-2">
@@ -389,7 +389,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-stone-400 mb-2">Bottom Line</h4>
+                      <h4 className="text-sm font-medium text-stone-400 mb-2">核心结论</h4>
                       <p className="text-stone-300 text-sm bg-stone-800 rounded-lg p-3">
                         {aggregateSynthesis.bottomLine}
                       </p>
@@ -407,16 +407,16 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                         ) : (
                           <GitBranch size={14} />
                         )}
-                        {isGeneratingFollowup ? 'Generating...' : 'Create Follow-up Study'}
+                        {isGeneratingFollowup ? '生成中...' : '创建后续研究'}
                       </button>
                       <p className="text-xs text-stone-500 mt-2">
-                        Generate a new study based on gaps and patterns found in this analysis.
+                        根据本次分析中发现的缺口与模式，生成一项新研究。
                       </p>
                     </div>
                   </div>
                 ) : (
                   <p className="text-stone-500 text-sm">
-                    Click "Analyze All Interviews" to generate cross-interview insights.
+                    点击「分析全部访谈」以生成跨访谈洞察。
                   </p>
                 )}
               </div>
@@ -428,9 +428,9 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               {interviews.length === 0 ? (
                 <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-12 text-center">
                   <Users size={32} className="text-stone-500 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-white mb-2">No Interviews Yet</h3>
+                  <h3 className="text-lg font-semibold text-white mb-2">暂无访谈</h3>
                   <p className="text-stone-400 text-sm">
-                    Share the participant link to start collecting interviews.
+                    分享参与者链接即可开始收集访谈。
                   </p>
                 </div>
               ) : (
@@ -472,7 +472,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                           </div>
                           <div className="flex items-center gap-1">
                             <MessageSquare size={12} />
-                            {interview.transcript.length} messages
+                            {interview.transcript.length} 条消息
                           </div>
                           <div>
                             {formatDate(interview.createdAt)}
@@ -503,10 +503,10 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                   <AlertCircle size={20} className="text-amber-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-medium text-white">
-                      {study.interviewCount} interview{study.interviewCount > 1 ? 's' : ''} collected
+                      已收集 {study.interviewCount} 场访谈
                     </h4>
                     <p className="text-sm text-stone-400">
-                      This study has collected data. Editing is allowed but may affect consistency with existing responses.
+                      本研究已收集数据。仍可编辑，但可能影响与已有回答的一致性。
                     </p>
                   </div>
                 </div>
@@ -515,23 +515,23 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               {/* Study Config Display */}
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-stone-400 mb-1">Study Name</label>
+                  <label className="block text-sm font-medium text-stone-400 mb-1">研究名称</label>
                   <p className="text-stone-200">{study.config.name}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-stone-400 mb-1">Description</label>
-                  <p className="text-stone-200">{study.config.description || 'No description'}</p>
+                  <label className="block text-sm font-medium text-stone-400 mb-1">描述</label>
+                  <p className="text-stone-200">{study.config.description || '暂无描述'}</p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-stone-400 mb-1">Research Question</label>
+                  <label className="block text-sm font-medium text-stone-400 mb-1">研究问题</label>
                   <p className="text-stone-200">{study.config.researchQuestion}</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-stone-400 mb-1">
-                    Core Questions ({study.config.coreQuestions.length})
+                    核心问题（{study.config.coreQuestions.length}）
                   </label>
                   <ul className="space-y-2">
                     {study.config.coreQuestions.map((q, i) => (
@@ -544,7 +544,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
 
                 <div>
                   <label className="block text-sm font-medium text-stone-400 mb-1">
-                    Topic Areas ({study.config.topicAreas.length})
+                    主题领域（{study.config.topicAreas.length}）
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {study.config.topicAreas.map((topic, i) => (
@@ -556,8 +556,11 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-stone-400 mb-1">AI Interview Style</label>
-                  <p className="text-stone-200 capitalize">{study.config.aiBehavior}</p>
+                  <label className="block text-sm font-medium text-stone-400 mb-1">AI 访谈风格</label>
+                  <p className="text-stone-200">{
+                    study.config.aiBehavior === 'structured' ? '结构化' :
+                    study.config.aiBehavior === 'exploratory' ? '探索式' : '标准'
+                  }</p>
                 </div>
               </div>
 
@@ -565,16 +568,16 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6 space-y-4">
                 <h3 className="font-semibold text-stone-100 flex items-center gap-2">
                   <LinkIcon size={18} className="text-stone-400" />
-                  Link Management
+                  链接管理
                 </h3>
 
                 <div className="flex items-center justify-between p-4 bg-stone-900/50 rounded-xl">
                   <div>
-                    <div className="font-medium text-stone-200">Participant Access</div>
+                    <div className="font-medium text-stone-200">参与者访问</div>
                     <p className="text-sm text-stone-400">
                       {(study.config.linksEnabled ?? true)
-                        ? 'Access enabled - participants can use the link below'
-                        : 'Access disabled - the same link will show an error until re-enabled'}
+                        ? '访问已开启 — 参与者可使用下方链接'
+                        : '访问已关闭 — 同一链接将显示错误，直至重新开启'}
                     </p>
                   </div>
                   <button
@@ -595,13 +598,16 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                 {study.config.linkExpiration && study.config.linkExpiration !== 'never' && (
                   <div className="flex items-center gap-2 text-sm text-stone-400">
                     <Clock size={14} />
-                    <span>Links expire: {study.config.linkExpiration === '7days' ? '7 days' : study.config.linkExpiration === '30days' ? '30 days' : '90 days'} after generation</span>
+                    <span>链接有效期：生成后 {
+                      study.config.linkExpiration === '7days' ? '7 天' :
+                      study.config.linkExpiration === '30days' ? '30 天' : '90 天'
+                    }</span>
                   </div>
                 )}
 
                 {!(study.config.linksEnabled ?? true) && (
                   <div className="text-xs text-amber-400 bg-amber-900/30 p-3 rounded-lg">
-                    Warning: All participant links are currently disabled. Participants trying to access the study will see an error message.
+                    注意：所有参与者链接当前已禁用。尝试访问本研究的参与者将看到错误提示。
                   </div>
                 )}
               </div>
@@ -610,7 +616,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
               <div className="bg-stone-800/50 rounded-xl border border-stone-700 p-6">
                 <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
                   <LinkIcon size={18} />
-                  Participant Link
+                  参与者链接
                 </h3>
 
                 <div className="space-y-4">
@@ -621,7 +627,7 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                     className="px-4 py-2 bg-stone-600 hover:bg-stone-500 text-white rounded-lg disabled:opacity-50 flex items-center gap-2"
                   >
                     {generatingLink ? <Loader2 size={16} className="animate-spin" /> : <LinkIcon size={16} />}
-                    Generate New Link
+                    生成新链接
                   </button>
 
                   {/* Link Display (when generated) */}
@@ -638,15 +644,15 @@ const StudyDetail: React.FC<StudyDetailProps> = ({ studyId }) => {
                         className="px-3 py-2 bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-lg flex items-center gap-1"
                       >
                         {copied ? <Check size={16} className="text-green-400" /> : <Copy size={16} />}
-                        {copied ? 'Copied!' : 'Copy'}
+                        {copied ? '已复制' : '复制'}
                       </button>
                     </div>
                   )}
 
                   {/* Explanation */}
                   <p className="text-xs text-stone-500">
-                    Each click generates a new unique link. All links share the same enable/disable toggle above.
-                    {!(study.config.linksEnabled ?? true) && ' Links are currently disabled - enable access above first.'}
+                    每次点击都会生成一条新的唯一链接。所有链接共用上方的启用/禁用开关。
+                    {!(study.config.linksEnabled ?? true) && ' 链接当前已禁用 — 请先在上方开启访问。'}
                   </p>
                 </div>
               </div>

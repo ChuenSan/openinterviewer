@@ -154,6 +154,6 @@ export async function deleteStudy(id: string): Promise<{ success: boolean; error
     return { success: true };
   } catch (error) {
     console.error('Error deleting study:', error);
-    return { success: false, error: 'Failed to delete study' };
+    return { success: false, error: '删除研究失败' };
   }
 }

@@ -54,12 +54,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ valid: true });
     }
 
-    return NextResponse.json({ valid: false, error: 'Unexpected ping response' });
+    return NextResponse.json({ valid: false, error: '意外的 ping 响应' });
   } catch (error) {
     console.error('Redis validation error:', error);
     return NextResponse.json({
       valid: false,
-      error: 'Failed to connect. Check your URL and token.',
+      error: '连接失败，请检查 URL 和 Token。',
     });
   }
 }

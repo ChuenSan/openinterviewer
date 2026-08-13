@@ -172,7 +172,7 @@ const InterviewChat: React.FC = () => {
       const errorMsg: InterviewMessage = {
         id: `msg-${Date.now()}`,
         role: 'ai',
-        content: "I appreciate you sharing that. Could you tell me more?",
+        content: "感谢您的分享。能再多说一些吗？",
         timestamp: Date.now()
       };
       addMessage(errorMsg);
@@ -323,16 +323,16 @@ const InterviewChat: React.FC = () => {
               <CheckCircle size={24} className="text-stone-300" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-white">Interview Complete</h3>
+              <h3 className="text-lg font-semibold text-white">访谈已完成</h3>
               <p className="text-sm text-stone-400 mt-1">
-                Your responses have been saved. Thank you for participating.
+                您的回答已保存。感谢参与。
               </p>
             </div>
             <button
               onClick={handleViewAnalysis}
               className="px-6 py-3 bg-stone-600 hover:bg-stone-500 text-white font-medium rounded-xl transition-colors flex items-center gap-2 mx-auto"
             >
-              View Analysis <ArrowRight size={18} />
+              查看分析 <ArrowRight size={18} />
             </button>
           </div>
         </motion.div>

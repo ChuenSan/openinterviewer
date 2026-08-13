@@ -48,8 +48,8 @@ export async function POST(request: Request) {
         return NextResponse.json({
           valid: false,
           error: response.status === 400 || response.status === 403
-            ? 'Invalid API key'
-            : `API error (status ${response.status}). Please check your key and try again.`,
+            ? 'API 密钥无效'
+            : `API 错误（状态 ${response.status}）。请检查密钥后重试。`,
         });
       }
 
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       if (!response.ok) {
         return NextResponse.json({
           valid: false,
-          error: response.status === 401 ? 'Invalid API key' : `API error (${response.status})`,
+          error: response.status === 401 ? 'API 密钥无效' : `API 错误（${response.status}）`,
         });
       }
 
@@ -102,7 +102,7 @@ export async function POST(request: Request) {
       if (!response.ok) {
         return NextResponse.json({
           valid: false,
-          error: response.status === 401 ? 'Invalid API key' : `API error (${response.status})`,
+          error: response.status === 401 ? 'API 密钥无效' : `API 错误（${response.status}）`,
         });
       }
 
@@ -112,6 +112,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: '未知提供商' }, { status: 400 });
   } catch (error) {
     console.error('AI key validation error:', error);
-    return NextResponse.json({ valid: false, error: 'Validation request failed' });
+    return NextResponse.json({ valid: false, error: '验证请求失败' });
   }
 }

@@ -177,7 +177,7 @@ export async function verifyParticipantToken(request: Request): Promise<Particip
       } catch (error) {
         // Check if it's an expiration error
         if (error instanceof jose.errors.JWTExpired) {
-          return { valid: false, error: 'This link has expired. Please request a new participant link from the researcher.' };
+          return { valid: false, error: '此链接已过期。请向研究者申请新的参与者链接。' };
         }
         // Token invalid, fall through to check admin session
       }

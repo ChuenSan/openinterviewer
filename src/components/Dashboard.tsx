@@ -96,17 +96,23 @@ const Dashboard: React.FC = () => {
 
   const formatDuration = (start: number, end: number) => {
     const minutes = Math.round((end - start) / 1000 / 60);
-    return `${minutes} min`;
+    return `${minutes} 分钟`;
   };
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
+    return new Date(timestamp).toLocaleString('zh-CN', {
+      year: 'numeric',
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const statusLabel = (status: string) => {
+    if (status === 'completed') return '已完成';
+    if (status === 'in-progress') return '进行中';
+    return status;
   };
 
   return (
@@ -124,9 +130,9 @@ const Dashboard: React.FC = () => {
                 <FolderOpen className="text-stone-300" size={20} />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">Interview Dashboard</h1>
+                <h1 className="text-3xl font-bold text-white">访谈仪表盘</h1>
                 <p className="text-stone-400">
-                  {interviews.length} interview{interviews.length !== 1 ? 's' : ''} collected
+                  已收集 {interviews.length} 场访谈
                 </p>
               </div>
             </div>
@@ -137,14 +143,14 @@ const Dashboard: React.FC = () => {
                 className="px-4 py-2 text-sm bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
               >
                 <BookOpen size={16} />
-                My Studies
+                我的研究
               </button>
               <button
                 onClick={() => router.push('/setup')}
                 className="px-4 py-2 text-sm bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
               >
                 <ArrowLeft size={16} />
-                Back to Setup
+                返回设置
               </button>
               {interviews.length > 0 && (
                 <button
@@ -157,7 +163,7 @@ const Dashboard: React.FC = () => {
                   ) : (
                     <Download size={16} />
                   )}
-                  Export All
+                  全部导出
                 </button>
               )}
               <button
@@ -165,7 +171,7 @@ const Dashboard: React.FC = () => {
                 className="px-4 py-2 text-sm border border-stone-600 text-stone-400 hover:bg-stone-700 rounded-xl transition-colors flex items-center gap-2"
               >
                 <LogOut size={16} />
-                Logout
+                退出登录
               </button>
             </div>
           </div>
@@ -195,10 +201,10 @@ const Dashboard: React.FC = () => {
               onChange={(e) => setSelectedStudyId(e.target.value || null)}
               className="px-4 py-2 bg-stone-800 border border-stone-700 rounded-xl text-stone-300 focus:outline-none focus:ring-2 focus:ring-stone-500"
             >
-              <option value="">All Studies</option>
+              <option value="">全部研究</option>
               {studies.map((study) => (
                 <option key={study.id} value={study.id}>
-                  {study.config.name} ({study.interviewCount} interviews)
+                  {study.config.name}（{study.interviewCount} 场访谈）
                 </option>
               ))}
             </select>
@@ -207,7 +213,7 @@ const Dashboard: React.FC = () => {
                 onClick={() => setSelectedStudyId(null)}
                 className="text-sm text-stone-500 hover:text-stone-400"
               >
-                Clear filter
+                清除筛选
               </button>
             )}
           </motion.div>
@@ -227,15 +233,15 @@ const Dashboard: React.FC = () => {
             <div className="w-16 h-16 rounded-full bg-stone-800 flex items-center justify-center mx-auto mb-4">
               <FileText size={32} className="text-stone-500" />
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">No Interviews Yet</h2>
+            <h2 className="text-xl font-semibold text-white mb-2">暂无访谈</h2>
             <p className="text-stone-400 mb-6">
-              Completed interviews will appear here. Share participant links to start collecting data.
+              完成的访谈将显示在这里。分享参与者链接即可开始收集数据。
             </p>
             <button
               onClick={() => router.push('/setup')}
               className="px-6 py-3 bg-stone-600 hover:bg-stone-500 text-white rounded-xl transition-colors"
             >
-              Create Study Link
+              创建研究链接
             </button>
           </motion.div>
         ) : (
@@ -258,7 +264,7 @@ const Dashboard: React.FC = () => {
                           ? 'bg-stone-700 text-stone-300'
                           : 'bg-stone-600 text-stone-200'
                       }`}>
-                        {interview.status}
+                        {statusLabel(interview.status)}
                       </span>
                     </div>
 
@@ -289,7 +295,7 @@ const Dashboard: React.FC = () => {
                       </div>
                       <div className="flex items-center gap-1">
                         <MessageSquare size={12} />
-                        {interview.transcript.length} messages
+                        {interview.transcript.length} 条消息
                       </div>
                       <div>
                         {formatDate(interview.createdAt)}

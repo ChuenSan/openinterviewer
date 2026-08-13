@@ -68,7 +68,7 @@ const Onboarding: React.FC = () => {
       const data = await res.json();
       setValidation({ loading: false, valid: data.valid, error: data.error || null });
     } catch {
-      setValidation({ loading: false, valid: false, error: 'Validation failed' });
+      setValidation({ loading: false, valid: false, error: '验证失败' });
     }
   };
 
@@ -84,7 +84,7 @@ const Onboarding: React.FC = () => {
       const data = await res.json();
       setRedisValidation({ loading: false, valid: data.valid, error: data.error || null });
     } catch {
-      setRedisValidation({ loading: false, valid: false, error: 'Validation failed' });
+      setRedisValidation({ loading: false, valid: false, error: '验证失败' });
     }
   };
 
@@ -109,7 +109,7 @@ const Onboarding: React.FC = () => {
 
       if (!saveRes.ok) {
         const data = await saveRes.json().catch(() => ({}));
-        setSaveError(data.error || 'Failed to save credentials. Please try again.');
+        setSaveError(data.error || '保存凭据失败，请重试。');
         setSaving(false);
         return;
       }
@@ -117,14 +117,14 @@ const Onboarding: React.FC = () => {
       // Mark onboarding complete
       const completeRes = await fetch('/api/onboarding/complete', { method: 'POST' });
       if (!completeRes.ok) {
-        setSaveError('Failed to complete onboarding. Please try again.');
+        setSaveError('完成引导失败，请重试。');
         setSaving(false);
         return;
       }
 
       router.push('/studies');
     } catch {
-      setSaveError('Connection error. Please try again.');
+      setSaveError('连接出错，请重试。');
       setSaving(false);
     }
   };
@@ -167,11 +167,11 @@ const Onboarding: React.FC = () => {
                     <Sparkles size={28} className="text-stone-300" />
                   </div>
                   <h1 className="text-2xl font-bold text-white">
-                    Welcome{profile?.name ? `, ${profile.name.split(' ')[0]}` : ''}!
+                    {profile?.name ? `欢迎，${profile.name.split(' ')[0]}！` : '欢迎！'}
                   </h1>
                   <p className="text-stone-400 mt-3 leading-relaxed">
-                    Let&apos;s get you set up. OpenInterviewer uses a <strong className="text-stone-300">Bring Your Own Storage</strong> model &mdash;
-                    your data stays in your own infrastructure, giving you full control over your research data.
+                    我们来完成初始配置。OpenInterviewer 采用 <strong className="text-stone-300">自带存储</strong> 模式——
+                    数据保存在你自己的基础设施中，研究数据完全由你掌控。
                   </p>
                 </div>
 
@@ -179,15 +179,15 @@ const Onboarding: React.FC = () => {
                   <div className="flex items-start gap-3 p-3 bg-stone-800 rounded-lg">
                     <Key size={18} className="text-stone-400 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="text-stone-200 text-sm font-medium">AI API Key</p>
-                      <p className="text-stone-400 text-xs">Gemini or Claude key for AI-powered interviews</p>
+                      <p className="text-stone-200 text-sm font-medium">AI API 密钥</p>
+                      <p className="text-stone-400 text-xs">用于 AI 访谈的 Gemini 或 Claude 密钥</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 p-3 bg-stone-800 rounded-lg">
                     <Database size={18} className="text-stone-400 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="text-stone-200 text-sm font-medium">Upstash Redis</p>
-                      <p className="text-stone-400 text-xs">Free-tier database to store your studies and interviews</p>
+                      <p className="text-stone-400 text-xs">用于存储研究和访谈的免费套餐数据库</p>
                     </div>
                   </div>
                 </div>
@@ -196,9 +196,9 @@ const Onboarding: React.FC = () => {
 
             {step === 'ai-keys' && (
               <motion.div key="ai-keys" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h2 className="text-xl font-bold text-white mb-1">AI API Key</h2>
+                <h2 className="text-xl font-bold text-white mb-1">AI API 密钥</h2>
                 <p className="text-stone-400 text-sm mb-6">
-                  Add at least one AI provider key. You can add both for flexibility.
+                  至少添加一个 AI 服务商密钥。也可以同时添加多个，方便切换。
                 </p>
 
                 <div className="space-y-5">
@@ -221,7 +221,7 @@ const Onboarding: React.FC = () => {
                         disabled={!geminiKey || geminiValidation.loading}
                         className="px-3 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
                       >
-                        Test
+                        测试
                       </button>
                     </div>
                     {geminiValidation.error && <p className="text-red-400 text-xs mt-1">{geminiValidation.error}</p>}
@@ -233,24 +233,24 @@ const Onboarding: React.FC = () => {
                         className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
                       >
                         {geminiGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                        How to get a Gemini API key
+                        如何获取 Gemini API 密钥
                       </button>
 
                       {geminiGuideOpen && (
                         <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
                           <ol className="list-decimal list-inside space-y-1 text-stone-300">
-                            <li>Go to <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">aistudio.google.com/apikey</a></li>
-                            <li>Sign in with any Google account</li>
-                            <li>Click "Create API key" (auto-creates a Google Cloud project)</li>
-                            <li>Copy the key (starts with AIza)</li>
+                            <li>前往 <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">aistudio.google.com/apikey</a></li>
+                            <li>使用任意 Google 账号登录</li>
+                            <li>点击「Create API key」（会自动创建 Google Cloud 项目）</li>
+                            <li>复制密钥（以 AIza 开头）</li>
                           </ol>
                           <div className="flex items-start gap-1.5 text-stone-400 mt-2">
                             <span>•</span>
-                            <span>No credit card required</span>
+                            <span>无需信用卡</span>
                           </div>
                           <div className="flex items-start gap-1.5 text-stone-400">
                             <span>•</span>
-                            <span>Free tier: 10 req/min, 250 req/day for Gemini 2.5 Flash</span>
+                            <span>免费额度：Gemini 2.5 Flash 每分钟 10 次，每天 250 次</span>
                           </div>
                         </div>
                       )}
@@ -276,7 +276,7 @@ const Onboarding: React.FC = () => {
                         disabled={!anthropicKey || anthropicValidation.loading}
                         className="px-3 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
                       >
-                        Test
+                        测试
                       </button>
                     </div>
                     {anthropicValidation.error && <p className="text-red-400 text-xs mt-1">{anthropicValidation.error}</p>}
@@ -288,24 +288,24 @@ const Onboarding: React.FC = () => {
                         className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
                       >
                         {claudeGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                        How to get a Claude API key
+                        如何获取 Claude API 密钥
                       </button>
 
                       {claudeGuideOpen && (
                         <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
                           <ol className="list-decimal list-inside space-y-1 text-stone-300">
-                            <li>Go to <a href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">console.anthropic.com</a></li>
-                            <li>Sign up with email or Google account</li>
-                            <li>Claim $5 free credits (requires phone verification, US numbers only)</li>
-                            <li>Go to API Keys → Create API Key → copy it (starts with sk-ant-)</li>
+                            <li>前往 <a href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">console.anthropic.com</a></li>
+                            <li>使用邮箱或 Google 账号注册</li>
+                            <li>领取 5 美元免费额度（需手机验证，仅限美国号码）</li>
+                            <li>进入 API Keys → Create API Key → 复制密钥（以 sk-ant- 开头）</li>
                           </ol>
                           <div className="flex items-start gap-1.5 text-stone-400 mt-2">
                             <span>•</span>
-                            <span>$5 free credits ≈ 15-100 interviews with Haiku</span>
+                            <span>5 美元免费额度约可完成 15-100 场 Haiku 访谈</span>
                           </div>
                           <div className="flex items-start gap-1.5 text-amber-400">
                             <span>•</span>
-                            <span>Credit card required after free credits expire</span>
+                            <span>免费额度用完后需绑定信用卡</span>
                           </div>
                         </div>
                       )}
@@ -331,7 +331,7 @@ const Onboarding: React.FC = () => {
                         disabled={!openaiKey || openaiValidation.loading}
                         className="px-3 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
                       >
-                        Test
+                        测试
                       </button>
                     </div>
                     {openaiValidation.error && <p className="text-red-400 text-xs mt-1">{openaiValidation.error}</p>}
@@ -343,24 +343,24 @@ const Onboarding: React.FC = () => {
                         className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
                       >
                         {openaiGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                        How to get an OpenAI API key
+                        如何获取 OpenAI API 密钥
                       </button>
 
                       {openaiGuideOpen && (
                         <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
                           <ol className="list-decimal list-inside space-y-1 text-stone-300">
-                            <li>Go to <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">platform.openai.com/api-keys</a></li>
-                            <li>Sign up or log in with your OpenAI account</li>
-                            <li>Click "Create new secret key"</li>
-                            <li>Copy the key (starts with sk-proj-)</li>
+                            <li>前往 <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">platform.openai.com/api-keys</a></li>
+                            <li>使用 OpenAI 账号注册或登录</li>
+                            <li>点击「Create new secret key」</li>
+                            <li>复制密钥（以 sk-proj- 开头）</li>
                           </ol>
                           <div className="flex items-start gap-1.5 text-stone-400 mt-2">
                             <span>•</span>
-                            <span>New accounts get $5 free credits (expires after 3 months)</span>
+                            <span>新账号可获 5 美元免费额度（3 个月后过期）</span>
                           </div>
                           <div className="flex items-start gap-1.5 text-amber-400">
                             <span>•</span>
-                            <span>Credit card or pre-paid billing required after free credits expire</span>
+                            <span>免费额度用完后需绑定信用卡或预付费账单</span>
                           </div>
                         </div>
                       )}
@@ -374,8 +374,8 @@ const Onboarding: React.FC = () => {
               <motion.div key="redis" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <h2 className="text-xl font-bold text-white mb-1">Upstash Redis</h2>
                 <p className="text-stone-400 text-sm mb-6">
-                  Your studies and interview data will be stored in your own Upstash Redis database.
-                  The free tier is more than enough to get started.
+                  你的研究和访谈数据将存储在自己的 Upstash Redis 数据库中。
+                  免费套餐足够起步使用。
                 </p>
 
                 <div className="space-y-4">
@@ -406,7 +406,7 @@ const Onboarding: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <ValidationBadge state={redisValidation} />
-                      {redisValidation.valid && <span className="text-green-400 text-sm">Connected</span>}
+                      {redisValidation.valid && <span className="text-green-400 text-sm">已连接</span>}
                       {redisValidation.error && <span className="text-red-400 text-sm">{redisValidation.error}</span>}
                     </div>
                     <button
@@ -414,7 +414,7 @@ const Onboarding: React.FC = () => {
                       disabled={!redisUrl || !redisToken || redisValidation.loading}
                       className="px-4 py-2 bg-stone-700 hover:bg-stone-600 disabled:opacity-50 text-stone-300 text-sm rounded-lg transition-colors"
                     >
-                      {redisValidation.loading ? 'Testing...' : 'Test Connection'}
+                      {redisValidation.loading ? '测试中...' : '测试连接'}
                     </button>
                   </div>
 
@@ -425,26 +425,26 @@ const Onboarding: React.FC = () => {
                       className="text-xs text-stone-500 hover:text-stone-400 inline-flex items-center gap-1"
                     >
                       {redisGuideOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-                      How to set up Upstash Redis
+                      如何配置 Upstash Redis
                     </button>
 
                     {redisGuideOpen && (
                       <div className="mt-2 p-3 bg-stone-800/30 border border-stone-600 rounded-lg text-xs space-y-2">
                         <ol className="list-decimal list-inside space-y-1 text-stone-300">
-                          <li>Go to <a href="https://console.upstash.com" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">console.upstash.com</a> and sign up with Google/GitHub</li>
-                          <li>Click "+ Create Database"</li>
-                          <li>Choose Regional (recommended), select nearest region</li>
-                          <li>Select Free plan (256 MB, 500K commands/month)</li>
-                          <li>After creation, go to database details → REST API section</li>
-                          <li>Copy REST URL (https://*.upstash.io) and REST Token</li>
+                          <li>前往 <a href="https://console.upstash.com" target="_blank" rel="noopener noreferrer" className="text-stone-400 hover:text-stone-300 underline">console.upstash.com</a>，使用 Google / GitHub 注册</li>
+                          <li>点击「+ Create Database」</li>
+                          <li>选择 Regional（推荐），并选择最近的区域</li>
+                          <li>选择 Free 套餐（256 MB，每月 50 万次命令）</li>
+                          <li>创建完成后，进入数据库详情 → REST API 部分</li>
+                          <li>复制 REST URL（https://*.upstash.io）和 REST Token</li>
                         </ol>
                         <div className="flex items-start gap-1.5 text-amber-400 mt-2">
                           <span>⚠</span>
-                          <span>Use the REST URL (https://), not the regular Redis URL (redis://)</span>
+                          <span>请使用 REST URL（https://），不要使用普通 Redis URL（redis://）</span>
                         </div>
                         <div className="flex items-start gap-1.5 text-stone-400">
                           <span>•</span>
-                          <span>Free tier: 1 database, 256 MB, 500K commands/month</span>
+                          <span>免费套餐：1 个数据库，256 MB，每月 50 万次命令</span>
                         </div>
                       </div>
                     )}
@@ -459,22 +459,22 @@ const Onboarding: React.FC = () => {
                   <div className="w-14 h-14 rounded-full bg-green-500/20 flex items-center justify-center mx-auto mb-4">
                     <CheckCircle size={28} className="text-green-400" />
                   </div>
-                  <h2 className="text-xl font-bold text-white mb-2">You&apos;re all set!</h2>
+                  <h2 className="text-xl font-bold text-white mb-2">一切就绪！</h2>
                   <p className="text-stone-400 text-sm mb-6">
-                    Your credentials have been securely encrypted and stored.
-                    You&apos;re ready to create your first study.
+                    你的凭据已加密保存。
+                    现在可以创建第一项研究了。
                   </p>
 
                   <div className="space-y-2 mb-6 text-left">
                     <div className="flex items-center gap-2 text-sm">
                       <CheckCircle size={14} className="text-green-400" />
                       <span className="text-stone-300">
-                        AI: {geminiValidation.valid && anthropicValidation.valid ? 'Gemini + Claude' : geminiValidation.valid ? 'Gemini' : 'Claude'}
+                        AI：{geminiValidation.valid && anthropicValidation.valid ? 'Gemini + Claude' : geminiValidation.valid ? 'Gemini' : openaiValidation.valid ? 'OpenAI' : 'Claude'}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
                       <CheckCircle size={14} className="text-green-400" />
-                      <span className="text-stone-300">Storage: Upstash Redis connected</span>
+                      <span className="text-stone-300">存储：Upstash Redis 已连接</span>
                     </div>
                   </div>
 
@@ -493,11 +493,11 @@ const Onboarding: React.FC = () => {
                     {saving ? (
                       <>
                         <Loader2 size={18} className="animate-spin" />
-                        Saving...
+                        保存中...
                       </>
                     ) : (
                       <>
-                        Create Your First Study
+                        创建第一项研究
                         <ArrowRight size={18} />
                       </>
                     )}
@@ -516,7 +516,7 @@ const Onboarding: React.FC = () => {
                 className="flex items-center gap-1 text-sm text-stone-400 hover:text-stone-300 disabled:opacity-30 transition-colors"
               >
                 <ArrowLeft size={14} />
-                Back
+                返回
               </button>
               <button
                 onClick={() => setCurrentStep(currentStep + 1)}
@@ -526,7 +526,7 @@ const Onboarding: React.FC = () => {
                 }
                 className="flex items-center gap-1 text-sm text-stone-200 hover:text-white disabled:opacity-30 transition-colors"
               >
-                {step === 'welcome' ? 'Get Started' : 'Next'}
+                {step === 'welcome' ? '开始配置' : '下一步'}
                 <ArrowRight size={14} />
               </button>
             </div>

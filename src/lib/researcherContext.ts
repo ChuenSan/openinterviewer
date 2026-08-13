@@ -95,12 +95,12 @@ export async function getRequestContext(): Promise<RequestContextResult> {
   const authCookie = cookieStore.get(SESSION_COOKIE_NAME);
 
   if (!authCookie?.value) {
-    return { authorized: false, context: null, error: 'Unauthorized' };
+    return { authorized: false, context: null, error: '未授权' };
   }
 
   const session = await verifySessionToken(authCookie.value);
   if (!session.valid) {
-    return { authorized: false, context: null, error: 'Session expired or invalid' };
+    return { authorized: false, context: null, error: '会话已过期或无效' };
   }
 
   try {
@@ -113,7 +113,7 @@ export async function getRequestContext(): Promise<RequestContextResult> {
 
     // Hosted mode: resolve researcher credentials
     if (!session.researcherId) {
-      return { authorized: false, context: null, error: 'No researcher identity in session' };
+      return { authorized: false, context: null, error: '会话中没有研究者身份' };
     }
 
     const context = await resolveById(session.researcherId);
@@ -124,7 +124,7 @@ export async function getRequestContext(): Promise<RequestContextResult> {
     };
   } catch (err) {
     console.error('Failed to resolve researcher context:', err);
-    return { authorized: false, context: null, error: 'Failed to resolve researcher context' };
+    return { authorized: false, context: null, error: '解析研究者上下文失败' };
   }
 }
 
@@ -161,7 +161,7 @@ export async function getParticipantRequestContext(
     if (auth.studyId) {
       const study = await getStudy(auth.studyId);
       if (study && study.config.linksEnabled === false) {
-        return { valid: false, context: null, error: 'Participant links have been disabled for this study.' };
+        return { valid: false, context: null, error: '该研究的参与者链接已被禁用。' };
       }
     }
 
@@ -182,7 +182,7 @@ export async function getParticipantRequestContext(
     }
 
     if (!researcherId) {
-      return { valid: false, context: null, error: 'Study owner not found' };
+      return { valid: false, context: null, error: '未找到研究所有者' };
     }
 
     const context = await resolveById(researcherId);
@@ -192,18 +192,18 @@ export async function getParticipantRequestContext(
       try {
         const study = await getStudy(auth.studyId, context.kvClient);
         if (study && study.config.linksEnabled === false) {
-          return { valid: false, context: null, error: 'Participant links have been disabled for this study.' };
+          return { valid: false, context: null, error: '该研究的参与者链接已被禁用。' };
         }
       } catch (kvError) {
         // Fail closed: if we can't verify link status, deny access
         console.error('Failed to check link status for study:', auth.studyId, kvError);
-        return { valid: false, context: null, error: 'Unable to verify study status. Please try again later.' };
+        return { valid: false, context: null, error: '无法验证研究状态，请稍后重试。' };
       }
     }
 
     return { valid: true, context, studyId: auth.studyId };
   } catch (err) {
     console.error('Failed to resolve participant context:', err);
-    return { valid: false, context: null, error: 'Failed to resolve study context' };
+    return { valid: false, context: null, error: '解析研究上下文失败' };
   }
 }

@@ -18,7 +18,7 @@ export async function GET(request: Request) {
     if (!kvAvailable) {
       return NextResponse.json({
         interviews: [],
-        warning: '尚未配置存储。 Connect Vercel KV to enable persistence.'
+        warning: '尚未配置存储。请连接 Vercel KV 以启用持久化。'
       });
     }
 

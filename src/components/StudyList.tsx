@@ -51,7 +51,7 @@ const StudyList: React.FC = () => {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this study? This cannot be undone.')) {
+    if (!confirm('确定要删除这项研究吗？此操作无法撤销。')) {
       return;
     }
 
@@ -61,11 +61,11 @@ const StudyList: React.FC = () => {
       if (result.success) {
         setStudies(studies.filter(s => s.id !== id));
       } else {
-        alert(result.error || 'Failed to delete study');
+        alert(result.error || '删除研究失败');
       }
     } catch (error) {
       console.error('Error deleting study:', error);
-      alert('Failed to delete study');
+      alert('删除研究失败');
     } finally {
       setDeletingId(null);
       setMenuOpenId(null);
@@ -91,22 +91,22 @@ const StudyList: React.FC = () => {
       if (response.ok) {
         setDemoMessage({
           type: 'success',
-          text: `Demo data loaded: ${data.data.studiesSeeded} study, ${data.data.interviewsSeeded} interviews`
+          text: `演示数据已加载：${data.data.studiesSeeded} 项研究，${data.data.interviewsSeeded} 场访谈`
         });
         await loadStudies(); // Refresh the list
       } else {
-        setDemoMessage({ type: 'error', text: data.error || 'Failed to load demo data' });
+        setDemoMessage({ type: 'error', text: data.error || '加载演示数据失败' });
       }
     } catch (error) {
       console.error('Error loading demo:', error);
-      setDemoMessage({ type: 'error', text: 'Failed to load demo data' });
+      setDemoMessage({ type: 'error', text: '加载演示数据失败' });
     } finally {
       setLoadingDemo(false);
     }
   };
 
   const handleClearDemo = async () => {
-    if (!confirm('Are you sure you want to clear all demo data?')) return;
+    if (!confirm('确定要清除全部演示数据吗？')) return;
 
     setLoadingDemo(true);
     setDemoMessage(null);
@@ -115,14 +115,14 @@ const StudyList: React.FC = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setDemoMessage({ type: 'success', text: 'Demo data cleared' });
+        setDemoMessage({ type: 'success', text: '演示数据已清除' });
         await loadStudies(); // Refresh the list
       } else {
-        setDemoMessage({ type: 'error', text: data.error || 'Failed to clear demo data' });
+        setDemoMessage({ type: 'error', text: data.error || '清除演示数据失败' });
       }
     } catch (error) {
       console.error('Error clearing demo:', error);
-      setDemoMessage({ type: 'error', text: 'Failed to clear demo data' });
+      setDemoMessage({ type: 'error', text: '清除演示数据失败' });
     } finally {
       setLoadingDemo(false);
     }
@@ -132,10 +132,10 @@ const StudyList: React.FC = () => {
   const hasDemoData = studies.some(s => s.id.startsWith('demo-'));
 
   const formatDate = (timestamp: number) => {
-    return new Date(timestamp).toLocaleDateString('en-US', {
+    return new Date(timestamp).toLocaleDateString('zh-CN', {
+      year: 'numeric',
       month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+      day: 'numeric'
     });
   };
 
@@ -154,9 +154,9 @@ const StudyList: React.FC = () => {
                 <BookOpen className="text-stone-300" size={20} />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-white">My Studies</h1>
+                <h1 className="text-3xl font-bold text-white">我的研究</h1>
                 <p className="text-stone-400">
-                  {studies.length} {studies.length === 1 ? 'study' : 'studies'}
+                  {studies.length} 项研究
                 </p>
               </div>
             </div>
@@ -167,14 +167,14 @@ const StudyList: React.FC = () => {
                 className="px-4 py-2 text-sm bg-stone-600 hover:bg-stone-500 text-white rounded-xl transition-colors flex items-center gap-2"
               >
                 <Plus size={16} />
-                Create Study
+                创建研究
               </button>
               <button
                 onClick={() => router.push('/dashboard')}
                 className="px-4 py-2 text-sm bg-stone-700 hover:bg-stone-600 text-stone-300 rounded-xl transition-colors flex items-center gap-2"
               >
                 <Users size={16} />
-                All Interviews
+                全部访谈
               </button>
               {hasDemoData ? (
                 <button
@@ -183,7 +183,7 @@ const StudyList: React.FC = () => {
                   className="px-4 py-2 text-sm border border-amber-700/50 text-amber-400 hover:bg-amber-900/30 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   {loadingDemo ? <Loader2 size={16} className="animate-spin" /> : <Database size={16} />}
-                  Clear Demo
+                  清除演示
                 </button>
               ) : (
                 <button
@@ -192,7 +192,7 @@ const StudyList: React.FC = () => {
                   className="px-4 py-2 text-sm border border-purple-700/50 text-purple-400 hover:bg-purple-900/30 rounded-xl transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   {loadingDemo ? <Loader2 size={16} className="animate-spin" /> : <Sparkles size={16} />}
-                  Load Demo
+                  加载演示
                 </button>
               )}
               <button
@@ -200,7 +200,7 @@ const StudyList: React.FC = () => {
                 className="px-4 py-2 text-sm border border-stone-600 text-stone-400 hover:bg-stone-700 rounded-xl transition-colors flex items-center gap-2"
               >
                 <LogOut size={16} />
-                Logout
+                退出登录
               </button>
             </div>
           </div>
@@ -215,10 +215,10 @@ const StudyList: React.FC = () => {
           >
             <AlertTriangle size={20} className="text-amber-400 flex-shrink-0 mt-0.5" />
             <div className="flex-1">
-              <h4 className="font-medium text-amber-300 mb-1">Storage Not Configured</h4>
+              <h4 className="font-medium text-amber-300 mb-1">存储尚未配置</h4>
               <p className="text-sm text-amber-400/80">{kvWarning}</p>
               <p className="text-sm text-amber-400/60 mt-2">
-                See the README for setup instructions using Vercel KV (Upstash Redis).
+                请参阅 README，按说明使用 Vercel KV（Upstash Redis）完成配置。
               </p>
             </div>
           </motion.div>
@@ -266,9 +266,9 @@ const StudyList: React.FC = () => {
             <div className="w-16 h-16 rounded-full bg-stone-800 flex items-center justify-center mx-auto mb-4">
               <BookOpen size={32} className="text-stone-500" />
             </div>
-            <h2 className="text-xl font-semibold text-white mb-2">No Studies Yet</h2>
+            <h2 className="text-xl font-semibold text-white mb-2">暂无研究</h2>
             <p className="text-stone-400 mb-6">
-              Create your first study or load demo data to explore the platform.
+              创建第一项研究，或加载演示数据来体验平台。
             </p>
             <div className="flex items-center justify-center gap-4">
               <button
@@ -276,7 +276,7 @@ const StudyList: React.FC = () => {
                 className="px-6 py-3 bg-stone-600 hover:bg-stone-500 text-white rounded-xl transition-colors flex items-center gap-2"
               >
                 <Plus size={18} />
-                Create Study
+                创建研究
               </button>
               {!kvWarning && (
                 <button
@@ -289,13 +289,13 @@ const StudyList: React.FC = () => {
                   ) : (
                     <Sparkles size={18} />
                   )}
-                  Load Demo Data
+                  加载演示数据
                 </button>
               )}
             </div>
             {!kvWarning && (
               <p className="text-stone-500 text-sm mt-4">
-                Demo includes a sample study with 3 completed interviews and AI analysis
+                演示包含一项示例研究、3 场已完成访谈及 AI 分析
               </p>
             )}
           </motion.div>
@@ -327,7 +327,7 @@ const StudyList: React.FC = () => {
                         className="w-full px-4 py-2 text-left text-sm text-stone-300 hover:bg-stone-700 flex items-center gap-2"
                       >
                         <Eye size={14} />
-                        View Details
+                        查看详情
                       </button>
                       <button
                         onClick={() => {
@@ -340,7 +340,7 @@ const StudyList: React.FC = () => {
                         className="w-full px-4 py-2 text-left text-sm text-stone-300 hover:bg-stone-700 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <LinkIcon size={14} />
-                        Edit & Generate Link
+                        编辑并生成链接
                       </button>
                       <button
                         onClick={() => handleDelete(study.id)}
@@ -352,7 +352,7 @@ const StudyList: React.FC = () => {
                         ) : (
                           <Trash2 size={14} />
                         )}
-                        Delete
+                        删除
                       </button>
                     </div>
                   )}
@@ -380,7 +380,7 @@ const StudyList: React.FC = () => {
                   <div className="flex items-center gap-4 text-sm text-stone-500 mb-3">
                     <div className="flex items-center gap-1">
                       <Users size={14} />
-                      <span>{study.interviewCount} interviews</span>
+                      <span>{study.interviewCount} 场访谈</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar size={14} />
@@ -396,10 +396,10 @@ const StudyList: React.FC = () => {
                         : 'bg-green-900/50 text-green-400'
                     }`}>
                       {study.isLocked ? <Lock size={10} /> : <Unlock size={10} />}
-                      {study.isLocked ? 'Locked' : 'Editable'}
+                      {study.isLocked ? '已锁定' : '可编辑'}
                     </span>
                     <span className="px-2 py-1 text-xs rounded-full bg-stone-700 text-stone-400">
-                      {study.config.coreQuestions.length} questions
+                      {study.config.coreQuestions.length} 个问题
                     </span>
                   </div>
                 </div>
