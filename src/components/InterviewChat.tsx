@@ -51,7 +51,6 @@ const InterviewChat: React.FC = () => {
   } = useStore();
 
   const [input, setInput] = useState('');
-  const [initialized, setInitialized] = useState(false);
   const [showFinishOption, setShowFinishOption] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -68,39 +67,35 @@ const InterviewChat: React.FC = () => {
     }
   }, [questionProgress.currentPhase]);
 
-  // Initialize with greeting
+  // Do not put a local init flag in deps: setting it retriggers cleanup
+  // and drops the greeting, leaving isAiThinking stuck true.
   useEffect(() => {
-    let mounted = true;
+    if (!studyConfig || interviewHistory.length > 0) return;
+
+    let cancelled = false;
+    setAiThinking(true);
 
     const initialize = async () => {
-      if (!studyConfig || initialized || interviewHistory.length > 0) return;
-
-      setInitialized(true);
-      setAiThinking(true);
-
       try {
         const greeting = await getInterviewGreeting(studyConfig, participantToken);
+        if (cancelled || useStore.getState().interviewHistory.length > 0) return;
 
-        if (!mounted) return; // Prevent state update if unmounted
-
-        const msg: InterviewMessage = {
+        addMessage({
           id: `msg-${Date.now()}`,
           role: 'ai',
           content: greeting,
           timestamp: Date.now()
-        };
-        addMessage(msg);
+        });
       } catch (error) {
         console.error('Error initializing interview:', error);
       } finally {
-        if (mounted) setAiThinking(false);
+        if (!cancelled) setAiThinking(false);
       }
     };
 
     initialize();
-
-    return () => { mounted = false; };
-  }, [studyConfig, initialized, interviewHistory.length]);
+    return () => { cancelled = true; };
+  }, [studyConfig, interviewHistory.length, participantToken]);
 
   const handleSend = async (textOverride?: string) => {
     const text = textOverride || input;
